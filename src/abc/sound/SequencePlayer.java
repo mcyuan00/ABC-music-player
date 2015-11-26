@@ -30,6 +30,7 @@ public class SequencePlayer {
     private final Sequencer sequencer;
     private final Track track;
     private final int beatsPerMinute;
+    private final int ticksPerBeat;
 
     /*
      * Rep invariant:
@@ -53,6 +54,7 @@ public class SequencePlayer {
      */
     public SequencePlayer(int beatsPerMinute, int ticksPerBeat)
             throws MidiUnavailableException, InvalidMidiDataException {
+        this.ticksPerBeat = ticksPerBeat;
         this.sequencer = MidiSystem.getSequencer();
 
         // create a sequence object with with tempo-based timing, where
@@ -76,6 +78,16 @@ public class SequencePlayer {
      * @param numTicks the number of ticks for which this note should be played; must be >= 0
      */
     public void addNote(int note, int startTick, int numTicks) {
+//        try {
+//            // schedule two events in the track, one for starting a note and
+//            // the other for ending the note.
+//            addMidiNoteEvent(ShortMessage.NOTE_ON, note, (int) (startTick * ticksPerBeat));
+//            addMidiNoteEvent(ShortMessage.NOTE_OFF, note, (int) ((startTick + numTicks) * ticksPerBeat));
+//        } catch (InvalidMidiDataException imde) {
+//            String msg = MessageFormat.format("Cannot add note with the pitch {0} at beat {1} " +
+//                                              "for duration {2}", note, startTick, numTicks);
+//            throw new RuntimeException(msg, imde);
+//        }
         try {
             // schedule two events in the track, one for starting a note and
             // the other for ending the note.
