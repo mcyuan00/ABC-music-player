@@ -30,8 +30,7 @@ public class SequencePlayer {
     private Sequencer sequencer;
     private Track track;
     private int beatsPerMinute;
-    public int ticksPerBeat;
-    public int currentTick;
+    private int ticksPerBeat;
 
     /*
      * Rep invariant:
@@ -69,7 +68,6 @@ public class SequencePlayer {
         sequencer.setSequence(sequence);
         
         this.ticksPerBeat = ticksPerBeat;
-        this.currentTick = 0;
 
         checkRep();
         
