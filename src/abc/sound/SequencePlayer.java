@@ -27,10 +27,11 @@ public class SequencePlayer {
     // the "end_of_track" meta message type
     private static final int META_END_OF_TRACK = 47;
 
-    private final Sequencer sequencer;
-    private final Track track;
-    private final int beatsPerMinute;
-    private final int ticksPerBeat;
+    private Sequencer sequencer;
+    private Track track;
+    private int beatsPerMinute;
+    public int ticksPerBeat;
+    public int currentTick;
 
     /*
      * Rep invariant:
@@ -54,7 +55,7 @@ public class SequencePlayer {
      */
     public SequencePlayer(int beatsPerMinute, int ticksPerBeat)
             throws MidiUnavailableException, InvalidMidiDataException {
-        this.ticksPerBeat = ticksPerBeat;
+        
         this.sequencer = MidiSystem.getSequencer();
 
         // create a sequence object with with tempo-based timing, where
@@ -66,8 +67,12 @@ public class SequencePlayer {
         this.track = sequence.createTrack();
 
         sequencer.setSequence(sequence);
+        
+        this.ticksPerBeat = ticksPerBeat;
+        this.currentTick = 0;
 
         checkRep();
+        
     }
 
     /**
