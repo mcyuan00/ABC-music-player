@@ -19,12 +19,6 @@ public interface Music {
     double duration();
     
     /**
-     * 
-     * @return pitch of note
-     */
-    Pitch pitch();
-    
-    /**
      * Transpose all notes upward or downward in pitch.
      * @param semitonesUp semitones by which to transpose
      * @return for Music m, return m' such that for all notes n in m, the

@@ -20,7 +20,6 @@ public class Note implements Music {
     /**
      * @return pitch of this note
      */
-    @Override
     public Pitch pitch() {
         return pitch;
     }

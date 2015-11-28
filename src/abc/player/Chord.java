@@ -22,6 +22,7 @@ public class Chord implements Music{
         // TODO Auto-generated method stub
         return null;
     }
+
     
 
 }
