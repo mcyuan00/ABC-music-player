@@ -34,7 +34,8 @@ public class Note implements Music {
     
     /**
      * Transpose this note.
-     * @return a new Note that is equivalent to the previous note 
+     * @param semitonesUp semitones by which to transpose
+     * @return a new Note that is equivalent to the original note 
      * transposed by a given number of semitones
      */
     @Override
