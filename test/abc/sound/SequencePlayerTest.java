@@ -9,6 +9,8 @@ import javax.sound.midi.MidiUnavailableException;
 
 import org.junit.Test;
 
+import abc.player.Pitch;
+
 /**
  * @category no_didit
  */
@@ -113,7 +115,6 @@ public class SequencePlayerTest {
             player.addNote(new Pitch('G').toMidiNote(), 72, 12);
             //rest for 12
 
-            //TODO: skips this measure???
             player.addNote(new Pitch('C').transpose(Pitch.OCTAVE).toMidiNote(), 96, 18);
             player.addNote(new Pitch('G').toMidiNote(), 114, 6);
             //rest for 12
@@ -157,7 +158,7 @@ public class SequencePlayerTest {
              * this case, you need to explicitly exit the program with
              * System.exit(0).
              */
-            System.exit(0);
+            //System.exit(0);
 
         } catch (MidiUnavailableException mue) {
             mue.printStackTrace();
@@ -167,6 +168,7 @@ public class SequencePlayerTest {
             ioe.printStackTrace();
         }
     }
+
 
 
 }

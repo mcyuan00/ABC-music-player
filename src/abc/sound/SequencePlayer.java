@@ -14,6 +14,8 @@ import javax.sound.midi.Sequencer;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Track;
 
+import abc.player.Pitch;
+
 /**
  * Schedules and plays a sequence of notes at given time steps (or "ticks").
  */
