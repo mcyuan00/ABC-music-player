@@ -11,8 +11,11 @@ public class Voices implements Music {
 
     @Override
     public double duration() {
-        // TODO Auto-generated method stub
-        return 0;
+        double time =0;
+        for (Measure measure: measures){
+            time += measure.duration();
+        }
+        return time;
     }
 
     @Override

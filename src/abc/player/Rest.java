@@ -9,8 +9,7 @@ public class Rest implements Music {
 
     @Override
     public double duration() {
-        // TODO Auto-generated method stub
-        return 0;
+        return duration;
     }
 
     @Override

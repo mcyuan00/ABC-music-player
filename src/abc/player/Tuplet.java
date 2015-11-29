@@ -11,8 +11,11 @@ public class Tuplet implements Music{
 
     @Override
     public double duration() {
-        // TODO Auto-generated method stub
-        return 0;
+        double time =0;
+        for (Note note: notes){
+            time += note.duration();
+        }
+        return time;
     }
 
     @Override
