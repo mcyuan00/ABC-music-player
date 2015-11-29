@@ -20,12 +20,10 @@ public class Measure implements Music {
         this.duration = duration;
     }
 
-
     @Override
     public double duration() {
         return duration;
     }
-
 
     @Override
     public Music transpose(int semitonesUp) {

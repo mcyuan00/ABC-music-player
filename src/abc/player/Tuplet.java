@@ -14,7 +14,7 @@ public class Tuplet implements Music{
     private final Note[] notes;
     
     /**
-     * Make a tuplet with certain notes.
+     * Make a Tuplet with certain notes.
      * @param numNotes number of notes in the tuplet
      * @param notes notes in the tuplet
      */

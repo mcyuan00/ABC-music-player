@@ -22,15 +22,13 @@ public class Note implements Music {
      */
     public Pitch pitch() {
         return pitch;
-    }
-    
+    } 
 
     @Override
     public double duration() {
         return duration;
     }
     
-
     @Override
     public Music transpose(int semitonesUp) {
         return new Note(duration, pitch.transpose(semitonesUp));

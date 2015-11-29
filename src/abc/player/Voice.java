@@ -1,10 +1,19 @@
 package abc.player;
 
-public class Voices implements Music {
+/**
+ * Voice represents a melodic line (voice) playing at the
+ * same time as other melodic lines (voices).
+ */
+public class Voice implements Music {
     private final String name;
     private final Measure[] measures;
     
-    public Voices(String name, Measure[] measures){
+    /**
+     * Make a Voice with a given name identifier and measures.
+     * @param name identifies the voice
+     * @param measures music for the voice to play
+     */
+    public Voice(String name, Measure[] measures){
         this.name = name;
         this.measures = measures;
     }

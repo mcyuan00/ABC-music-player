@@ -20,13 +20,11 @@ public class Chord implements Music{
         this.notes = notes;
     }
     
-
     @Override
     public double duration() {
         return duration;
     }
     
-
     @Override
     public Music transpose(int semitonesUp) {
         // TODO Auto-generated method stub
