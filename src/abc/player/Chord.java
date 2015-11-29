@@ -1,7 +1,7 @@
 package abc.player;
 
 /**
- * Chord represents two or more notes played simultaneously.
+ * Chord represents one or more notes played simultaneously.
  */
 public class Chord implements Music{
     private final double duration;
@@ -25,7 +25,6 @@ public class Chord implements Music{
      */
     @Override
     public double duration() {
-        // TODO Auto-generated method stub
         return duration;
     }
     

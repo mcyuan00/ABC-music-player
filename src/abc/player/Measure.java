@@ -1,9 +1,9 @@
 package abc.player;
 
 /**
- * Measure represents a group of notes, for which an accidental applied to a particular note
- * is assumed to still apply if the note is repeated within the measure grouping.
- * The combined duration of the notes is equal to the number of beats
+ * Measure represents a group of notes and rests, for which an accidental applied to 
+ * a particular note is assumed to still apply if the note is repeated within the measure grouping.
+ * The combined duration of the notes and rests is equal to the number of beats
  * in one measure as defined by the piece's time signature.
  */
 public class Measure implements Music {
@@ -13,6 +13,7 @@ public class Measure implements Music {
     /**
      * Make a Measure with certain notes and rests.
      * @param m array of Music
+     * @param duration duration in beats, must be >= 0
      */
     public Measure(Music[] m, double duration){
         this.m = m;
@@ -24,7 +25,6 @@ public class Measure implements Music {
      */
     @Override
     public double duration() {
-        // TODO Auto-generated method stub
         return duration;
     }
 
