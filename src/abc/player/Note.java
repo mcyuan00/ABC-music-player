@@ -24,20 +24,13 @@ public class Note implements Music {
         return pitch;
     }
     
-    /**
-     * @return duration of this note
-     */
+
     @Override
     public double duration() {
         return duration;
     }
     
-    /**
-     * Transpose this note.
-     * @param semitonesUp semitones by which to transpose
-     * @return a new Note that is equivalent to the original note 
-     * transposed by a given number of semitones
-     */
+
     @Override
     public Music transpose(int semitonesUp) {
         return new Note(duration, pitch.transpose(semitonesUp));

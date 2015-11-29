@@ -20,20 +20,13 @@ public class Chord implements Music{
         this.notes = notes;
     }
     
-    /**
-     * @return duration of this chord
-     */
+
     @Override
     public double duration() {
         return duration;
     }
     
-    /**
-     * Transpose this chord.   
-     * @param semitonesUp semitones by which to transpose
-     * @return a new Chord with notes equivalent to every note of the original chord
-     * transposed by a given number of semitones
-     */
+
     @Override
     public Music transpose(int semitonesUp) {
         // TODO Auto-generated method stub
