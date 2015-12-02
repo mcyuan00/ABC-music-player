@@ -1,5 +1,8 @@
 package abc.player;
 
+/**
+ * Represents the key signature of a given piece.
+ */
 public enum KeySignature {
 
     // Major keys
