@@ -15,6 +15,7 @@ import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Track;
 
 import abc.player.Pitch;
+import abc.player.PlayerElement;
 
 /**
  * Schedules and plays a sequence of notes at given time steps (or "ticks").
@@ -93,6 +94,26 @@ public class SequencePlayer {
 //                                              "for duration {2}", note, startTick, numTicks);
 //            throw new RuntimeException(msg, imde);
 //        }
+        try {
+            // schedule two events in the track, one for starting a note and
+            // the other for ending the note.
+            addMidiNoteEvent(ShortMessage.NOTE_ON, note, startTick);
+            addMidiNoteEvent(ShortMessage.NOTE_OFF, note, startTick + numTicks);
+        } catch (InvalidMidiDataException imde) {
+            String msg = MessageFormat.format("Cannot add note with the pitch {0} at tick {1} " +
+                                              "for duration {2}", note, startTick, numTicks);
+            throw new RuntimeException(msg, imde);
+        }
+    }
+    
+    /**
+     * Schedule a note to be played using a PlayerElement
+     * @param playerElement the player element, which contains all information about the note
+     */
+    public void addNote(PlayerElement playerElement){
+        int note = playerElement.pitchMidiValue();
+        int startTick = playerElement.startTick();
+        int numTicks = playerElement.numTicks();
         try {
             // schedule two events in the track, one for starting a note and
             // the other for ending the note.

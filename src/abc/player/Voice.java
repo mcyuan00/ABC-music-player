@@ -35,7 +35,7 @@ public class Voice implements Music {
     }
 
     @Override
-    public List<PlayerElement> getPlayerElements() {
+    public List<PlayerElement> getPlayerElements(int startTick) {
         // TODO Auto-generated method stub
         return null;
     }
