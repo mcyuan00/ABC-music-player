@@ -9,7 +9,7 @@ public interface Music {
      *              + Tuplet (numNotes: int, notes Note[])
      *              + Rest (duration: duration)
      *              + Measure (m: Music[])
-     *              + Voices(name: String, measures: Concat[]) 
+     *              + Voice (name: String, measures: Measure[]) 
      */
 
     /**
