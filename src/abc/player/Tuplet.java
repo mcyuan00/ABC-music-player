@@ -58,7 +58,7 @@ public class Tuplet implements Music{
     }
 
     @Override
-    public PlayerElement constructPlayer() {
+    public List<PlayerElement> getPlayerElements() {
         // TODO Auto-generated method stub
         return null;
     }
