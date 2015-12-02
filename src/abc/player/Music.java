@@ -20,7 +20,7 @@ public interface Music {
 
     /**
      * 
-     * @return total duration of music
+     * @return total duration of music in terms of fraction of a whole note
      */
     Fraction duration();
     

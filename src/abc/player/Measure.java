@@ -23,24 +23,28 @@ public class Measure implements Music {
 
     @Override
     public Fraction duration() {
-        List<Fraction> fracs = new ArrayList<Fraction>();
-        for(Music music: m){
-            fracs.add(music.duration());
+        List<Fraction> durations = new ArrayList<Fraction>();
+        for (Music music : m){
+            durations.add(music.duration());
         }
-        return Fraction.sumAllFractions(fracs);  
+        return Fraction.sumAllFractions(durations);
     }
-
-
+    
+    
     @Override
     public List<PlayerElement> getPlayerElements(int startTick, int ticksPerBeat, Fraction pieceNoteLength) {
-        // TODO Auto-generated method stub
-        return null;
+        List<PlayerElement> elements = new ArrayList<PlayerElement>();
+        int currentStart = startTick;
+        for (Music music:m){
+            elements.addAll(music.getPlayerElements(currentStart, ticksPerBeat, pieceNoteLength));
+            
+            // calculate the start tick of the next music element
+            Fraction numBeats = new Fraction(music.duration().numerator()*pieceNoteLength.denominator(), music.duration().denominator()*pieceNoteLength.numerator()).simplify();
+            int musicDuration = ticksPerBeat*numBeats.numerator()/numBeats.denominator();
+            currentStart = currentStart + musicDuration;
+        }
+        return elements;
     }
 
-//    @Override
-//    public Music transpose(int semitonesUp) {
-//        // TODO Auto-generated method stub
-//        return null;
-//    }
 
 }

@@ -1,5 +1,6 @@
 package abc.player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -61,13 +62,16 @@ public class Note implements Music {
 
     @Override
     public List<PlayerElement> getPlayerElements(int startTick, int ticksPerBeat, Fraction pieceNoteLength) {
-        // TODO Auto-generated method stub
-        return null;
+        List<PlayerElement> elements = new ArrayList<PlayerElement>();
+        
+        //find the number of ticks the note is played for
+        Fraction numBeats = new Fraction(duration.numerator()*pieceNoteLength.denominator(), duration.denominator()*pieceNoteLength.numerator()).simplify();
+        int noteDuration = ticksPerBeat*numBeats.numerator()/numBeats.denominator();
+        
+        elements.add(new PlayerElement(pitch, startTick, noteDuration));
+        return elements;
     }
     
-//    @Override
-//    public Music transpose(int semitonesUp) {
-//        return new Note(duration, pitch.transpose(semitonesUp));
-//    }
+
 
 }

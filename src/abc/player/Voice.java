@@ -23,7 +23,11 @@ public class Voice implements Music {
 
     @Override
     public Fraction duration() {
-        return new Fraction(0,0);
+        List<Fraction> durations = new ArrayList<Fraction>();
+        for (Measure measure : measures){
+            durations.add(measure.duration());
+        }
+        return Fraction.sumAllFractions(durations);
     }
     
     /**
@@ -44,14 +48,18 @@ public class Voice implements Music {
 
     @Override
     public List<PlayerElement> getPlayerElements(int startTick, int ticksPerBeat, Fraction pieceNoteLength) {
-        // TODO Auto-generated method stub
-        return null;
+        List<PlayerElement> elements = new ArrayList<PlayerElement>();
+        int currentStart = startTick;
+        for (Measure measure : measures){
+            elements.addAll(measure.getPlayerElements(currentStart, ticksPerBeat, pieceNoteLength));
+            
+            // calculate the start tick of the next music element
+            Fraction numBeats = new Fraction(measure.duration().numerator()*pieceNoteLength.denominator(), measure.duration().denominator()*pieceNoteLength.numerator()).simplify();
+            int musicDuration = ticksPerBeat*numBeats.numerator()/numBeats.denominator();
+            currentStart = currentStart + musicDuration;
+        }
+        return elements;
     }
 
-//    @Override
-//    public Music transpose(int semitonesUp) {
-//        // TODO Auto-generated method stub
-//        return null;
-//    }
 
 }

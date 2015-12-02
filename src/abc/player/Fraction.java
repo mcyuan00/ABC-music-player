@@ -72,6 +72,13 @@ public class Fraction {
         return runningTotal;
     }
     
+    /**
+     * @return the fraction object as a double
+     */
+    public double toDecimal(){
+        return numerator/denominator;
+    }
+    
     @Override
     public boolean equals(Object obj){
         if(! (obj instanceof Fraction)) {return false;}

@@ -1,5 +1,6 @@
 package abc.player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,26 +15,26 @@ import java.util.List;
 public class Tuplet implements Music{
     private final int numNotes;
     private final Fraction noteDuration; // duration of each note in tuplet i.e. quarter/eighth etc
-    private final List<Note> chordNotes;
+    private final List<Note> notes;
     
     /**
      * Make a Tuplet with certain notes.
      * @param numNotes number of notes in the tuplet
      * @param notes notes in the tuplet
      */
-    public Tuplet(int numNotes, List<Note> chordNotes, Fraction noteDuration){
+    public Tuplet(int numNotes, List<Note> notes, Fraction noteDuration){
         this.numNotes = numNotes;
         this.noteDuration = noteDuration;
-        this.chordNotes = chordNotes;
+        this.notes = notes;
     }
 
     @Override
     public Fraction duration() {
-        return new Fraction(noteDuration.numerator()*numNotes, noteDuration.denominator());
+        return new Fraction(noteDuration.numerator()*numNotes, noteDuration.denominator()).simplify();
     }
     
     /**
-     * @return the length of the individual notes of the tuplet
+     * @return the length of the individual notes of the tuplet as a fraction of a whole note
      */
     public Fraction noteDuration(){
         return noteDuration;
@@ -50,20 +51,22 @@ public class Tuplet implements Music{
     /**
      * @return a list of all the notes played in the tuplet
      */
-    public List<Note> chordNotes(){
-        return chordNotes;
+    public List<Note> tupletNotes(){
+        return new ArrayList<Note>(notes);
     }
 
     @Override
     public List<PlayerElement> getPlayerElements(int startTick, int ticksPerBeat, Fraction pieceNoteLength) {
-        // TODO Auto-generated method stub
-        return null;
+        List<PlayerElement> elements = new ArrayList<PlayerElement>();
+        int currentStart = startTick;
+        for (Note note : notes){
+            PlayerElement noteElement = note.getPlayerElements(currentStart, ticksPerBeat, pieceNoteLength).get(0);
+            elements.add(noteElement);
+            currentStart = currentStart + noteElement.numTicks();
+        }
+        return elements;
     }
     
-//    @Override
-//    public Music transpose(int semitonesUp) {
-//        // TODO Auto-generated method stub
-//        return null;
-//    }
+
 
 }

@@ -7,26 +7,20 @@ import java.util.List;
  * Chord represents one or more notes played simultaneously.
  */
 public class Chord implements Music{
-    private final Fraction duration;
     private final int numNotes;
     private final List<Note> notes;
     
     /**
      * Make a Chord with certain notes played for duration beats.
-     * @param duration duration in beats, must be >= 0
+     * @param duration duration in beats, must be >= 0 
      * @param numNotes number of notes in the chord
      * @param notes notes in the chord
      */
-    public Chord(Fraction duration, int numNotes, List<Note> notes){
-        this.duration = duration;
+    public Chord(int numNotes, List<Note> notes){
         this.numNotes = numNotes;
         this.notes = notes;
     }
     
-    @Override
-    public Fraction duration() {
-        return duration;
-    }
     
     /**
      * 
@@ -40,23 +34,32 @@ public class Chord implements Music{
      * 
      * @return the notes that are in the chord
      */
-    public List<Note> notes(){
-        return new ArrayList<Note>(notes);
-        
+    public List<Note> chordNotes(){
+        return new ArrayList<Note>(notes);   
+    }
+
+    // duration of chord is the duration of the shortest note
+    @Override
+    public Fraction duration() {
+        Fraction duration = notes.get(0).duration();
+        for (Note note : notes){
+            if(note.duration().toDecimal()< duration.toDecimal()){
+                duration = note.duration();
+            }
+        }
+        return duration;
     }
 
 
     @Override
     public List<PlayerElement> getPlayerElements(int startTick, int ticksPerBeat, Fraction pieceNoteLength) {
-        // TODO Auto-generated method stub
-        return null;
+        List<PlayerElement> elements = new ArrayList<PlayerElement>();
+        for(Note note : notes){
+            elements.addAll(note.getPlayerElements(startTick, ticksPerBeat, pieceNoteLength));
+        }
+        return elements;
     }
-    
-//    @Override
-//    public Music transpose(int semitonesUp) {
-//        // TODO Auto-generated method stub
-//        return null;
-//    }
+
 
     
 
