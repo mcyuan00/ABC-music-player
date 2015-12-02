@@ -26,10 +26,18 @@ public class Voice implements Music {
         return new Fraction(0,0);
     }
     
+    /**
+     * Identifies the voice with a String name
+     * @return name of the voice
+     */
     public String name(){
         return name;
     }
     
+    /**
+     * Returns the measures that the voice plays
+     * @return ArrayList<Measure> of measures played by the voice
+     */
     public List<Measure> measures(){
         return new ArrayList<Measure>(measures);
     }
