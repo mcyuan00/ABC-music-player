@@ -49,7 +49,12 @@ public interface Music {
         return new SequencePlayer(tempo, tickBreakdown);
     }
     
-    List<PlayerElement> getPlayerElements();
+    /**
+     * 
+     * @param startTick the start tick of the music
+     * @return the list of PlayerElements for the entire music
+     */
+    List<PlayerElement> getPlayerElements(int startTick);
     
     @Override String toString();
     

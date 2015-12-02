@@ -11,7 +11,7 @@ public class Piece {
     }
     
     public static void Play(){
-        // call Music.play
+        // call Music.constructPlayer() and then plays it
     }
     
 }
