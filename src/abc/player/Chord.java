@@ -1,12 +1,15 @@
 package abc.player;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Chord represents one or more notes played simultaneously.
  */
 public class Chord implements Music{
     private final Fraction duration;
     private final int numNotes;
-    private final Note[] notes;
+    private final List<Note> notes;
     
     /**
      * Make a Chord with certain notes played for duration beats.
@@ -14,7 +17,7 @@ public class Chord implements Music{
      * @param numNotes number of notes in the chord
      * @param notes notes in the chord
      */
-    public Chord(Fraction duration, int numNotes, Note[] notes){
+    public Chord(Fraction duration, int numNotes, List<Note> notes){
         this.duration = duration;
         this.numNotes = numNotes;
         this.notes = notes;
@@ -23,6 +26,15 @@ public class Chord implements Music{
     @Override
     public Fraction duration() {
         return duration;
+    }
+    
+    public int numNotes(){
+        return numNotes;
+    }
+    
+    public List<Note> notes(){
+        return new ArrayList<Note>(notes);
+        
     }
     
 //    @Override

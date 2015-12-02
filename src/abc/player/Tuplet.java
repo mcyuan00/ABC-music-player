@@ -1,5 +1,7 @@
 package abc.player;
 
+import java.util.List;
+
 /**
  * Tuplet represents a consecutive group of notes that are to
  * be played for a duration that is either greater or less than 
@@ -12,17 +14,17 @@ package abc.player;
 public class Tuplet implements Music{
     private final int numNotes;
     private final Fraction noteDuration; // duration of each note in tuplet i.e. quarter/eighth etc
-    private final Note[] notes;
+    private final List<Note> chordNotes;
     
     /**
      * Make a Tuplet with certain notes.
      * @param numNotes number of notes in the tuplet
      * @param notes notes in the tuplet
      */
-    public Tuplet(int numNotes, Note[] notes, Fraction noteDuration){
+    public Tuplet(int numNotes, List<Note> chordNotes, Fraction noteDuration){
         this.numNotes = numNotes;
         this.noteDuration = noteDuration;
-        this.notes = notes;
+        this.chordNotes = chordNotes;
     }
 
     @Override
@@ -38,6 +40,11 @@ public class Tuplet implements Music{
         return numNotes;
         
     }
+    
+    public List<Note> chordNotes(){
+        return chordNotes;
+    }
+    
 //    @Override
 //    public Music transpose(int semitonesUp) {
 //        // TODO Auto-generated method stub

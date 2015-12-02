@@ -7,6 +7,11 @@ public class Fraction {
     private final int numerator;
     private final int denominator;
     
+    private void checkRep(){
+        assert (numerator >= 0);
+        assert (denominator > 0);
+    }
+    
     public Fraction(int n, int d){
         this.numerator = n;
         this.denominator= d;
@@ -65,10 +70,6 @@ public class Fraction {
         return numerator + "/" + denominator;
     }
     
-    private void checkRep(){
-        assert (numerator >= 0);
-        assert (denominator > 0);
-    }
     
 
 }

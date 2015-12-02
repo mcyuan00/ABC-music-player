@@ -22,6 +22,14 @@ public class Header {
         this.index = index;
         this.title = title;
         this.key = key;
+        this.composer = DEFAULT_COMPOSER;
+        this.meter = DEFAULT_METER;
+        this.tempo = DEFAULT_TEMPO;
+        this.noteLength = DEFAULT_NOTE_LENGTH;
+    }
+    
+    public String composer(){
+        return composer;
     }
     
     public KeySignature keySignature(){
@@ -40,5 +48,28 @@ public class Header {
         return tempo;
     }
     
+    public String title(){
+        return title;
+    }
+    
+    public int index(){
+        return index;
+    }
+    
+    public void setComposer(String composer){
+        this.composer = composer;
+    }
+    
+    public void setMeter(Fraction meter){
+        this.meter = meter;
+    }
+    
+    public void setTempo(int tempo){
+        this.tempo = tempo;
+    }
+    
+    public void setNoteLength(Fraction noteLength){
+        this.noteLength = noteLength;
+    }
 
 }
