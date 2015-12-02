@@ -22,7 +22,7 @@ tuplet : tupletspec numnote+;
 tupletspec : '(' DIGIT;
 comment : '%' text+ NEWLINE;
 text : ~NEWLINE;
-NOTELETTER :  'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' |'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'g';
+NOTELETTER :  [a-gA-G];
 OCTAVE :  '\''+ | ','+;
 ACCIDENTAL : '_' | '__' | '^' | '^^' | '=';
 BARLINE : '|' | '||' | '|:' | ':|' | '[|' | '|]';
