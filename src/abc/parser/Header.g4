@@ -9,19 +9,19 @@ import Configuration;
 root : header EOF;
 header : index comment* title otherfields* key;
 index : 'X:' DIGIT+ NEWLINE;
-title : 'T:' [.]+ NEWLINE;
+title : 'T:' text+ NEWLINE;
 otherfields : composer | length | meter | tempo | voice | comment;
-composer : 'C:' [.]+ NEWLINE;
+composer : 'C:' text+ NEWLINE;
 meter : 'M:' (DIGIT+ '/' DIGIT+) | 'C' | 'C|' NEWLINE;
 length : 'L:' DIGIT+ '/' DIGIT+ NEWLINE;
 tempo : 'Q:' (DIGIT+ '/' DIGIT+) '=' DIGIT+ NEWLINE;
-voice : 'V:' [.]+ NEWLINE;
-key : 'K:' [A-Ga-g] KEYACCIDENTAL? MINOR? NEWLINE;
-comment : [.]+ NEWLINE;
+voice : 'V:' text+ NEWLINE;
+key : 'K:' NOTE KEYACCIDENTAL? MINOR? NEWLINE;
+comment : '%' text+ NEWLINE;
+text: ~NEWLINE;
+NOTE: [a-gA-G];
 KEYACCIDENTAL : '#' | 'b';
 MINOR : 'm';
 NEWLINE : [\r]? [\n];
 DIGIT : [0-9];
-
-WHITESPACE : [\s]+ | [\t]+ -> skip
-
+WHITESPACE : [\s\t]+ -> skip;
