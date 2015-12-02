@@ -28,6 +28,14 @@ public interface Music {
      */
 //    Music transpose(int semitonesUp);
     
+    public static SequencePlayer play(){
+        // call piece.constructPlayer
+        return new SequencePlayer();
+    }
+    
+    SPConstructor constructPlayer(){
+        
+    }
     
     
     @Override String toString();
