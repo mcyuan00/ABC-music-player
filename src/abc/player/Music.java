@@ -1,5 +1,7 @@
 package abc.player;
 
+import java.util.List;
+
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiUnavailableException;
 
@@ -34,12 +36,20 @@ public interface Music {
      */
 //    Music transpose(int semitonesUp);
     
-    public static SequencePlayer play(int tempo, int tickBreakdown) throws MidiUnavailableException, InvalidMidiDataException{
-        // call piece.constructPlayer
+    /**
+     * 
+     * @param tempo
+     * @param tickBreakdown
+     * @return
+     * @throws MidiUnavailableException
+     * @throws InvalidMidiDataException
+     */
+    public static SequencePlayer constructPlayer(int tempo, int tickBreakdown) throws MidiUnavailableException, InvalidMidiDataException{
+        // call piece.constructPlayer TODO finish this thing
         return new SequencePlayer(tempo, tickBreakdown);
     }
     
-    PlayerElement constructPlayer(); 
+    List<PlayerElement> getPlayerElements();
     
     @Override String toString();
     

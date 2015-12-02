@@ -1,5 +1,7 @@
 package abc.player;
 
+import java.util.List;
+
 /**
  * Rest represents a pause in a piece of music
  */
@@ -23,7 +25,7 @@ public class Rest implements Music {
     }
 
     @Override
-    public PlayerElement constructPlayer() {
+    public List<PlayerElement> getPlayerElements() {
         // TODO Auto-generated method stub
         return null;
     }
