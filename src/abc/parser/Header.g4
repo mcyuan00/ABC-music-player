@@ -18,11 +18,10 @@ tempo : 'Q:' (DIGIT+ '/' DIGIT+) '=' DIGIT+ NEWLINE;
 voice : 'V:' text+ NEWLINE;
 key : 'K:' NOTE KEYACCIDENTAL? MINOR? NEWLINE;
 comment : '%' text+ NEWLINE;
-text: (~NEWLINE);
+text: ~NEWLINE;
 NOTE: [a-gA-G];
 KEYACCIDENTAL : '#' | 'b';
 MINOR : 'm';
 NEWLINE : [\r]? [\n];
 DIGIT : [0-9];
-WHITESPACE : [\s]+ | [\t]+ -> skip
-
+WHITESPACE : [\s\t]+ -> skip;

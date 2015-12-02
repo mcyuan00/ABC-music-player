@@ -1,4 +1,4 @@
-// Generated from Music.g4 by ANTLR 4.5.1
+// Generated from Header.g4 by ANTLR 4.5.1
 
 package abc.parser;
 // Do not edit this .java file! Edit the .g4 file and re-run Antlr.
@@ -13,32 +13,33 @@ import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.misc.*;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
-public class MusicLexer extends Lexer {
+public class HeaderLexer extends Lexer {
   static { RuntimeMetaData.checkVersion("4.5.1", RuntimeMetaData.VERSION); }
 
   protected static final DFA[] _decisionToDFA;
   protected static final PredictionContextCache _sharedContextCache =
     new PredictionContextCache();
   public static final int
-    T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, NOTELETTER=8, 
-    OCTAVE=9, ACCIDENTAL=10, BARLINE=11, NUMREPEAT=12, NEWLINE=13, WHITESPACE=14, 
-    DIGIT=15;
+    T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9, 
+    T__9=10, T__10=11, T__11=12, T__12=13, NOTE=14, KEYACCIDENTAL=15, MINOR=16, 
+    NEWLINE=17, DIGIT=18, WHITESPACE=19;
   public static String[] modeNames = {
     "DEFAULT_MODE"
   };
 
   public static final String[] ruleNames = {
-    "T__0", "T__1", "T__2", "T__3", "T__4", "T__5", "T__6", "NOTELETTER", 
-    "OCTAVE", "ACCIDENTAL", "BARLINE", "NUMREPEAT", "NEWLINE", "WHITESPACE", 
-    "DIGIT"
+    "T__0", "T__1", "T__2", "T__3", "T__4", "T__5", "T__6", "T__7", "T__8", 
+    "T__9", "T__10", "T__11", "T__12", "NOTE", "KEYACCIDENTAL", "MINOR", 
+    "NEWLINE", "DIGIT", "WHITESPACE"
   };
 
   private static final String[] _LITERAL_NAMES = {
-    null, "'V:'", "'['", "']'", "'z'", "'/'", "'('", "'%'"
+    null, "'X:'", "'T:'", "'C:'", "'M:'", "'/'", "'C'", "'C|'", "'L:'", 
+    "'Q:'", "'='", "'V:'", "'K:'", "'%'", null, null, "'m'"
   };
   private static final String[] _SYMBOLIC_NAMES = {
-    null, null, null, null, null, null, null, null, "NOTELETTER", "OCTAVE", 
-    "ACCIDENTAL", "BARLINE", "NUMREPEAT", "NEWLINE", "WHITESPACE", "DIGIT"
+    null, null, null, null, null, null, null, null, null, null, null, null, 
+    null, null, "NOTE", "KEYACCIDENTAL", "MINOR", "NEWLINE", "DIGIT", "WHITESPACE"
   };
   public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
 
@@ -91,13 +92,13 @@ public class MusicLexer extends Lexer {
       }
 
 
-  public MusicLexer(CharStream input) {
+  public HeaderLexer(CharStream input) {
     super(input);
     _interp = new LexerATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
   }
 
   @Override
-  public String getGrammarFileName() { return "Music.g4"; }
+  public String getGrammarFileName() { return "Header.g4"; }
 
   @Override
   public String[] getRuleNames() { return ruleNames; }
@@ -112,35 +113,33 @@ public class MusicLexer extends Lexer {
   public ATN getATN() { return _ATN; }
 
   public static final String _serializedATN =
-    "\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\2\21f\b\1\4\2\t\2"+
+    "\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\2\25`\b\1\4\2\t\2"+
       "\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4"+
-      "\13\t\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\3\2\3\2\3\2"+
-      "\3\3\3\3\3\4\3\4\3\5\3\5\3\6\3\6\3\7\3\7\3\b\3\b\3\t\3\t\3\n\6\n\64"+
-      "\n\n\r\n\16\n\65\3\n\6\n9\n\n\r\n\16\n:\5\n=\n\n\3\13\3\13\3\13\3"+
-      "\13\3\13\3\13\3\13\5\13F\n\13\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f"+
-      "\3\f\3\f\5\fS\n\f\3\r\3\r\3\r\3\r\5\rY\n\r\3\16\5\16\\\n\16\3\16\3"+
-      "\16\3\17\6\17a\n\17\r\17\16\17b\3\20\3\20\2\2\21\3\3\5\4\7\5\t\6\13"+
-      "\7\r\b\17\t\21\n\23\13\25\f\27\r\31\16\33\17\35\20\37\21\3\2\7\4\2"+
-      "CIci\3\2\17\17\3\2\f\f\5\2\13\13^^uu\3\2\62;t\2\3\3\2\2\2\2\5\3\2"+
-      "\2\2\2\7\3\2\2\2\2\t\3\2\2\2\2\13\3\2\2\2\2\r\3\2\2\2\2\17\3\2\2\2"+
-      "\2\21\3\2\2\2\2\23\3\2\2\2\2\25\3\2\2\2\2\27\3\2\2\2\2\31\3\2\2\2"+
-      "\2\33\3\2\2\2\2\35\3\2\2\2\2\37\3\2\2\2\3!\3\2\2\2\5$\3\2\2\2\7&\3"+
-      "\2\2\2\t(\3\2\2\2\13*\3\2\2\2\r,\3\2\2\2\17.\3\2\2\2\21\60\3\2\2\2"+
-      "\23<\3\2\2\2\25E\3\2\2\2\27R\3\2\2\2\31X\3\2\2\2\33[\3\2\2\2\35`\3"+
-      "\2\2\2\37d\3\2\2\2!\"\7X\2\2\"#\7<\2\2#\4\3\2\2\2$%\7]\2\2%\6\3\2"+
-      "\2\2&\'\7_\2\2\'\b\3\2\2\2()\7|\2\2)\n\3\2\2\2*+\7\61\2\2+\f\3\2\2"+
-      "\2,-\7*\2\2-\16\3\2\2\2./\7\'\2\2/\20\3\2\2\2\60\61\t\2\2\2\61\22"+
-      "\3\2\2\2\62\64\7)\2\2\63\62\3\2\2\2\64\65\3\2\2\2\65\63\3\2\2\2\65"+
-      "\66\3\2\2\2\66=\3\2\2\2\679\7.\2\28\67\3\2\2\29:\3\2\2\2:8\3\2\2\2"+
-      ":;\3\2\2\2;=\3\2\2\2<\63\3\2\2\2<8\3\2\2\2=\24\3\2\2\2>F\7a\2\2?@"+
-      "\7a\2\2@F\7a\2\2AF\7`\2\2BC\7`\2\2CF\7`\2\2DF\7?\2\2E>\3\2\2\2E?\3"+
-      "\2\2\2EA\3\2\2\2EB\3\2\2\2ED\3\2\2\2F\26\3\2\2\2GS\7~\2\2HI\7~\2\2"+
-      "IS\7~\2\2JK\7~\2\2KS\7<\2\2LM\7<\2\2MS\7~\2\2NO\7]\2\2OS\7~\2\2PQ"+
-      "\7~\2\2QS\7_\2\2RG\3\2\2\2RH\3\2\2\2RJ\3\2\2\2RL\3\2\2\2RN\3\2\2\2"+
-      "RP\3\2\2\2S\30\3\2\2\2TU\7]\2\2UY\7\63\2\2VW\7]\2\2WY\7\64\2\2XT\3"+
-      "\2\2\2XV\3\2\2\2Y\32\3\2\2\2Z\\\t\3\2\2[Z\3\2\2\2[\\\3\2\2\2\\]\3"+
-      "\2\2\2]^\t\4\2\2^\34\3\2\2\2_a\t\5\2\2`_\3\2\2\2ab\3\2\2\2b`\3\2\2"+
-      "\2bc\3\2\2\2c\36\3\2\2\2de\t\6\2\2e \3\2\2\2\13\2\65:<ERX[b\2";
+      "\13\t\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4"+
+      "\22\t\22\4\23\t\23\4\24\t\24\3\2\3\2\3\2\3\3\3\3\3\3\3\4\3\4\3\4\3"+
+      "\5\3\5\3\5\3\6\3\6\3\7\3\7\3\b\3\b\3\b\3\t\3\t\3\t\3\n\3\n\3\n\3\13"+
+      "\3\13\3\f\3\f\3\f\3\r\3\r\3\r\3\16\3\16\3\17\3\17\3\20\3\20\3\21\3"+
+      "\21\3\22\5\22T\n\22\3\22\3\22\3\23\3\23\3\24\6\24[\n\24\r\24\16\24"+
+      "\\\3\24\3\24\2\2\25\3\3\5\4\7\5\t\6\13\7\r\b\17\t\21\n\23\13\25\f"+
+      "\27\r\31\16\33\17\35\20\37\21!\22#\23%\24\'\25\3\2\b\4\2CIci\4\2%"+
+      "%dd\3\2\17\17\3\2\f\f\3\2\62;\5\2\13\13^^uua\2\3\3\2\2\2\2\5\3\2\2"+
+      "\2\2\7\3\2\2\2\2\t\3\2\2\2\2\13\3\2\2\2\2\r\3\2\2\2\2\17\3\2\2\2\2"+
+      "\21\3\2\2\2\2\23\3\2\2\2\2\25\3\2\2\2\2\27\3\2\2\2\2\31\3\2\2\2\2"+
+      "\33\3\2\2\2\2\35\3\2\2\2\2\37\3\2\2\2\2!\3\2\2\2\2#\3\2\2\2\2%\3\2"+
+      "\2\2\2\'\3\2\2\2\3)\3\2\2\2\5,\3\2\2\2\7/\3\2\2\2\t\62\3\2\2\2\13"+
+      "\65\3\2\2\2\r\67\3\2\2\2\179\3\2\2\2\21<\3\2\2\2\23?\3\2\2\2\25B\3"+
+      "\2\2\2\27D\3\2\2\2\31G\3\2\2\2\33J\3\2\2\2\35L\3\2\2\2\37N\3\2\2\2"+
+      "!P\3\2\2\2#S\3\2\2\2%W\3\2\2\2\'Z\3\2\2\2)*\7Z\2\2*+\7<\2\2+\4\3\2"+
+      "\2\2,-\7V\2\2-.\7<\2\2.\6\3\2\2\2/\60\7E\2\2\60\61\7<\2\2\61\b\3\2"+
+      "\2\2\62\63\7O\2\2\63\64\7<\2\2\64\n\3\2\2\2\65\66\7\61\2\2\66\f\3"+
+      "\2\2\2\678\7E\2\28\16\3\2\2\29:\7E\2\2:;\7~\2\2;\20\3\2\2\2<=\7N\2"+
+      "\2=>\7<\2\2>\22\3\2\2\2?@\7S\2\2@A\7<\2\2A\24\3\2\2\2BC\7?\2\2C\26"+
+      "\3\2\2\2DE\7X\2\2EF\7<\2\2F\30\3\2\2\2GH\7M\2\2HI\7<\2\2I\32\3\2\2"+
+      "\2JK\7\'\2\2K\34\3\2\2\2LM\t\2\2\2M\36\3\2\2\2NO\t\3\2\2O \3\2\2\2"+
+      "PQ\7o\2\2Q\"\3\2\2\2RT\t\4\2\2SR\3\2\2\2ST\3\2\2\2TU\3\2\2\2UV\t\5"+
+      "\2\2V$\3\2\2\2WX\t\6\2\2X&\3\2\2\2Y[\t\7\2\2ZY\3\2\2\2[\\\3\2\2\2"+
+      "\\Z\3\2\2\2\\]\3\2\2\2]^\3\2\2\2^_\b\24\2\2_(\3\2\2\2\5\2S\\\3\b\2"+
+      "\2";
   public static final ATN _ATN =
     new ATNDeserializer().deserialize(_serializedATN.toCharArray());
   static {

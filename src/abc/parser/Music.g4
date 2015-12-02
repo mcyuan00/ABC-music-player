@@ -28,6 +28,6 @@ ACCIDENTAL : '_' | '__' | '^' | '^^' | '=';
 BARLINE : '|' | '||' | '|:' | ':|' | '[|' | '|]';
 NUMREPEAT: '[1' | '[2';
 NEWLINE : [\r]? [\n];
-WHITESPACE : [\s]+ | [\t]+;
+WHITESPACE : [\s\t]+;
 DIGIT : [0-9];
 
