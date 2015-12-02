@@ -22,6 +22,12 @@ public class Rest implements Music {
         return duration;
     }
 
+    @Override
+    public PlayerElement constructPlayer() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
     /**
      * Transpose this rest.
      */

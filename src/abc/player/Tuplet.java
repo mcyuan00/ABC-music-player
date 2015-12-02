@@ -31,18 +31,36 @@ public class Tuplet implements Music{
     public Fraction duration() {
         return new Fraction(noteDuration.numerator()*numNotes, noteDuration.denominator());
     }
-
+    
+    /**
+     * 
+     * @return the length of the individual notes of the tuplet
+     */
     public Fraction noteDuration(){
         return noteDuration;
     }
     
+    /**
+     * 
+     * @return the number of notes in the tuplet (i.e. 2 for duplet, 3 for triplet, 4 for quaduplet)
+     */
     public int numNotes(){
         return numNotes;
         
     }
     
+    /**
+     * 
+     * @return a list of all the notes played in the tuplet
+     */
     public List<Note> chordNotes(){
         return chordNotes;
+    }
+
+    @Override
+    public PlayerElement constructPlayer() {
+        // TODO Auto-generated method stub
+        return null;
     }
     
 //    @Override

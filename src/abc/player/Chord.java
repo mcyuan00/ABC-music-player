@@ -28,13 +28,27 @@ public class Chord implements Music{
         return duration;
     }
     
+    /**
+     * 
+     * @return the number of notes that are played together in this chord
+     */
     public int numNotes(){
         return numNotes;
     }
     
+    /**
+     * 
+     * @return the notes that are in the chord
+     */
     public List<Note> notes(){
         return new ArrayList<Note>(notes);
         
+    }
+
+    @Override
+    public PlayerElement constructPlayer() {
+        // TODO Auto-generated method stub
+        return null;
     }
     
 //    @Override

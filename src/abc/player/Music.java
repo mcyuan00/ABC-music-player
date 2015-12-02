@@ -1,5 +1,9 @@
 package abc.player;
 
+import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.MidiUnavailableException;
+
+import abc.sound.SequencePlayer;
 
 public interface Music {
     /**
@@ -25,18 +29,17 @@ public interface Music {
      *         corresponding note n' in m' has
      *         n'.pitch() == n.pitch().transpose(semitonesUp), and m' is
      *         otherwise identical to m
+     * @throws InvalidMidiDataException 
+     * @throws MidiUnavailableException 
      */
 //    Music transpose(int semitonesUp);
     
-    public static SequencePlayer play(){
+    public static SequencePlayer play(int tempo, int tickBreakdown) throws MidiUnavailableException, InvalidMidiDataException{
         // call piece.constructPlayer
-        return new SequencePlayer();
+        return new SequencePlayer(tempo, tickBreakdown);
     }
     
-    SPConstructor constructPlayer(){
-        
-    }
-    
+    PlayerElement constructPlayer(); 
     
     @Override String toString();
     

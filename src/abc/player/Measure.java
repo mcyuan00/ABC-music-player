@@ -30,6 +30,12 @@ public class Measure implements Music {
         return Fraction.sumAllFractions(fracs);  
     }
 
+    @Override
+    public PlayerElement constructPlayer() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 //    @Override
 //    public Music transpose(int semitonesUp) {
 //        // TODO Auto-generated method stub

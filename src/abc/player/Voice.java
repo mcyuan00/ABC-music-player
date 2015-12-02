@@ -34,6 +34,12 @@ public class Voice implements Music {
         return new ArrayList<Measure>(measures);
     }
 
+    @Override
+    public PlayerElement constructPlayer() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 //    @Override
 //    public Music transpose(int semitonesUp) {
 //        // TODO Auto-generated method stub
