@@ -28,6 +28,8 @@ public interface Music {
      */
 //    Music transpose(int semitonesUp);
     
+    
+    
     @Override String toString();
     
     @Override boolean equals(Object obj);
