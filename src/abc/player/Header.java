@@ -1,5 +1,11 @@
 package abc.player;
 
+/**
+ * Header is a mutable type that represents the header of a music piece.
+ * It has the basic informations about the piece, which are:
+ *  title, composer, key, meter, tempo (defines the speed of a default note), and index.
+ *
+ */
 public class Header {
    
     private String composer;
@@ -17,7 +23,13 @@ public class Header {
     private int DEFAULT_TEMPO = 100;
     private String DEFAULT_COMPOSER = "Unknown";
     
-    
+    /**
+     * Makes a header with the given index, title, and key.
+     * The meter will be set to 4/4, note length to 1/8, tempo = 100, and composer = "Unknown"
+     * @param index the index of the piece
+     * @param title the title of the piece
+     * @param key the key of the piece
+     */
     public Header(int index, String title, KeySignature key){
         this.index = index;
         this.title = title;
@@ -28,46 +40,90 @@ public class Header {
         this.noteLength = DEFAULT_NOTE_LENGTH;
     }
     
+    /**
+     * 
+     * @return the composer of the piece
+     */
     public String composer(){
         return composer;
     }
     
+    /**
+     * 
+     * @return the key signature of the piece
+     */
     public KeySignature keySignature(){
         return key;
     }
     
+    /**
+     * 
+     * @return the note length of the default note
+     */
     public Fraction noteLength(){
         return noteLength;
     }
     
+    /**
+     * 
+     * @return the meter of the piece.
+     */
     public Fraction meter(){
         return meter;
     }
     
+    /**
+     * 
+     * @return the tempo of the piece
+     */
     public int tempo(){
         return tempo;
     }
     
+    /**
+     * 
+     * @return the title of the piece
+     */
     public String title(){
         return title;
     }
     
+    /**
+     * 
+     * @return the index of the piece
+     */
     public int index(){
         return index;
     }
     
+    /**
+     * Sets the composer of the piece to composer
+     * @param composer the name of the composer
+     */
     public void setComposer(String composer){
         this.composer = composer;
     }
     
+    /**
+     * Sets the meter of the piece to the meter
+     * @param meter the meter of the piece
+     */
     public void setMeter(Fraction meter){
         this.meter = meter;
     }
     
+    /**
+     * Sets the tempo of the piece to the tempo
+     * @param tempo the tempo of the piece
+     */
     public void setTempo(int tempo){
         this.tempo = tempo;
     }
     
+    /**
+     * Sets the default note length of the piece to noteLength
+     * @param noteLength the length of the default note
+     */
     public void setNoteLength(Fraction noteLength){
         this.noteLength = noteLength;
     }
