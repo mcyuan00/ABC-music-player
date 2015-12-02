@@ -7,21 +7,37 @@ public class Fraction {
     private final int numerator;
     private final int denominator;
     
+    /**
+     * Asserts rep invariant
+     */
     private void checkRep(){
         assert (numerator >= 0);
         assert (denominator > 0);
     }
     
+    /**
+     * Makes a new fraction with numerator n and denominator d
+     * @param n numerator of the fraction
+     * @param d denominator of the fraction
+     */
     public Fraction(int n, int d){
         this.numerator = n;
         this.denominator= d;
         checkRep();
     }
     
+    /**
+     * Returns the numerator of the fraction as an int
+     * @return numerator
+     */
     public int numerator(){
         return numerator;
     }
     
+    /**
+     * Returns the denominator of the fraction as an int
+     * @return denominator
+     */
     public int denominator(){
         return denominator;
     }
@@ -42,7 +58,7 @@ public class Fraction {
     }
     
     /**
-     * sums up all the fractions in the list
+     * Sums up all the fractions in the list
      * @param summands the fractions to be summed
      * @return the sum of all the fractions simplified; returns Fraction(0, 1) if the list is empty
      */
