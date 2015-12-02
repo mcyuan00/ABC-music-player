@@ -19,18 +19,14 @@ public class Voice implements Music {
     }
 
     @Override
-    public double duration() {
-        double time =0;
-        for (Measure measure: measures){
-            time += measure.duration();
-        }
-        return time;
+    public Fraction duration() {
+        return new Fraction(0,0);
     }
 
-    @Override
-    public Music transpose(int semitonesUp) {
-        // TODO Auto-generated method stub
-        return null;
-    }
+//    @Override
+//    public Music transpose(int semitonesUp) {
+//        // TODO Auto-generated method stub
+//        return null;
+//    }
 
 }
