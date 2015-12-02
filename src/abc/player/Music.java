@@ -39,22 +39,25 @@ public interface Music {
     /**
      * 
      * @param tempo
-     * @param tickBreakdown
-     * @return
+     * @param ticksPerBeat the number of ticks in one beat of music
+     * @param pieceNoteLength the default note length in the piece
+     * @return a SequencePlayer that plays the entire music
      * @throws MidiUnavailableException
      * @throws InvalidMidiDataException
      */
-    public static SequencePlayer constructPlayer(int tempo, int tickBreakdown) throws MidiUnavailableException, InvalidMidiDataException{
+    public static SequencePlayer constructPlayer(int tempo, int ticksPerBeat, Fraction pieceNoteLength) throws MidiUnavailableException, InvalidMidiDataException{
         // call piece.constructPlayer TODO finish this thing
-        return new SequencePlayer(tempo, tickBreakdown);
+        return new SequencePlayer(tempo, ticksPerBeat);
     }
     
     /**
-     * 
+     * Translates this music object into PlayerElements, to be used to construct a SequencePlayer
      * @param startTick the start tick of the music
+     * @param ticksPerBeat the number of ticks in one beat of music
+     * @param pieceNoteLength the default note length in the piece
      * @return the list of PlayerElements for the entire music
      */
-    List<PlayerElement> getPlayerElements(int startTick);
+    List<PlayerElement> getPlayerElements(int startTick, int ticksPerBeat, Fraction pieceNoteLength);
     
     @Override String toString();
     

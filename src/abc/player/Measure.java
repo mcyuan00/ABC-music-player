@@ -30,8 +30,9 @@ public class Measure implements Music {
         return Fraction.sumAllFractions(fracs);  
     }
 
+
     @Override
-    public List<PlayerElement> getPlayerElements(int startTick) {
+    public List<PlayerElement> getPlayerElements(int startTick, int ticksPerBeat, Fraction pieceNoteLength) {
         // TODO Auto-generated method stub
         return null;
     }

@@ -33,7 +33,6 @@ public class Tuplet implements Music{
     }
     
     /**
-     * 
      * @return the length of the individual notes of the tuplet
      */
     public Fraction noteDuration(){
@@ -41,7 +40,6 @@ public class Tuplet implements Music{
     }
     
     /**
-     * 
      * @return the number of notes in the tuplet (i.e. 2 for duplet, 3 for triplet, 4 for quaduplet)
      */
     public int numNotes(){
@@ -50,7 +48,6 @@ public class Tuplet implements Music{
     }
     
     /**
-     * 
      * @return a list of all the notes played in the tuplet
      */
     public List<Note> chordNotes(){
@@ -58,7 +55,7 @@ public class Tuplet implements Music{
     }
 
     @Override
-    public List<PlayerElement> getPlayerElements(int startTick) {
+    public List<PlayerElement> getPlayerElements(int startTick, int ticksPerBeat, Fraction pieceNoteLength) {
         // TODO Auto-generated method stub
         return null;
     }
