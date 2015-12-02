@@ -15,7 +15,7 @@ public class Note implements Music {
      * @param duration duration in beats, must be >= 0
      * @param noteLetter the letter that represents the note (A, B, C, D, E, F, G)
      * @param octave octaves above middle C 
-     *          (0 represents C4 to B4, -1 represents C3 to B3, 1 represents C5 to B5)
+     *          (0 represents C4 to B4, 1 represents C5 to B5, -1 represents C3 to B3)
      */
     public Note(Fraction duration, char noteLetter, int octave){
         this.duration = duration;
