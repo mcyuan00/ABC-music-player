@@ -16,7 +16,7 @@ meter : 'M:' (DIGIT+ '/' DIGIT+) | 'C' | 'C|' NEWLINE;
 length : 'L:' DIGIT+ '/' DIGIT+ NEWLINE;
 tempo : 'Q:' (DIGIT+ '/' DIGIT+) '=' DIGIT+ NEWLINE;
 voice : 'V:' [.]+ NEWLINE;
-key : 'K:' [ABCDEFGabcdefg] KEYACCIDENTAL? MINOR? NEWLINE;
+key : 'K:' [A-Ga-g] KEYACCIDENTAL? MINOR? NEWLINE;
 comment : [.]+ NEWLINE;
 KEYACCIDENTAL : '#' | 'b';
 MINOR : 'm';

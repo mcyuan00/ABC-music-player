@@ -11,9 +11,11 @@ public class Note implements Music {
     private final Pitch pitch;
 
     /**
-     * Make a Note with a certain pitch played for duration beats.
+     * Make a Note with a certain pitch (without an accidental) played for duration beats.
      * @param duration duration in beats, must be >= 0
-     * @param pitch pitch of the note
+     * @param noteLetter the letter that represents the note (A, B, C, D, E, F, G)
+     * @param octave octaves above middle C 
+     *          (0 represents C4 to B4, -1 represents C3 to B3, 1 represents C5 to B5)
      */
     public Note(Fraction duration, char noteLetter, int octave){
         this.duration = duration;
@@ -23,6 +25,16 @@ public class Note implements Music {
         pitch = new Pitch(noteLetter).transpose(Pitch.OCTAVE*octave);
     }
     
+    /**
+     * Make a Note with a certain pitch (with an accidental) played for duration beats.
+     * @param duration duration in beats, must be >= 0
+     * @param noteLetter the letter that represents the note (A, B, C, D, E, F, G)
+     * @param octave octaves above middle C 
+     *          (0 represents C4 to B4, 1 represents C5 to B5, -1 represents C3 to B3)
+     * @param accidental accidental that modifies the note by a given number of semitones
+     *          (0 represents natural, 1 represents sharp, 2 represents double sharp,
+     *          -1 represents flat, -2 represents double flat)
+     */
     public Note(Fraction duration, char noteLetter, int octave, int accidental){
         this.duration = duration;
         this.noteLetter = noteLetter;
