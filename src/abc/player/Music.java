@@ -16,7 +16,7 @@ public interface Music {
      * 
      * @return total duration of music
      */
-    double duration();
+    Fraction duration();
     
     /**
      * Transpose all notes upward or downward in pitch.
@@ -26,7 +26,7 @@ public interface Music {
      *         n'.pitch() == n.pitch().transpose(semitonesUp), and m' is
      *         otherwise identical to m
      */
-    Music transpose(int semitonesUp);
+//    Music transpose(int semitonesUp);
     
     @Override String toString();
     

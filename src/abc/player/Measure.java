@@ -8,27 +8,21 @@ package abc.player;
  */
 public class Measure implements Music {
     private final Music[] m;
-    private final double duration;
     
     /**
      * Make a Measure with certain notes and rests.
      * @param m array of Music
      * @param duration duration in beats, must be >= 0
      */
-    public Measure(Music[] m, double duration){
+    public Measure(Music[] m){
         this.m = m;
-        this.duration = duration;
     }
 
-    @Override
-    public double duration() {
-        return duration;
-    }
 
-    @Override
-    public Music transpose(int semitonesUp) {
-        // TODO Auto-generated method stub
-        return null;
-    }
+//    @Override
+//    public Music transpose(int semitonesUp) {
+//        // TODO Auto-generated method stub
+//        return null;
+//    }
 
 }

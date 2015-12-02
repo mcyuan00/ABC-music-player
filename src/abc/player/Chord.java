@@ -4,7 +4,7 @@ package abc.player;
  * Chord represents one or more notes played simultaneously.
  */
 public class Chord implements Music{
-    private final double duration;
+    private final Fraction duration;
     private final int numNotes;
     private final Note[] notes;
     
@@ -14,22 +14,22 @@ public class Chord implements Music{
      * @param numNotes number of notes in the chord
      * @param notes notes in the chord
      */
-    public Chord(double duration, int numNotes, Note[] notes){
+    public Chord(Fraction duration, int numNotes, Note[] notes){
         this.duration = duration;
         this.numNotes = numNotes;
         this.notes = notes;
     }
     
     @Override
-    public double duration() {
+    public Fraction duration() {
         return duration;
     }
     
-    @Override
-    public Music transpose(int semitonesUp) {
-        // TODO Auto-generated method stub
-        return null;
-    }
+//    @Override
+//    public Music transpose(int semitonesUp) {
+//        // TODO Auto-generated method stub
+//        return null;
+//    }
 
     
 

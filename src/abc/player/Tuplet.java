@@ -11,6 +11,7 @@ package abc.player;
  */
 public class Tuplet implements Music{
     private final int numNotes;
+    private final Fraction noteDuration; // duration of each note in tuplet i.e. quarter/eighth etc
     private final Note[] notes;
     
     /**
@@ -18,24 +19,29 @@ public class Tuplet implements Music{
      * @param numNotes number of notes in the tuplet
      * @param notes notes in the tuplet
      */
-    public Tuplet(int numNotes, Note[] notes){
+    public Tuplet(int numNotes, Note[] notes, Fraction noteDuration){
         this.numNotes = numNotes;
+        this.noteDuration = noteDuration;
         this.notes = notes;
     }
 
     @Override
-    public double duration() {
-        double time =0;
-        for (Note note: notes){
-            time += note.duration();
-        }
-        return time;
+    public Fraction duration() {
+        return new Fraction(noteDuration.numerator()*numNotes, noteDuration.denominator());
     }
 
-    @Override
-    public Music transpose(int semitonesUp) {
-        // TODO Auto-generated method stub
-        return null;
+    public Fraction noteDuration(){
+        return noteDuration;
     }
+    
+    public int numNotes(){
+        return numNotes;
+        
+    }
+//    @Override
+//    public Music transpose(int semitonesUp) {
+//        // TODO Auto-generated method stub
+//        return null;
+//    }
 
 }

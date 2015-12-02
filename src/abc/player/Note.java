@@ -4,7 +4,10 @@ package abc.player;
  * Note represents a note with a given pitch played for a given duration.
  */
 public class Note implements Music {
-    private final int duration;
+    private final Fraction duration;
+    private final char noteLetter;
+    private final int octave;
+    private final int accidental;
     private final Pitch pitch;
 
     /**
@@ -12,10 +15,22 @@ public class Note implements Music {
      * @param duration duration in beats, must be >= 0
      * @param pitch pitch of the note
      */
-    public Note(int duration, Pitch pitch){
+    public Note(Fraction duration, char noteLetter, int octave){
         this.duration = duration;
-        this.pitch = pitch;
+        this.noteLetter = noteLetter;
+        this.octave = octave;
+        this.accidental = 0;
+        pitch = new Pitch(noteLetter).transpose(Pitch.OCTAVE*octave);
     }
+    
+    public Note(Fraction duration, char noteLetter, int octave, int accidental){
+        this.duration = duration;
+        this.noteLetter = noteLetter;
+        this.octave = octave;
+        this.accidental = accidental;
+        pitch = new Pitch(noteLetter).transpose(Pitch.OCTAVE*octave + accidental);
+    }
+    
     
     /**
      * @return pitch of this note
@@ -25,13 +40,13 @@ public class Note implements Music {
     } 
 
     @Override
-    public double duration() {
+    public Fraction duration() {
         return duration;
     }
     
-    @Override
-    public Music transpose(int semitonesUp) {
-        return new Note(duration, pitch.transpose(semitonesUp));
-    }
+//    @Override
+//    public Music transpose(int semitonesUp) {
+//        return new Note(duration, pitch.transpose(semitonesUp));
+//    }
 
 }

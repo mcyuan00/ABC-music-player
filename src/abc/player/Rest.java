@@ -4,13 +4,13 @@ package abc.player;
  * Rest represents a pause in a piece of music
  */
 public class Rest implements Music {
-    private final double duration;
+    private final Fraction duration;
     
     /**
      * Make a Rest that lasts for duration beats
      * @param duration duration in beats, must be >= 0
      */
-    public Rest(double duration){
+    public Rest(Fraction duration){
         this.duration = duration;
     }
 
@@ -18,16 +18,16 @@ public class Rest implements Music {
      * @return duration of this rest
      */
     @Override
-    public double duration() {
+    public Fraction duration() {
         return duration;
     }
 
     /**
      * Transpose this rest.
      */
-    @Override
-    public Music transpose(int semitonesUp) {
-        return this;
-    }
+//    @Override
+//    public Music transpose(int semitonesUp) {
+//        return this;
+//    }
 
 }
