@@ -7,6 +7,10 @@ package abc.player;
  *
  */
 public class Header {
+    
+    //rep invariant:
+    //  tempo > 0
+    //  all the fractions are already required to be greater than 0 and have a nonzero denominator
    
     private String composer;
     private KeySignature key;
@@ -38,6 +42,7 @@ public class Header {
         this.meter = DEFAULT_METER;
         this.tempo = DEFAULT_TEMPO;
         this.noteLength = DEFAULT_NOTE_LENGTH;
+        checkRep();
     }
     
     /**
@@ -102,6 +107,7 @@ public class Header {
      */
     public void setComposer(String composer){
         this.composer = composer;
+        checkRep();
     }
     
     /**
@@ -110,6 +116,7 @@ public class Header {
      */
     public void setMeter(Fraction meter){
         this.meter = meter;
+        checkRep();
     }
     
     /**
@@ -118,6 +125,7 @@ public class Header {
      */
     public void setTempo(int tempo){
         this.tempo = tempo;
+        checkRep();
     }
     
     /**
@@ -126,6 +134,11 @@ public class Header {
      */
     public void setNoteLength(Fraction noteLength){
         this.noteLength = noteLength;
+        checkRep();
+    }
+    
+    private void checkRep(){
+        assert tempo > 0;
     }
 
 }
