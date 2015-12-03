@@ -5,6 +5,7 @@ import java.util.List;
 
 /**
  * Note represents a note with a given pitch played for a given duration.
+ * This class is immutable.
  */
 public class Note implements Music {
     private final Fraction duration;
@@ -15,7 +16,7 @@ public class Note implements Music {
 
     /**
      * Make a Note with a certain pitch (without an accidental) played for duration beats.
-     * @param duration duration in beats, must be >= 0
+     * @param duration duration in beats, must be >= 0 (e.g. one quarter note would be Fraction(1, 4)
      * @param noteLetter the letter that represents the note (A, B, C, D, E, F, G)
      * @param octave octaves above middle C 
      *          (0 represents C4 to B4, 1 represents C5 to B5, -1 represents C3 to B3)

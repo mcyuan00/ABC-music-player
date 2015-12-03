@@ -52,7 +52,7 @@ public interface Music {
     
     /**
      * Translates this music object into PlayerElements, to be used to construct a SequencePlayer
-     * @param startTick the start tick of the music
+     * @param startTick the start tick of the music, must be positive
      * @param ticksPerBeat the number of ticks in one beat of music
      * @param pieceNoteLength the default note length in the piece
      * @return the list of PlayerElements for the entire music
