@@ -59,5 +59,23 @@ public class PlayerElementTest {
         assertFalse(playerElement.equals(playerElementDifferentStartTick));
         assertFalse(playerElement.equals(playerElementDifferentNumTicks));
     }
+    
+    @Test
+    public void testPlayerElementEqualsTwoRests(){
+        PlayerElement pe = new PlayerElement(132, 53);
+        PlayerElement peEquals = new PlayerElement(132, 53);
+        PlayerElement peDifferentStartTick = new PlayerElement(130, 53);
+        PlayerElement peDifferentNumTicks = new PlayerElement(132, 182);
+        assertEquals(pe, peEquals);
+        assertFalse(pe.equals(peDifferentNumTicks));
+        assertFalse(pe.equals(peDifferentStartTick));
+    }
+    
+    @Test
+    public void testPlayerElementEqualsRestAndNote(){
+        PlayerElement note = new PlayerElement(new Pitch('C'), 5, 3);
+        PlayerElement rest = new PlayerElement(5, 3);
+        assertFalse(note.equals(rest));
+    }
 
 }
