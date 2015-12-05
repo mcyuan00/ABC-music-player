@@ -71,11 +71,18 @@ public class ParseTest {
         HeaderParser parser = new HeaderParser(tokens);
         ParseTree tree = parser.root();
         Future<JDialog> inspect = Trees.inspect(tree, parser);
+        
         try {
-            Utils.waitForClose(inspect.get());
-        } catch (Exception e) {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        
+//        try {
+//            Utils.waitForClose(inspect.get());
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
     //test body parse
