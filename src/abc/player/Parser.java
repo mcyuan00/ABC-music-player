@@ -63,6 +63,12 @@ public class Parser {
         private Stack<String> requiredStack = new Stack<>();
         private Stack<String> optionalStack = new Stack();
 
+        
+        /**
+         * 
+         * @return
+         * @Throws IllegalArgumentException of index, title, or keySignature is missing
+         */
         public Header getHeader(){
             int index = -1;
             String title = "";
@@ -104,7 +110,7 @@ public class Parser {
                }   
            }
            if(index == -1 || title.equals("") || keySignature.equals(KeySignature.valueOf("NEGATIVE"))){
-               throw new RuntimeException();
+               throw new IllegalArgumentException();
            }
                
            Header header = new Header(index, title, keySignature);
