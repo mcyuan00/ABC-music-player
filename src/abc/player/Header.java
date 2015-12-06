@@ -43,7 +43,7 @@ public class Header {
     private int tempo;
     private String title;
     private int index;
-    private List<String> voice = new ArrayList<String>();
+    private List<String> voices = new ArrayList<String>();
 
     // default values
 
@@ -127,6 +127,14 @@ public class Header {
     }
 
     /**
+     * 
+     * @return the voice(s) of the piece
+     */
+    public List<String> voices(){
+        return voices;
+    }
+    
+    /**
      * Sets the composer of the piece to composer
      * @param composer the name of the composer
      */
@@ -163,7 +171,7 @@ public class Header {
     }
 
     public void addVoice(String voiceName){
-        this.voice.add(voiceName);
+        this.voices.add(voiceName);
     }
     private void checkRep(){
         assert tempo > 0;

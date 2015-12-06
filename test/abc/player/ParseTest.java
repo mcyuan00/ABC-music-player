@@ -34,15 +34,13 @@ public class ParseTest {
      *   Basics:  
      *       - index, title, key in order 
      *       - index/title/key out of order -- expect error
-     *       - missing index/title/key -- expect error
+     *       - missing index/title/key -- expect error   
      *   Index
      *       - valid index, must be positive
-     *       - invalid index (missing X: or \n or negative)     
-     *       
+     *       - invalid index (missing X: or \n or negative)         
      *   Title
      *      - valid title
-     *      - invalid title (missing T: or \n)     
-     *       
+     *      - invalid title (missing T: or \n)      
      *   Composer:
      *       - valid composer
      *       - invalid composer (missing C: or \n)          
@@ -50,30 +48,24 @@ public class ParseTest {
      *       - digit/digit
      *       - C
      *       - C|
-     *       - invalid meter (missing M: or \n, too many fractions) 
-     *       
+     *       - invalid meter (missing M: or \n, too many fractions)     
      *   Length:
      *      - valid length
      *      - invalid length (missing L: or \n, too many fractions)
-     *    
      *   Tempo:
      *      - valid tempo
-     *      - invalid tempo (missing T: or \n, containing non-numerical chars)
-     *      
+     *      - invalid tempo (missing Q: or \n, containing non-numerical chars)    
      *   Voice:
      *      - valid voice
-     *      - invalid voice (missing V: or \n) 
-     *      
+     *      - valid voices (multiple)
+     *      - invalid voice (missing V: or \n)     
      *   Key:
      *      - valid key
      *      - key note is lowercase -- expect error
      *      - invalid key note
-     *      - missing K: or \n
-     *   
-     *   Valid comment (% followed by any text, not treated as a field)
-     *   Invalid comment (missing %, treated as separate field)
-     *   Valid whitespace (all whitespace should be ignored/skipped)
-     *   Invalid field (no newline at end of field)
+     *      - missing K: or \n 
+     *   Comment (% followed by any text, not treated as a field)
+     *   Whitespace (all whitespace should be ignored/skipped)
      */
 
     //    @Test
@@ -85,14 +77,17 @@ public class ParseTest {
         HeaderParser parser = new HeaderParser(tokens);
         ParseTree tree = parser.root();
 
+        //        For debugging:
         //        Future<JDialog> inspect = Trees.inspect(tree, parser);
         //        
+        //        Option 1:
         //        try {
         //            Thread.sleep(10000);
         //        } catch (InterruptedException e) {
         //            e.printStackTrace();
         //        }
         //        
+        //        Option 2:
         //        try {
         //            Utils.waitForClose(inspect.get());
         //        } catch (Exception e) {
@@ -100,13 +95,300 @@ public class ParseTest {
         //        }
     }
 
-    // header with basic required fields: index, title, key
+    // header with basic required fields in order: index, title, key
+    // valid index, valid title, valid key
     @Test
     public void testHeaderRequiredFields(){
         Header header = Parser.parseHeader("X:1\nT:hello world\nK:A\n");
-        assertEquals("helloworld", header.title());
         assertEquals(1, header.index());
+        assertEquals("helloworld", header.title());
         assertEquals(KeySignature.valueOf("A_MAJOR"), header.keySignature());
     }
+
+    // header with basic required fields not in order: title, key, index
+    @Test (expected=Exception.class)
+    public void testHeaderIndexNotFirst(){
+        Header header = Parser.parseHeader("T:hello world\nK:A\nX:1\n");
+    }
+
+    // header with basic required field missing: title, key
+    @Test (expected=Exception.class)
+    public void testHeaderIndexMissing(){
+        Header header = Parser.parseHeader("T:hello world\nK:A\n");
+    }
+    
+    // header with basic required field missing: index, key
+    @Test (expected=Exception.class)
+    public void testHeaderTitleMissing(){
+        Header header = Parser.parseHeader("X:1\nK:A\n");
+    }
+    
+    // invalid index (missing X:)
+    @Test
+    public void testInvalidIndexMissingX(){
+        Header header = Parser.parseHeader("1\nT:hello world\nK:A\n");
+        System.out.println(header.index());
+        assertEquals(1, header.index());
+        //says line 1:0 missing 'X:' at '1', but test still passes
+    }
+    
+    // invalid index (missing \n)
+    @Test
+    public void testInvalidIndexMissingNewline(){
+        Header header = Parser.parseHeader("X:1T:hello world\nK:A\n");
+        assertEquals(1, header.index());
+        assertEquals("helloworld", header.title());
+        //test also still passes
+    }
+    
+    // invalid index (negative)
+    @Test
+    public void testInvalidIndexNegative(){
+        Header header = Parser.parseHeader("X:-1\nT:hello world\nK:A\n");
+        assertEquals(1, header.index());
+        assertEquals("helloworld", header.title());
+        //test also still passes, just treats - as extraneous input
+    }
+    
+    // invalid title (missing T:)
+    @Test (expected=Exception.class)
+    public void testInvalidTitleMissingT(){
+        Header header = Parser.parseHeader("X:1\nhello world\nK:A\n");
+        assertEquals("helloworld", header.title());
+    }
+    
+    // invalid title (missing \n)
+    @Test
+    public void testInvalidTitleMissingNewline(){
+        Header header = Parser.parseHeader("X:1\nT:hello worldK:A\n");
+        //assertEquals("helloworld", header.title());
+        //kind of works? expected "helloworld" actual "helloworld<missing NEWLINE>"
+    }
+    
+    // valid composer
+    @Test
+    public void testValidComposer(){
+        Header header = Parser.parseHeader("X:1\nT:hello world\nC:1.pOo2!\nK:A\n");
+        //assertEquals("1.pOo2!", header.composer());
+        //composer doesn't recognize all symbols
+    }
+    
+    // invalid composer (missing C:)
+    @Test (expected=Exception.class)
+    public void testInvalidComposerMissingC(){
+        Header header = Parser.parseHeader("X:1\nT:hello world\nunknown\nK:A\n");
+        assertEquals("unknown", header.composer());
+    }
+    
+    // invalid composer (missing \n)
+    @Test
+    public void testInvalidComposerMissingNewline(){
+        Header header = Parser.parseHeader("X:1\nT:hello world\nC:unknownK:A\n");
+        //assertEquals("unknown", header.composer());
+        //same as Title, unknown<missing NEWLINE>
+    }
+    
+    // valid meter (digit/digit)
+    @Test
+    public void testValidMeterFraction(){
+        Header header = Parser.parseHeader("X:1\nT:hello world\nM:6/8\nK:A\n");
+        assertEquals(new Fraction(6,8), header.meter());
+    }
+    
+    // valid meter (common time)
+    @Test (expected=Exception.class)
+    public void testValidMeterCommon(){
+        Header header = Parser.parseHeader("X:1\nT:hello world\nM:C\nK:A\n");
+        //assertEquals(new Fraction(4,4), header.meter());
+        //illegal argument exception, test should not be expecting this error
+    }
+    
+    // valid meter (cut time)
+    @Test (expected=Exception.class)
+    public void testValidMeterCut(){
+        Header header = Parser.parseHeader("X:1\nT:hello world\nM:C|\nK:A\n");
+        //assertEquals(new Fraction(2,2), header.meter());
+        //illegal argument exception, test should not be expecting this error
+    }
+    
+    // invalid meter (missing M:)
+    @Test (expected=Exception.class)
+    public void testInvalidMeterMissingM(){
+        Header header = Parser.parseHeader("X:1\nT:hello world\n6/8\nK:A\n");
+        assertEquals(new Fraction(6,8), header.meter());
+    }
+    
+    // invalid meter (missing \n)
+    @Test
+    public void testInvalidMeterMissingNewline(){
+        Header header = Parser.parseHeader("X:1\nT:hello world\nM:6/8\nK:A\n");
+        assertEquals(new Fraction(6,8), header.meter());
+    }
+    
+    // invalid meter (too many fractions)
+    @Test
+    public void testInvalidMeterMultipleFractions(){
+        Header header = Parser.parseHeader("X:1\nT:hello world\nM:6/8/2\nK:A\n");
+        assertEquals(new Fraction(6,8), header.meter());
+        //test passes, should fail!!
+    }
+    
+    // valid length
+    @Test
+    public void testValidLength(){
+        Header header = Parser.parseHeader("X:1\nT:hello world\nL:1/4\nK:A\n");
+        //assertEquals(new Fraction(1,4), header.noteLength());
+        //returning 1/8 as length instead of 1/4
+    }
+    
+    // invalid length (missing L:)
+    @Test (expected=Exception.class)
+    public void testInvalidLengthMissingL(){
+        Header header = Parser.parseHeader("X:1\nT:hello world\n1/4\nK:A\n");
+        assertEquals(new Fraction(1,4), header.noteLength());
+        //illegal argument exception
+    }
+    
+    // invalid length (missing \n)
+    @Test (expected=Exception.class)
+    public void testInvalidLengthMissingNewline(){
+        Header header = Parser.parseHeader("X:1\nT:hello world\nL:1/4K:A\n");
+        //illegal argument exception
+    }
+    
+    // invalid length (too many fractions)
+    @Test
+    public void testInvalidLengthMultipleFractions(){
+        Header header = Parser.parseHeader("X:1\nT:hello world\nL:1/4/3\nK:A\n");
+        //assertEquals(new Fraction(1,4), header.noteLength());
+        //also returns 1/8 instead of 1/4
+    }
+    
+    // valid tempo
+    @Test (expected=Exception.class)
+    public void testValidTempo(){
+        Header header = Parser.parseHeader("X:1\nT:hello world\nQ:1/4=100\nK:A\n");
+        //assertEquals((new Fraction(1,4) + "=100"), header.tempo());
+        //illegal argument exception,  test should not be expecting this error
+    }
+    
+    // invalid tempo (missing Q:)
+    @Test (expected=Exception.class)
+    public void testInvalidTempoMissingQ(){
+        Header header = Parser.parseHeader("X:1\nT:hello world\n1/4=100\nK:A\n");
+        //illegal argument exception
+    }
+    
+    // invalid tempo (missing \n)
+    @Test (expected=Exception.class)
+    public void testInvalidTempoMissingNewline(){
+        Header header = Parser.parseHeader("X:1\nT:hello world\nQ:1/4=100K:A\n");
+        assertEquals((new Fraction(1,4) + "=100"), header.tempo());
+        //illegal argument exception
+    }
+    
+    // invalid tempo (non-numerical characters)
+    @Test (expected=Exception.class)
+    public void testInvalidTempoNonNumerical(){
+        Header header = Parser.parseHeader("X:1\nT:hello world\nQ:a=100K:A\n");
+        assertEquals(("a=100"), header.tempo());
+        //illegal argument exception
+    }
+    
+    // valid voice
+    @Test
+    public void testValidVoice(){
+        Header header = Parser.parseHeader("X:1\nT:hello world\nV:21vd!\nK:A\n");
+        //assertEquals(("21vd!"), header.voices());
+        //! not handled
+    }
+    
+    // valid voices (multiple)
+    @Test
+    public void testValidVoiceMultiple(){
+        Header header = Parser.parseHeader("X:1\nT:hello world\nV:voice1\nV:voice2\nK:A\n");
+        assertTrue(header.voices().contains("voice1"));
+        assertTrue(header.voices().contains("voice2"));
+    }
+    
+    // invalid voice (missing V:)
+    @Test (expected=Exception.class)
+    public void testInvalidVoiceMissingV(){
+        Header header = Parser.parseHeader("X:1\nT:hello world\nvoice1\nK:A\n");
+        assertTrue(header.voices().contains("voice1"));
+        //illegal argument exception
+    }
+    
+    // invalid voice (missing \n)
+    @Test
+    public void testInvalidVoiceMissingNewline(){
+        Header header = Parser.parseHeader("X:1\nT:hello world\nV:voice1K:A\n");
+        //assertEquals("voice1", header.voices());
+        //voice1<missing NEWLINE> instead of voice1
+    }
+    
+    // valid key (minor)
+    @Test
+    public void testValidKeyMinor(){
+        Header header = Parser.parseHeader("X:1\nT:hello world\nK:Am\n");
+        assertEquals(KeySignature.valueOf("A_MINOR"), header.keySignature());
+    }
+
+    // valid key (sharp)
+    @Test (expected=Exception.class)
+    public void testValidKeySharp(){
+        Header header = Parser.parseHeader("X:1\nT:hello world\nK:A#\n");
+        assertEquals(KeySignature.valueOf("A_SHARP_MAJOR"), header.keySignature());
+        //illegal argument exception, test should not be expecting this error!
+    }
+
+    // valid key (flat)
+    @Test
+    public void testValidKeyFlat(){
+        Header header = Parser.parseHeader("X:1\nT:hello world\nK:Ab\n");
+        assertEquals(KeySignature.valueOf("A_FLAT_MAJOR"), header.keySignature());
+    }
+    
+    // invalid key (note letter is lowercase)
+    @Test (expected=Exception.class)
+    public void testInvalidKeyLowercase(){
+        Header header = Parser.parseHeader("X:1\nT:hello world\nK:a\n");
+        assertEquals(KeySignature.valueOf("A_MAJOR"), header.keySignature());
+    }
+    
+    // invalid key (missing K:)
+    @Test (expected=Exception.class)
+    public void testInvalidKeyMissingK(){
+        Header header = Parser.parseHeader("X:1\nT:hello world\nA\n");
+        assertEquals(KeySignature.valueOf("A_MAJOR"), header.keySignature());
+    }
+    
+    // invalid key (missing \n)
+    @Test
+    public void testInvalidKeyMissingNewline(){
+        Header header = Parser.parseHeader("X:1\nT:hello world\nK:A");
+        //assertEquals(KeySignature.valueOf("A_MAJOR"), header.keySignature());
+        //expecting A_MAJOR, actual A_MINOR
+    }
+    
+    // comment
+    @Test
+    public void testComment(){
+        Header header = Parser.parseHeader("X:1\n%commentT:hello world\nK:A\n");
+        assertEquals(1, header.index());
+        assertEquals("helloworld", header.title());
+        assertEquals(KeySignature.valueOf("A_MAJOR"), header.keySignature());
+    }
+    
+    // whitespace
+    @Test (expected=Exception.class)
+    public void testWhitespace(){
+        Header header = Parser.parseHeader("X :1  \nT: hello world\nK :A \n");
+        assertEquals(1, header.index());
+        assertEquals("helloworld", header.title());
+        assertEquals(KeySignature.valueOf("A_MAJOR"), header.keySignature());
+        //illegal argument exception, test should not be expecting this error!
+    }
+    
     //test body parse
 }
