@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class Chord implements Music{
     private final int numNotes;
-    private final List<Note> notes;
+    private final List<Music> notes;
     
     /**
      * Make a Chord with certain notes played for duration beats.
@@ -16,7 +16,7 @@ public class Chord implements Music{
      * @param numNotes number of notes in the chord
      * @param notes notes in the chord
      */
-    public Chord(int numNotes, List<Note> notes){
+    public Chord(int numNotes, List<Music> notes){
         this.numNotes = numNotes;
         this.notes = notes;
     }
@@ -34,15 +34,15 @@ public class Chord implements Music{
      * 
      * @return the notes that are in the chord
      */
-    public List<Note> chordNotes(){
-        return new ArrayList<Note>(notes);   
+    public List<Music> chordNotes(){
+        return new ArrayList<Music>(notes);   
     }
 
     // duration of chord is the duration of the shortest note
     @Override
     public Fraction duration() {
         Fraction duration = notes.get(0).duration();
-        for (Note note : notes){
+        for (Music note : notes){
             if(note.duration().toDecimal()< duration.toDecimal()){
                 duration = note.duration();
             }
@@ -54,7 +54,7 @@ public class Chord implements Music{
     @Override
     public List<PlayerElement> getPlayerElements(int startTick, int ticksPerBeat, Fraction pieceNoteLength) {
         List<PlayerElement> elements = new ArrayList<PlayerElement>();
-        for(Note note : notes){
+        for(Music note : notes){
             elements.addAll(note.getPlayerElements(startTick, ticksPerBeat, pieceNoteLength));
         }
         return elements;

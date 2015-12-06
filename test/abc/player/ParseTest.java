@@ -390,5 +390,37 @@ public class ParseTest {
         //illegal argument exception, test should not be expecting this error!
     }
     
+    
+    /***
+     * TODO: FIGURE OUT HOW TO DEAL WITH ACCIDENTALS IN MEASURES
+     */
+
     //test body parse
+    /*
+     * Note:
+     *      - Lowercase and uppercase notes
+     *      - , vs ' signaling octave change: 0, 1, multiple
+     *      - duration in form n/m, /m, /, n
+     *      
+     * Tuplet:
+     *      - contains notes
+     *      - contains chords
+     *      - contains chords and notes, try in different orders (CNN, NCN, CNC, etc)
+     */
+    
+    // test single uppercase note with duration in form /m
+//    @Test
+    public void testMusicParserSingleUppercaseNote(){
+        Note note = (Note)Parser.parseMusic("A/3\n");
+        assertEquals(new Fraction(1,3), note.duration());
+        assertEquals(new Pitch('A'), note.pitch());
+    }
+    
+    // test single lowercase note with duration in form n/m
+    @Test
+    public void testMusicParserSingleLowerCaseNote(){
+        Note note = (Note)Parser.parseMusic("a2/3\n");
+        assertEquals(new Fraction(2,3), note.duration());
+        assertEquals(new Pitch('A').transpose(Pitch.OCTAVE), note.pitch());
+    }
 }

@@ -15,14 +15,14 @@ import java.util.List;
 public class Tuplet implements Music{
     private final int numNotes;
     private final Fraction noteDuration; // duration of each note in tuplet i.e. quarter/eighth etc
-    private final List<Note> notes;
+    private final List<Music> notes;
     
     /**
      * Make a Tuplet with certain notes.
      * @param numNotes number of notes in the tuplet
      * @param notes notes in the tuplet
      */
-    public Tuplet(int numNotes, List<Note> notes, Fraction noteDuration){
+    public Tuplet(int numNotes, List<Music> notes, Fraction noteDuration){
         this.numNotes = numNotes;
         this.noteDuration = noteDuration;
         this.notes = notes;
@@ -51,16 +51,16 @@ public class Tuplet implements Music{
     /**
      * @return a list of all the notes played in the tuplet
      */
-    public List<Note> tupletNotes(){
-        return new ArrayList<Note>(notes);
+    public List<Music> tupletNotes(){
+        return new ArrayList<Music>(notes);
     }
 
     @Override
     public List<PlayerElement> getPlayerElements(int startTick, int ticksPerBeat, Fraction pieceNoteLength) {
         List<PlayerElement> elements = new ArrayList<PlayerElement>();
         int currentStart = startTick;
-        for (Note note : notes){
-            PlayerElement noteElement = note.getPlayerElements(currentStart, ticksPerBeat, pieceNoteLength).get(0);
+        for (Music music : notes){
+            PlayerElement noteElement = music.getPlayerElements(currentStart, ticksPerBeat, pieceNoteLength).get(0);
             elements.add(noteElement);
             currentStart = currentStart + noteElement.numTicks();
         }
