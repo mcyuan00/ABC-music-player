@@ -61,6 +61,26 @@ public interface MusicListener extends ParseTreeListener {
    */
   void exitVoice(MusicParser.VoiceContext ctx);
   /**
+   * Enter a parse tree produced by {@link MusicParser#tuplet}.
+   * @param ctx the parse tree
+   */
+  void enterTuplet(MusicParser.TupletContext ctx);
+  /**
+   * Exit a parse tree produced by {@link MusicParser#tuplet}.
+   * @param ctx the parse tree
+   */
+  void exitTuplet(MusicParser.TupletContext ctx);
+  /**
+   * Enter a parse tree produced by {@link MusicParser#tupletspec}.
+   * @param ctx the parse tree
+   */
+  void enterTupletspec(MusicParser.TupletspecContext ctx);
+  /**
+   * Exit a parse tree produced by {@link MusicParser#tupletspec}.
+   * @param ctx the parse tree
+   */
+  void exitTupletspec(MusicParser.TupletspecContext ctx);
+  /**
    * Enter a parse tree produced by {@link MusicParser#chord}.
    * @param ctx the parse tree
    */
@@ -100,26 +120,6 @@ public interface MusicListener extends ParseTreeListener {
    * @param ctx the parse tree
    */
   void exitNotelength(MusicParser.NotelengthContext ctx);
-  /**
-   * Enter a parse tree produced by {@link MusicParser#tuplet}.
-   * @param ctx the parse tree
-   */
-  void enterTuplet(MusicParser.TupletContext ctx);
-  /**
-   * Exit a parse tree produced by {@link MusicParser#tuplet}.
-   * @param ctx the parse tree
-   */
-  void exitTuplet(MusicParser.TupletContext ctx);
-  /**
-   * Enter a parse tree produced by {@link MusicParser#tupletspec}.
-   * @param ctx the parse tree
-   */
-  void enterTupletspec(MusicParser.TupletspecContext ctx);
-  /**
-   * Exit a parse tree produced by {@link MusicParser#tupletspec}.
-   * @param ctx the parse tree
-   */
-  void exitTupletspec(MusicParser.TupletspecContext ctx);
   /**
    * Enter a parse tree produced by {@link MusicParser#comment}.
    * @param ctx the parse tree
