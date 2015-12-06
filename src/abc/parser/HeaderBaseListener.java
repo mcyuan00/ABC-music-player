@@ -91,18 +91,6 @@ public class HeaderBaseListener implements HeaderListener {
    *
    * <p>The default implementation does nothing.</p>
    */
-  @Override public void enterMeter(HeaderParser.MeterContext ctx) { }
-  /**
-   * {@inheritDoc}
-   *
-   * <p>The default implementation does nothing.</p>
-   */
-  @Override public void exitMeter(HeaderParser.MeterContext ctx) { }
-  /**
-   * {@inheritDoc}
-   *
-   * <p>The default implementation does nothing.</p>
-   */
   @Override public void enterLength(HeaderParser.LengthContext ctx) { }
   /**
    * {@inheritDoc}
@@ -122,6 +110,18 @@ public class HeaderBaseListener implements HeaderListener {
    * <p>The default implementation does nothing.</p>
    */
   @Override public void exitTempo(HeaderParser.TempoContext ctx) { }
+  /**
+   * {@inheritDoc}
+   *
+   * <p>The default implementation does nothing.</p>
+   */
+  @Override public void enterMeter(HeaderParser.MeterContext ctx) { }
+  /**
+   * {@inheritDoc}
+   *
+   * <p>The default implementation does nothing.</p>
+   */
+  @Override public void exitMeter(HeaderParser.MeterContext ctx) { }
   /**
    * {@inheritDoc}
    *

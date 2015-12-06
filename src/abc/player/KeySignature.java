@@ -4,7 +4,9 @@ package abc.player;
  * Represents the key signature of a given piece.
  */
 public enum KeySignature {
-
+    // version of null
+    NEGATIVE,
+    
     // Major keys
     C_MAJOR, // none
     G_MAJOR, // F#

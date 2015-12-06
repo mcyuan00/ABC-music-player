@@ -1,6 +1,8 @@
 package abc.player;
 
 
+import static org.junit.Assert.*;
+
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -39,7 +41,10 @@ public class ParseTest {
     // Valid composer (any text)
     // Invalid composer (missing C:)
     
-    // Valid meter (digit(s)/digit(s) or C or C|)
+    // Valid meter:
+    //      - digit/digit
+    //      - C
+    //      - C|
     // Invalid meter (missing M:, invalid characters)
     
     // Valid length (digit(s)/digit(s))
@@ -62,7 +67,7 @@ public class ParseTest {
     // Invalid field (no newline at end of field)
     
     // covers valid index, valid title, valid key
-    @Test
+//    @Test
     public void testHeaderParser(){
         CharStream stream = new ANTLRInputStream("X:1\nT:hello world\nK:A\n");
         HeaderLexer lexer = new HeaderLexer(stream);
@@ -85,5 +90,13 @@ public class ParseTest {
 //        }
     }
 
+    // header with basic required fields: index, title, key
+    @Test
+    public void testHeaderRequiredFields(){
+        Header header = Parser.parseHeader("X:1\nT:hello world\nK:A\n");
+        assertEquals("helloworld", header.title());
+        assertEquals(1, header.index());
+        assertEquals(KeySignature.valueOf("A_MAJOR"), header.keySignature());
+    }
     //test body parse
 }
