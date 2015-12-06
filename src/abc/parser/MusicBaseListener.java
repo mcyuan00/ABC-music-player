@@ -79,25 +79,13 @@ public class MusicBaseListener implements MusicListener {
    *
    * <p>The default implementation does nothing.</p>
    */
-  @Override public void enterNumnote(MusicParser.NumnoteContext ctx) { }
+  @Override public void enterChord(MusicParser.ChordContext ctx) { }
   /**
    * {@inheritDoc}
    *
    * <p>The default implementation does nothing.</p>
    */
-  @Override public void exitNumnote(MusicParser.NumnoteContext ctx) { }
-  /**
-   * {@inheritDoc}
-   *
-   * <p>The default implementation does nothing.</p>
-   */
-  @Override public void enterMultinote(MusicParser.MultinoteContext ctx) { }
-  /**
-   * {@inheritDoc}
-   *
-   * <p>The default implementation does nothing.</p>
-   */
-  @Override public void exitMultinote(MusicParser.MultinoteContext ctx) { }
+  @Override public void exitChord(MusicParser.ChordContext ctx) { }
   /**
    * {@inheritDoc}
    *
@@ -110,30 +98,6 @@ public class MusicBaseListener implements MusicListener {
    * <p>The default implementation does nothing.</p>
    */
   @Override public void exitNote(MusicParser.NoteContext ctx) { }
-  /**
-   * {@inheritDoc}
-   *
-   * <p>The default implementation does nothing.</p>
-   */
-  @Override public void enterIspitch(MusicParser.IspitchContext ctx) { }
-  /**
-   * {@inheritDoc}
-   *
-   * <p>The default implementation does nothing.</p>
-   */
-  @Override public void exitIspitch(MusicParser.IspitchContext ctx) { }
-  /**
-   * {@inheritDoc}
-   *
-   * <p>The default implementation does nothing.</p>
-   */
-  @Override public void enterPitch(MusicParser.PitchContext ctx) { }
-  /**
-   * {@inheritDoc}
-   *
-   * <p>The default implementation does nothing.</p>
-   */
-  @Override public void exitPitch(MusicParser.PitchContext ctx) { }
   /**
    * {@inheritDoc}
    *

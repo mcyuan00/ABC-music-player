@@ -61,25 +61,15 @@ public interface MusicListener extends ParseTreeListener {
    */
   void exitVoice(MusicParser.VoiceContext ctx);
   /**
-   * Enter a parse tree produced by {@link MusicParser#numnote}.
+   * Enter a parse tree produced by {@link MusicParser#chord}.
    * @param ctx the parse tree
    */
-  void enterNumnote(MusicParser.NumnoteContext ctx);
+  void enterChord(MusicParser.ChordContext ctx);
   /**
-   * Exit a parse tree produced by {@link MusicParser#numnote}.
+   * Exit a parse tree produced by {@link MusicParser#chord}.
    * @param ctx the parse tree
    */
-  void exitNumnote(MusicParser.NumnoteContext ctx);
-  /**
-   * Enter a parse tree produced by {@link MusicParser#multinote}.
-   * @param ctx the parse tree
-   */
-  void enterMultinote(MusicParser.MultinoteContext ctx);
-  /**
-   * Exit a parse tree produced by {@link MusicParser#multinote}.
-   * @param ctx the parse tree
-   */
-  void exitMultinote(MusicParser.MultinoteContext ctx);
+  void exitChord(MusicParser.ChordContext ctx);
   /**
    * Enter a parse tree produced by {@link MusicParser#note}.
    * @param ctx the parse tree
@@ -90,26 +80,6 @@ public interface MusicListener extends ParseTreeListener {
    * @param ctx the parse tree
    */
   void exitNote(MusicParser.NoteContext ctx);
-  /**
-   * Enter a parse tree produced by {@link MusicParser#ispitch}.
-   * @param ctx the parse tree
-   */
-  void enterIspitch(MusicParser.IspitchContext ctx);
-  /**
-   * Exit a parse tree produced by {@link MusicParser#ispitch}.
-   * @param ctx the parse tree
-   */
-  void exitIspitch(MusicParser.IspitchContext ctx);
-  /**
-   * Enter a parse tree produced by {@link MusicParser#pitch}.
-   * @param ctx the parse tree
-   */
-  void enterPitch(MusicParser.PitchContext ctx);
-  /**
-   * Exit a parse tree produced by {@link MusicParser#pitch}.
-   * @param ctx the parse tree
-   */
-  void exitPitch(MusicParser.PitchContext ctx);
   /**
    * Enter a parse tree produced by {@link MusicParser#rest}.
    * @param ctx the parse tree
