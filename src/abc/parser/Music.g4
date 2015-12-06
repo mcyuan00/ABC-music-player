@@ -15,7 +15,7 @@ chord : '[' note+ ']';
 note : ACCIDENTAL? NOTELETTER OCTAVE? notelength;
 rest : 'z' notelength;
 notelength : (DIGIT+)? '/'? (DIGIT+)?;
-tuplet : tupletspec note+;
+tuplet : tupletspec (note | chord)+;
 tupletspec : '(' DIGIT;
 comment : '%' text+ NEWLINE;
 text : ~NEWLINE;
