@@ -127,7 +127,6 @@ public class ParseTest {
     @Test (expected=Exception.class)
     public void testInvalidIndexMissingX(){
         Header header = Parser.parseHeader("1\nT:hello world\nK:A\n");
-        System.out.println(header.index());
         assertEquals(1, header.index());
     }
     
@@ -140,12 +139,11 @@ public class ParseTest {
     }
     
     // invalid index (negative)
-    @Test
+    @Test (expected=Exception.class)
     public void testInvalidIndexNegative(){
         Header header = Parser.parseHeader("X:-1\nT:hello world\nK:A\n");
         assertEquals(1, header.index());
-        assertEquals("helloworld", header.title());
-        //test also still passes, just treats - as extraneous input
+        //treats - as extraneous input
     }
     
     // invalid title (missing T:)
@@ -167,7 +165,6 @@ public class ParseTest {
     public void testValidComposer(){
         Header header = Parser.parseHeader("X:1\nT:hello world\nC:1.pOo2!\nK:A\n");
         assertEquals("1.pOo2!", header.composer());
-        //composer doesn't recognize all symbols
     }
     
     // invalid composer (missing C:)
@@ -192,18 +189,18 @@ public class ParseTest {
     }
     
     // valid meter (common time)
-    @Test (expected=Exception.class)
+    @Test
     public void testValidMeterCommon(){
         Header header = Parser.parseHeader("X:1\nT:hello world\nM:C\nK:A\n");
-        //assertEquals(new Fraction(4,4), header.meter());
+        assertEquals(new Fraction(4,4), header.meter());
         //illegal argument exception, test should not be expecting this error
     }
     
     // valid meter (cut time)
-    @Test (expected=Exception.class)
+    @Test
     public void testValidMeterCut(){
         Header header = Parser.parseHeader("X:1\nT:hello world\nM:C|\nK:A\n");
-        //assertEquals(new Fraction(2,2), header.meter());
+        assertEquals(new Fraction(2,2), header.meter());
         //illegal argument exception, test should not be expecting this error
     }
     
@@ -215,7 +212,7 @@ public class ParseTest {
     }
     
     // invalid meter (missing \n)
-    @Test
+    @Test (expected=Exception.class)
     public void testInvalidMeterMissingNewline(){
         Header header = Parser.parseHeader("X:1\nT:hello world\nM:6/8\nK:A\n");
         assertEquals(new Fraction(6,8), header.meter());
@@ -232,7 +229,7 @@ public class ParseTest {
     @Test
     public void testValidLength(){
         Header header = Parser.parseHeader("X:1\nT:hello world\nL:1/4\nK:A\n");
-        //assertEquals(new Fraction(1,4), header.noteLength());
+        assertEquals(new Fraction(1,4), header.noteLength());
         //returning 1/8 as length instead of 1/4
     }
     
@@ -241,29 +238,27 @@ public class ParseTest {
     public void testInvalidLengthMissingL(){
         Header header = Parser.parseHeader("X:1\nT:hello world\n1/4\nK:A\n");
         assertEquals(new Fraction(1,4), header.noteLength());
-        //illegal argument exception
     }
     
     // invalid length (missing \n)
     @Test (expected=Exception.class)
     public void testInvalidLengthMissingNewline(){
         Header header = Parser.parseHeader("X:1\nT:hello world\nL:1/4K:A\n");
-        //illegal argument exception
     }
     
     // invalid length (too many fractions)
-    @Test
+    @Test (expected=Exception.class)
     public void testInvalidLengthMultipleFractions(){
         Header header = Parser.parseHeader("X:1\nT:hello world\nL:1/4/3\nK:A\n");
-        //assertEquals(new Fraction(1,4), header.noteLength());
+        assertEquals(new Fraction(1,4), header.noteLength());
         //also returns 1/8 instead of 1/4
     }
     
     // valid tempo
-    @Test (expected=Exception.class)
+    @Test
     public void testValidTempo(){
         Header header = Parser.parseHeader("X:1\nT:hello world\nQ:1/4=100\nK:A\n");
-        //assertEquals((new Fraction(1,4) + "=100"), header.tempo());
+        assertEquals((new Fraction(1,4) + "=100"), header.tempo());
         //illegal argument exception,  test should not be expecting this error
     }
     
@@ -271,7 +266,7 @@ public class ParseTest {
     @Test (expected=Exception.class)
     public void testInvalidTempoMissingQ(){
         Header header = Parser.parseHeader("X:1\nT:hello world\n1/4=100\nK:A\n");
-        //illegal argument exception
+        assertEquals((new Fraction(1,4) + "=100"), header.tempo());
     }
     
     // invalid tempo (missing \n)
@@ -279,7 +274,6 @@ public class ParseTest {
     public void testInvalidTempoMissingNewline(){
         Header header = Parser.parseHeader("X:1\nT:hello world\nQ:1/4=100K:A\n");
         assertEquals((new Fraction(1,4) + "=100"), header.tempo());
-        //illegal argument exception
     }
     
     // invalid tempo (non-numerical characters)
@@ -287,15 +281,13 @@ public class ParseTest {
     public void testInvalidTempoNonNumerical(){
         Header header = Parser.parseHeader("X:1\nT:hello world\nQ:a=100K:A\n");
         assertEquals(("a=100"), header.tempo());
-        //illegal argument exception
     }
     
     // valid voice
     @Test
     public void testValidVoice(){
         Header header = Parser.parseHeader("X:1\nT:hello world\nV:21vd!\nK:A\n");
-        //assertEquals(("21vd!"), header.voices());
-        //! not handled
+        assertEquals(("21vd!"), header.voices());
     }
     
     // valid voices (multiple)
@@ -311,7 +303,6 @@ public class ParseTest {
     public void testInvalidVoiceMissingV(){
         Header header = Parser.parseHeader("X:1\nT:hello world\nvoice1\nK:A\n");
         assertTrue(header.voices().contains("voice1"));
-        //illegal argument exception
     }
     
     // invalid voice (missing \n)
@@ -329,7 +320,7 @@ public class ParseTest {
     }
 
     // valid key (sharp)
-    @Test (expected=Exception.class)
+    @Test
     public void testValidKeySharp(){
         Header header = Parser.parseHeader("X:1\nT:hello world\nK:A#\n");
         assertEquals(KeySignature.valueOf("A_SHARP_MAJOR"), header.keySignature());
