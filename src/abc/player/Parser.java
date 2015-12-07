@@ -394,7 +394,7 @@ public class Parser {
             for (int i = 0; i < notes.size(); i++){
                 chordNotes.add(stack.pop());
             }
-            Music m = new Chord(chordNotes.size(), chordNotes);
+            Music m = new Chord(chordNotes);
             stack.push(m);
         }
         

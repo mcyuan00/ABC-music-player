@@ -7,17 +7,14 @@ import java.util.List;
  * Chord represents one or more notes played simultaneously.
  */
 public class Chord implements Music{
-    private final int numNotes;
     private final List<Music> notes;
     
     /**
      * Make a Chord with certain notes played for duration beats.
      * @param duration duration in beats, must be >= 0 
-     * @param numNotes number of notes in the chord
-     * @param notes notes in the chord
+     * @param notes notes in the chord; cannot be an empty list
      */
-    public Chord(int numNotes, List<Music> notes){
-        this.numNotes = numNotes;
+    public Chord(List<Music> notes){
         this.notes = notes;
     }
     
@@ -27,7 +24,7 @@ public class Chord implements Music{
      * @return the number of notes that are played together in this chord
      */
     public int numNotes(){
-        return numNotes;
+        return notes.size();
     }
     
     /**
