@@ -19,7 +19,7 @@ voice : 'V:' text+ NEWLINE;
 key : 'K:' NOTE KEYACCIDENTAL? MINOR? NEWLINE;
 comment : '%' text+ NEWLINE;
 text : DIGIT | NOTE | MINOR | KEYACCIDENTAL | OTHER;
-OTHER :[a-zH-Z] | [-_=:;'"//\<>];
+OTHER :[a-zH-Z] | ~[A-Za-z0-9\n\t\s\r];
 NOTE: [A-G];
 KEYACCIDENTAL : '#' | 'b';
 MINOR : 'm';

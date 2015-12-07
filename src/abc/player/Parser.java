@@ -3,15 +3,21 @@ package abc.player;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
+import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.swing.JDialog;
+
+import org.antlr.v4.gui.Trees;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.TokenStream;
+import org.antlr.v4.runtime.misc.Utils;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
@@ -63,6 +69,13 @@ public class Parser {
             // root is the starter rule for this grammar.
             // Other grammars may have different names for the starter rule.
             ParseTree tree = parser.root();
+//
+//            Future<JDialog> inspect = Trees.inspect(tree, parser);
+//            try {
+//                Utils.waitForClose(inspect.get());
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
 
             MakeHeader headerMaker = new MakeHeader();
             new ParseTreeWalker().walk(headerMaker, tree);
@@ -88,8 +101,15 @@ public class Parser {
             int index = -1;
             String title = "";
             KeySignature keySignature= KeySignature.valueOf("NEGATIVE");
+
+            // parse/check existence of required fields index, header, keySignature
             while (!requiredStack.isEmpty()){
                 String context = requiredStack.pop();
+                if (context.contains("missing NEWLINE")){
+                    throw new IllegalArgumentException();  
+                }
+
+                //parse out index, header, and keySignature
                 if (context.contains("X:")){
                     Pattern pattern = Pattern.compile("[0-9]+");
                     Matcher matcher = pattern.matcher(context);
@@ -124,14 +144,21 @@ public class Parser {
                     keySignature = KeySignature.valueOf(key);
                 }   
             }
+            //missing one of index, header or keySig
             if(index == -1 || title.equals("") || keySignature.equals(KeySignature.valueOf("NEGATIVE"))){
                 throw new IllegalArgumentException();
             }
 
             Header header = new Header(index, title, keySignature);
 
+            //parse other fields
             while (!optionalStack.isEmpty()){
                 String context = optionalStack.pop();
+
+                if (context.contains("missing NEWLINE")){
+                    throw new IllegalArgumentException();  
+                }
+
                 if (context.contains("C:")){
                     String composer = context.replace("C:", "").replace("\n", "");
                     header.setComposer(composer);
@@ -331,12 +358,22 @@ public class Parser {
         }
     }
     static class MakeMusic implements MusicListener{
+        Map<NoteLetter, Accidental> keySig;
+
+        public MakeMusic(){
+            this.keySig = KeySignatureMap.KEY_SIGNATURE_MAP.get(KeySignature.valueOf("C_MAJOR"));
+        }
+
+        public MakeMusic(KeySignature keysig){
+            this.keySig = KeySignatureMap.KEY_SIGNATURE_MAP.get(keysig);
+        }
+
         private final Stack<Music> stack = new Stack<>();
 
         public Music getMusic(){
             return stack.get(0);
         }
-        
+
         @Override
         public void exitRoot(MusicParser.RootContext ctx) {
             // TODO Auto-generated method stub
@@ -374,7 +411,7 @@ public class Parser {
             assert stack.size()> tupletNum;
             assert tupletNum > 1 && tupletNum < 5;
             List<Music> tupletNotes = new ArrayList<Music>();
-            
+
             for (int i = 0; i < tupletNum; i++){
                 tupletNotes.add(stack.pop());
             }
@@ -385,14 +422,14 @@ public class Parser {
 
         @Override
         public void exitTupletspec(MusicParser.TupletspecContext ctx) { }
-        
+
         @Override
         public void exitChord(MusicParser.ChordContext ctx) {
             List<MusicParser.NoteContext> notes = ctx.note();
             assert stack.size() >= notes.size();
             assert notes.size()>= 1;
             List<Music> chordNotes = new ArrayList<Music>();
-            
+
             for (int i = 0; i < notes.size(); i++){
                 chordNotes.add(stack.pop());
             }
@@ -400,7 +437,7 @@ public class Parser {
             Music m = new Chord(chordNotes);
             stack.push(m);
         }
-        
+
         @Override
         public void exitNote(MusicParser.NoteContext ctx) {
             System.out.println(ctx.NOTELETTER().getText());
@@ -412,7 +449,7 @@ public class Parser {
                 if (Character.isLowerCase(note)){
                     octave +=1;
                 }
-                noteLetter = note;
+                noteLetter = Character.toUpperCase(note);
             }
             if (ctx.OCTAVE()!= null){
                 String octaves = ctx.OCTAVE().getText();
