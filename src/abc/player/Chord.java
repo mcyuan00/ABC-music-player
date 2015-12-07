@@ -38,16 +38,10 @@ public class Chord implements Music{
         return new ArrayList<Music>(notes);   
     }
 
-    // duration of chord is the duration of the shortest note
+    // duration of chord is the duration of the first note 
     @Override
     public Fraction duration() {
-        Fraction duration = notes.get(0).duration();
-        for (Music note : notes){
-            if(note.duration().toDecimal()< duration.toDecimal()){
-                duration = note.duration();
-            }
-        }
-        return duration;
+        return notes.get(0).duration();
     }
 
 
@@ -58,6 +52,16 @@ public class Chord implements Music{
             elements.addAll(note.getPlayerElements(startTick, ticksPerBeat, pieceNoteLength));
         }
         return elements;
+    }
+
+
+    @Override
+    public List<Fraction> getAllDurations() {
+        List<Fraction> allDurations = new ArrayList<>();
+        for (Music note : notes){
+            allDurations.add(note.duration());
+        }
+        return allDurations;
     }
 
 
