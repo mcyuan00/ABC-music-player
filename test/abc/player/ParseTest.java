@@ -214,12 +214,12 @@ public class ParseTest {
     // invalid meter (missing \n)
     @Test (expected=Exception.class)
     public void testInvalidMeterMissingNewline(){
-        Header header = Parser.parseHeader("X:1\nT:hello world\nM:6/8\nK:A\n");
+        Header header = Parser.parseHeader("X:1\nT:hello world\nM:6/8K:A\n");
         assertEquals(new Fraction(6,8), header.meter());
     }
     
     // invalid meter (too many fractions)
-    @Test (expected=Exception.class)
+    @Test (expected = Exception.class)
     public void testInvalidMeterMultipleFractions(){
         Header header = Parser.parseHeader("X:1\nT:hello world\nM:6/8/2\nK:A\n");
         assertEquals(new Fraction(6,8), header.meter());
@@ -257,37 +257,37 @@ public class ParseTest {
     // valid tempo
     @Test
     public void testValidTempo(){
-        Header header = Parser.parseHeader("X:1\nT:hello world\nQ:1/4=100\nK:A\n");
-        assertEquals((new Fraction(1,4) + "=100"), header.tempo());
+        Header header = Parser.parseHeader("X:1\nT:hello world\nQ:1/8=100\nK:A\n");
+        assertEquals(100, header.tempo());
         //illegal argument exception,  test should not be expecting this error
     }
     
     // invalid tempo (missing Q:)
     @Test (expected=Exception.class)
     public void testInvalidTempoMissingQ(){
-        Header header = Parser.parseHeader("X:1\nT:hello world\n1/4=100\nK:A\n");
-        assertEquals((new Fraction(1,4) + "=100"), header.tempo());
+        Header header = Parser.parseHeader("X:1\nT:hello world\n1/8=100\nK:A\n");
+        assertEquals(100, header.tempo());
     }
     
     // invalid tempo (missing \n)
     @Test (expected=Exception.class)
     public void testInvalidTempoMissingNewline(){
-        Header header = Parser.parseHeader("X:1\nT:hello world\nQ:1/4=100K:A\n");
-        assertEquals((new Fraction(1,4) + "=100"), header.tempo());
+        Header header = Parser.parseHeader("X:1\nT:hello world\nQ:1/8=100K:A\n");
+        assertEquals(100, header.tempo());
     }
     
     // invalid tempo (non-numerical characters)
     @Test (expected=Exception.class)
     public void testInvalidTempoNonNumerical(){
         Header header = Parser.parseHeader("X:1\nT:hello world\nQ:a=100K:A\n");
-        assertEquals(("a=100"), header.tempo());
+        assertEquals(100, header.tempo());
     }
     
     // valid voice
     @Test
     public void testValidVoice(){
         Header header = Parser.parseHeader("X:1\nT:hello world\nV:21vd!\nK:A\n");
-        assertEquals(("21vd!"), header.voices());
+        assertEquals(("21vd!"), header.voices().get(0));
     }
     
     // valid voices (multiple)
@@ -322,8 +322,8 @@ public class ParseTest {
     // valid key (sharp)
     @Test
     public void testValidKeySharp(){
-        Header header = Parser.parseHeader("X:1\nT:hello world\nK:A#\n");
-        assertEquals(KeySignature.valueOf("A_SHARP_MAJOR"), header.keySignature());
+        Header header = Parser.parseHeader("X:1\nT:hello world\nK:A#m\n");
+        assertEquals(KeySignature.valueOf("A_SHARP_MINOR"), header.keySignature());
         //illegal argument exception, test should not be expecting this error!
     }
 

@@ -213,7 +213,7 @@ public class HeaderParser extends Parser {
       setState(40);
       _errHandler.sync(this);
       _la = _input.LA(1);
-      while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__2) | (1L << T__3) | (1L << T__5) | (1L << T__7) | (1L << T__8) | (1L << T__9) | (1L << T__10) | (1L << T__12))) != 0)) {
+      while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__2) | (1L << T__3) | (1L << T__5) | (1L << T__7) | (1L << T__10) | (1L << T__12))) != 0)) {
         {
         {
         setState(37);
@@ -415,8 +415,6 @@ public class HeaderParser extends Parser {
         }
         break;
       case T__7:
-      case T__8:
-      case T__9:
         enterOuterAlt(_localctx, 3);
         {
         setState(63);
@@ -704,11 +702,11 @@ public class HeaderParser extends Parser {
   }
 
   public static class MeterContext extends ParserRuleContext {
+    public TerminalNode NEWLINE() { return getToken(HeaderParser.NEWLINE, 0); }
     public List<TerminalNode> DIGIT() { return getTokens(HeaderParser.DIGIT); }
     public TerminalNode DIGIT(int i) {
       return getToken(HeaderParser.DIGIT, i);
     }
-    public TerminalNode NEWLINE() { return getToken(HeaderParser.NEWLINE, 0); }
     public MeterContext(ParserRuleContext parent, int invokingState) {
       super(parent, invokingState);
     }
@@ -728,13 +726,14 @@ public class HeaderParser extends Parser {
     enterRule(_localctx, 16, RULE_meter);
     int _la;
     try {
-      setState(130);
+      enterOuterAlt(_localctx, 1);
+      {
+      setState(115);
+      match(T__7);
+      setState(129);
       switch (_input.LA(1)) {
-      case T__7:
-        enterOuterAlt(_localctx, 1);
+      case DIGIT:
         {
-        setState(115);
-        match(T__7);
         {
         setState(117); 
         _errHandler.sync(this);
@@ -770,23 +769,22 @@ public class HeaderParser extends Parser {
         }
         break;
       case T__8:
-        enterOuterAlt(_localctx, 2);
         {
         setState(127);
         match(T__8);
         }
         break;
       case T__9:
-        enterOuterAlt(_localctx, 3);
         {
         setState(128);
         match(T__9);
-        setState(129);
-        match(NEWLINE);
         }
         break;
       default:
         throw new NoViableAltException(this);
+      }
+      setState(131);
+      match(NEWLINE);
       }
     }
     catch (RecognitionException re) {
@@ -829,23 +827,23 @@ public class HeaderParser extends Parser {
     try {
       enterOuterAlt(_localctx, 1);
       {
-      setState(132);
+      setState(133);
       match(T__10);
-      setState(134); 
+      setState(135); 
       _errHandler.sync(this);
       _la = _input.LA(1);
       do {
         {
         {
-        setState(133);
+        setState(134);
         text();
         }
         }
-        setState(136); 
+        setState(137); 
         _errHandler.sync(this);
         _la = _input.LA(1);
       } while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << OTHER) | (1L << NOTE) | (1L << KEYACCIDENTAL) | (1L << MINOR) | (1L << DIGIT))) != 0) );
-      setState(138);
+      setState(139);
       match(NEWLINE);
       }
     }
@@ -886,29 +884,29 @@ public class HeaderParser extends Parser {
     try {
       enterOuterAlt(_localctx, 1);
       {
-      setState(140);
-      match(T__11);
       setState(141);
+      match(T__11);
+      setState(142);
       match(NOTE);
-      setState(143);
+      setState(144);
       _la = _input.LA(1);
       if (_la==KEYACCIDENTAL) {
         {
-        setState(142);
+        setState(143);
         match(KEYACCIDENTAL);
         }
       }
 
-      setState(146);
+      setState(147);
       _la = _input.LA(1);
       if (_la==MINOR) {
         {
-        setState(145);
+        setState(146);
         match(MINOR);
         }
       }
 
-      setState(148);
+      setState(149);
       match(NEWLINE);
       }
     }
@@ -952,23 +950,23 @@ public class HeaderParser extends Parser {
     try {
       enterOuterAlt(_localctx, 1);
       {
-      setState(150);
+      setState(151);
       match(T__12);
-      setState(152); 
+      setState(153); 
       _errHandler.sync(this);
       _la = _input.LA(1);
       do {
         {
         {
-        setState(151);
+        setState(152);
         text();
         }
         }
-        setState(154); 
+        setState(155); 
         _errHandler.sync(this);
         _la = _input.LA(1);
       } while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << OTHER) | (1L << NOTE) | (1L << KEYACCIDENTAL) | (1L << MINOR) | (1L << DIGIT))) != 0) );
-      setState(156);
+      setState(157);
       match(NEWLINE);
       }
     }
@@ -1010,7 +1008,7 @@ public class HeaderParser extends Parser {
     try {
       enterOuterAlt(_localctx, 1);
       {
-      setState(158);
+      setState(159);
       _la = _input.LA(1);
       if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << OTHER) | (1L << NOTE) | (1L << KEYACCIDENTAL) | (1L << MINOR) | (1L << DIGIT))) != 0)) ) {
       _errHandler.recoverInline(this);
@@ -1031,7 +1029,7 @@ public class HeaderParser extends Parser {
   }
 
   public static final String _serializedATN =
-    "\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\26\u00a3\4\2\t"+
+    "\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\26\u00a4\4\2\t"+
       "\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n"+
       "\4\13\t\13\4\f\t\f\4\r\t\r\4\16\t\16\3\2\3\2\3\2\3\3\3\3\7\3\"\n\3"+
       "\f\3\16\3%\13\3\3\3\3\3\7\3)\n\3\f\3\16\3,\13\3\3\3\3\3\3\4\3\4\6"+
@@ -1040,13 +1038,13 @@ public class HeaderParser extends Parser {
       "\7\r\7\16\7O\3\7\3\7\3\b\3\b\6\bV\n\b\r\b\16\bW\3\b\3\b\6\b\\\n\b"+
       "\r\b\16\b]\3\b\3\b\3\t\3\t\6\td\n\t\r\t\16\te\3\t\3\t\6\tj\n\t\r\t"+
       "\16\tk\3\t\3\t\6\tp\n\t\r\t\16\tq\3\t\3\t\3\n\3\n\6\nx\n\n\r\n\16"+
-      "\ny\3\n\3\n\6\n~\n\n\r\n\16\n\177\3\n\3\n\3\n\5\n\u0085\n\n\3\13\3"+
-      "\13\6\13\u0089\n\13\r\13\16\13\u008a\3\13\3\13\3\f\3\f\3\f\5\f\u0092"+
-      "\n\f\3\f\5\f\u0095\n\f\3\f\3\f\3\r\3\r\6\r\u009b\n\r\r\r\16\r\u009c"+
-      "\3\r\3\r\3\16\3\16\3\16\2\2\17\2\4\6\b\n\f\16\20\22\24\26\30\32\2"+
-      "\3\4\2\20\23\25\25\u00ad\2\34\3\2\2\2\4\37\3\2\2\2\6/\3\2\2\2\b\67"+
-      "\3\2\2\2\nI\3\2\2\2\fK\3\2\2\2\16S\3\2\2\2\20a\3\2\2\2\22\u0084\3"+
-      "\2\2\2\24\u0086\3\2\2\2\26\u008e\3\2\2\2\30\u0098\3\2\2\2\32\u00a0"+
+      "\ny\3\n\3\n\6\n~\n\n\r\n\16\n\177\3\n\3\n\5\n\u0084\n\n\3\n\3\n\3"+
+      "\13\3\13\6\13\u008a\n\13\r\13\16\13\u008b\3\13\3\13\3\f\3\f\3\f\5"+
+      "\f\u0093\n\f\3\f\5\f\u0096\n\f\3\f\3\f\3\r\3\r\6\r\u009c\n\r\r\r\16"+
+      "\r\u009d\3\r\3\r\3\16\3\16\3\16\2\2\17\2\4\6\b\n\f\16\20\22\24\26"+
+      "\30\32\2\3\4\2\20\23\25\25\u00ae\2\34\3\2\2\2\4\37\3\2\2\2\6/\3\2"+
+      "\2\2\b\67\3\2\2\2\nI\3\2\2\2\fK\3\2\2\2\16S\3\2\2\2\20a\3\2\2\2\22"+
+      "u\3\2\2\2\24\u0087\3\2\2\2\26\u008f\3\2\2\2\30\u0099\3\2\2\2\32\u00a1"+
       "\3\2\2\2\34\35\5\4\3\2\35\36\7\2\2\3\36\3\3\2\2\2\37#\5\6\4\2 \"\5"+
       "\30\r\2! \3\2\2\2\"%\3\2\2\2#!\3\2\2\2#$\3\2\2\2$&\3\2\2\2%#\3\2\2"+
       "\2&*\5\b\5\2\')\5\n\6\2(\'\3\2\2\2),\3\2\2\2*(\3\2\2\2*+\3\2\2\2+"+
@@ -1064,22 +1062,22 @@ public class HeaderParser extends Parser {
       "bd\7\25\2\2cb\3\2\2\2de\3\2\2\2ec\3\2\2\2ef\3\2\2\2fg\3\2\2\2gi\7"+
       "\7\2\2hj\7\25\2\2ih\3\2\2\2jk\3\2\2\2ki\3\2\2\2kl\3\2\2\2lm\3\2\2"+
       "\2mo\7\t\2\2np\7\25\2\2on\3\2\2\2pq\3\2\2\2qo\3\2\2\2qr\3\2\2\2rs"+
-      "\3\2\2\2st\7\24\2\2t\21\3\2\2\2uw\7\n\2\2vx\7\25\2\2wv\3\2\2\2xy\3"+
-      "\2\2\2yw\3\2\2\2yz\3\2\2\2z{\3\2\2\2{}\7\7\2\2|~\7\25\2\2}|\3\2\2"+
-      "\2~\177\3\2\2\2\177}\3\2\2\2\177\u0080\3\2\2\2\u0080\u0085\3\2\2\2"+
-      "\u0081\u0085\7\13\2\2\u0082\u0083\7\f\2\2\u0083\u0085\7\24\2\2\u0084"+
-      "u\3\2\2\2\u0084\u0081\3\2\2\2\u0084\u0082\3\2\2\2\u0085\23\3\2\2\2"+
-      "\u0086\u0088\7\r\2\2\u0087\u0089\5\32\16\2\u0088\u0087\3\2\2\2\u0089"+
-      "\u008a\3\2\2\2\u008a\u0088\3\2\2\2\u008a\u008b\3\2\2\2\u008b\u008c"+
-      "\3\2\2\2\u008c\u008d\7\24\2\2\u008d\25\3\2\2\2\u008e\u008f\7\16\2"+
-      "\2\u008f\u0091\7\21\2\2\u0090\u0092\7\22\2\2\u0091\u0090\3\2\2\2\u0091"+
-      "\u0092\3\2\2\2\u0092\u0094\3\2\2\2\u0093\u0095\7\23\2\2\u0094\u0093"+
-      "\3\2\2\2\u0094\u0095\3\2\2\2\u0095\u0096\3\2\2\2\u0096\u0097\7\24"+
-      "\2\2\u0097\27\3\2\2\2\u0098\u009a\7\17\2\2\u0099\u009b\5\32\16\2\u009a"+
-      "\u0099\3\2\2\2\u009b\u009c\3\2\2\2\u009c\u009a\3\2\2\2\u009c\u009d"+
-      "\3\2\2\2\u009d\u009e\3\2\2\2\u009e\u009f\7\24\2\2\u009f\31\3\2\2\2"+
-      "\u00a0\u00a1\t\2\2\2\u00a1\33\3\2\2\2\25#*\63;FIOW]ekqy\177\u0084"+
-      "\u008a\u0091\u0094\u009c";
+      "\3\2\2\2st\7\24\2\2t\21\3\2\2\2u\u0083\7\n\2\2vx\7\25\2\2wv\3\2\2"+
+      "\2xy\3\2\2\2yw\3\2\2\2yz\3\2\2\2z{\3\2\2\2{}\7\7\2\2|~\7\25\2\2}|"+
+      "\3\2\2\2~\177\3\2\2\2\177}\3\2\2\2\177\u0080\3\2\2\2\u0080\u0084\3"+
+      "\2\2\2\u0081\u0084\7\13\2\2\u0082\u0084\7\f\2\2\u0083w\3\2\2\2\u0083"+
+      "\u0081\3\2\2\2\u0083\u0082\3\2\2\2\u0084\u0085\3\2\2\2\u0085\u0086"+
+      "\7\24\2\2\u0086\23\3\2\2\2\u0087\u0089\7\r\2\2\u0088\u008a\5\32\16"+
+      "\2\u0089\u0088\3\2\2\2\u008a\u008b\3\2\2\2\u008b\u0089\3\2\2\2\u008b"+
+      "\u008c\3\2\2\2\u008c\u008d\3\2\2\2\u008d\u008e\7\24\2\2\u008e\25\3"+
+      "\2\2\2\u008f\u0090\7\16\2\2\u0090\u0092\7\21\2\2\u0091\u0093\7\22"+
+      "\2\2\u0092\u0091\3\2\2\2\u0092\u0093\3\2\2\2\u0093\u0095\3\2\2\2\u0094"+
+      "\u0096\7\23\2\2\u0095\u0094\3\2\2\2\u0095\u0096\3\2\2\2\u0096\u0097"+
+      "\3\2\2\2\u0097\u0098\7\24\2\2\u0098\27\3\2\2\2\u0099\u009b\7\17\2"+
+      "\2\u009a\u009c\5\32\16\2\u009b\u009a\3\2\2\2\u009c\u009d\3\2\2\2\u009d"+
+      "\u009b\3\2\2\2\u009d\u009e\3\2\2\2\u009e\u009f\3\2\2\2\u009f\u00a0"+
+      "\7\24\2\2\u00a0\31\3\2\2\2\u00a1\u00a2\t\2\2\2\u00a2\33\3\2\2\2\25"+
+      "#*\63;FIOW]ekqy\177\u0083\u008b\u0092\u0095\u009d";
   public static final ATN _ATN =
     new ATNDeserializer().deserialize(_serializedATN.toCharArray());
   static {
