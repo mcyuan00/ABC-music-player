@@ -1,6 +1,7 @@
 package abc.player;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
 import java.util.regex.Matcher;
@@ -377,6 +378,7 @@ public class Parser {
             for (int i = 0; i < tupletNum; i++){
                 tupletNotes.add(stack.pop());
             }
+            Collections.reverse(tupletNotes);
             Music m = new Tuplet(tupletNum, tupletNotes, tupletNotes.get(0).duration());
             stack.push(m);
         }
@@ -394,6 +396,7 @@ public class Parser {
             for (int i = 0; i < notes.size(); i++){
                 chordNotes.add(stack.pop());
             }
+            Collections.reverse(chordNotes);
             Music m = new Chord(chordNotes);
             stack.push(m);
         }
