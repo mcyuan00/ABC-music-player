@@ -46,5 +46,14 @@ public class Measure implements Music {
         return elements;
     }
 
+    @Override
+    public List<Fraction> getAllDurations() {
+        List<Fraction> allDurations = new ArrayList<>();
+        for (Music music : m){
+            allDurations.addAll(music.getAllDurations());
+        }
+        return allDurations;
+    }
+
 
 }

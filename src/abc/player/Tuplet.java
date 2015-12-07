@@ -21,6 +21,7 @@ public class Tuplet implements Music{
      * Make a Tuplet with certain notes.
      * @param numNotes number of notes in the tuplet
      * @param notes notes in the tuplet
+     * @param noteDuration the length of each note in the tuplet
      */
     public Tuplet(int numNotes, List<Music> notes, Fraction noteDuration){
         this.numNotes = numNotes;
@@ -65,6 +66,15 @@ public class Tuplet implements Music{
             currentStart = currentStart + noteElement.numTicks();
         }
         return elements;
+    }
+
+    @Override
+    public List<Fraction> getAllDurations() {
+       List<Fraction> allDurations = new ArrayList<>();
+       for (Music note : notes){
+           allDurations.add(note.duration());
+       }
+       return allDurations;
     }
     
 

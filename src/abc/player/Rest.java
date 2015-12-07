@@ -1,5 +1,6 @@
 package abc.player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,6 +30,13 @@ public class Rest implements Music {
     public List<PlayerElement> getPlayerElements(int startTick, int ticksPerBeat, Fraction pieceNoteLength) {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    @Override
+    public List<Fraction> getAllDurations() {
+        List<Fraction> allDurations = new ArrayList<>();
+        allDurations.add(duration);
+        return allDurations;
     }
 
     /**

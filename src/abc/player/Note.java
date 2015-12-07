@@ -72,6 +72,13 @@ public class Note implements Music {
         elements.add(new PlayerElement(pitch, startTick, startTick + noteDuration));
         return elements;
     }
+
+    @Override
+    public List<Fraction> getAllDurations() {
+        List<Fraction> allDurations = new ArrayList<>();
+        allDurations.add(duration);
+        return allDurations;
+    }
     
 
 

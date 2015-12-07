@@ -61,5 +61,14 @@ public class Voice implements Music {
         return elements;
     }
 
+    @Override
+    public List<Fraction> getAllDurations() {
+        List<Fraction> allDurations = new ArrayList<>();
+        for (Music music : measures){
+            allDurations.addAll(music.getAllDurations());
+        }
+        return allDurations;
+    }
+
 
 }
