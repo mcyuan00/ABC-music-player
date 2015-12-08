@@ -1,6 +1,7 @@
 package abc.player;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiUnavailableException;
@@ -26,9 +27,9 @@ public interface Music {
     
     /**
      * 
-     * @return the duration of each note or chord in order
+     * @return all the denominators for durations used
      */
-    List<Fraction> getAllDurations();
+    Set<Integer> getAllDurationDenominators();
     
     /**
      * Transpose all notes upward or downward in pitch.

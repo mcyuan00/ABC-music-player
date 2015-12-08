@@ -1,7 +1,9 @@
 package abc.player;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Note represents a note with a given pitch played for a given duration.
@@ -22,7 +24,7 @@ public class Note implements Music {
      *          (0 represents C4 to B4, 1 represents C5 to B5, -1 represents C3 to B3)
      */
     public Note(Fraction duration, char noteLetter, int octave){
-        this.duration = duration;
+        this.duration = duration.simplify();
         this.noteLetter = noteLetter;
 //        this.octave = octave;
 //        this.accidental = 0;
@@ -40,7 +42,7 @@ public class Note implements Music {
      *          -1 represents flat, -2 represents double flat)
      */
     public Note(Fraction duration, char noteLetter, int octave, int accidental){
-        this.duration = duration;
+        this.duration = duration.simplify();
         this.noteLetter = noteLetter;
 //        this.octave = octave;
 //        this.accidental = accidental;
@@ -61,10 +63,10 @@ public class Note implements Music {
     }
 
     @Override
-    public List<Fraction> getAllDurations() {
-        List<Fraction> allDurations = new ArrayList<>();
-        allDurations.add(duration);
-        return allDurations;
+    public Set<Integer> getAllDurationDenominators() {
+        Set<Integer> denominators = new HashSet<>();
+        denominators.add(duration.denominator());
+        return denominators;
     }
     
     @Override

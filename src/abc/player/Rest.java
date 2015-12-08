@@ -1,7 +1,9 @@
 package abc.player;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Rest represents a pause in a piece of music
@@ -14,7 +16,7 @@ public class Rest implements Music {
      * @param duration duration in beats, must be >= 0
      */
     public Rest(Fraction duration){
-        this.duration = duration;
+        this.duration = duration.simplify();
     }
 
     /**
@@ -39,15 +41,22 @@ public class Rest implements Music {
     }
 
     @Override
-    public List<Fraction> getAllDurations() {
-        List<Fraction> allDurations = new ArrayList<>();
-        allDurations.add(duration);
-        return allDurations;
+    public Set<Integer> getAllDurationDenominators() {
+        Set<Integer> denominators = new HashSet<>();
+        denominators.add(duration.denominator());
+        return denominators;
     }
 
     @Override
     public void transposeKey(char note, int semitonesUp) {
         //rests cannot be transposed
+    }
+    
+    @Override
+    public boolean equals(Object obj){
+        if(! (obj instanceof Rest)) {return false;}
+        Rest that = (Rest) obj;
+        return this.duration.equals(that.duration());
     }
 
 
