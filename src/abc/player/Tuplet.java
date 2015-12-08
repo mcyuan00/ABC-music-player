@@ -17,11 +17,10 @@ public class Tuplet implements Music{
     
     /**
      * Make a Tuplet with certain notes.
-     * @param defaultNoteLength the length of the default note as specified by the Header
      * @param numNotes number of notes in the tuplet
      * @param notes notes in the tuplet; each note are required to have the same duration
      */
-    public Tuplet(Fraction defaultNoteLength, int numNotes, List<Music> notes){
+    public Tuplet(int numNotes, List<Music> notes){
         if (numNotes == 2){
             Fraction totalLength = 
         }
