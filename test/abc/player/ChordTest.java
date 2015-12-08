@@ -36,11 +36,13 @@ public class ChordTest {
         List<Music> chordNotes = new ArrayList<>();
         chordNotes.add(new Note(new Fraction(1, 5), 'A', 0));
         assertEquals(chordNotes, chord.chordNotes());
-        //check duratioon
+        //check duration
         assertEquals(new Fraction(1, 5), chord.duration());
         //check getPlayerElements
         List<PlayerElement> playerElements = new ArrayList<>();
         playerElements.add(new PlayerElement(new Pitch('A'), 10, 5));
+        List<PlayerElement> actualElements = chord.getPlayerElements(10, 5, new Fraction(1, 5));
+        System.out.println(actualElements.get(0).numTicks());
         assertEquals(playerElements, chord.getPlayerElements(10, 5, new Fraction(1, 5)));
         
     }

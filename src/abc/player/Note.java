@@ -69,7 +69,7 @@ public class Note implements Music {
         Fraction numBeats = new Fraction(duration.numerator()*pieceNoteLength.denominator(), duration.denominator()*pieceNoteLength.numerator()).simplify();
         int noteDuration = ticksPerBeat*numBeats.numerator()/numBeats.denominator();
         
-        elements.add(new PlayerElement(pitch, startTick, startTick + noteDuration));
+        elements.add(new PlayerElement(pitch, startTick, noteDuration));
         return elements;
     }
 

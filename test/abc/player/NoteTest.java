@@ -29,7 +29,7 @@ public class NoteTest {
         allDurations.add(new Fraction(3, 4));
         assertEquals(allDurations, note.getAllDurations());
         List<PlayerElement> playerElements = new ArrayList<>();
-        playerElements.add(new PlayerElement(new Pitch('B'), 5, 11));
+        playerElements.add(new PlayerElement(new Pitch('B'), 5, 6));
         assertEquals(playerElements, note.getPlayerElements(5, 2, new Fraction(1, 4)));
     }
     
@@ -55,7 +55,7 @@ public class NoteTest {
         allDurations.add(new Fraction(2, 8));
         assertEquals(allDurations, note.getAllDurations());
         List<PlayerElement> playerElements = new ArrayList<>();
-        playerElements.add(new PlayerElement(new Pitch('G').transpose(Pitch.OCTAVE * -2 - 1), 12, 16));
+        playerElements.add(new PlayerElement(new Pitch('G').transpose(Pitch.OCTAVE * -2 - 1), 12, 4));
         assertEquals(playerElements, note.getPlayerElements(12, 16, new Fraction(1, 1)));
     }
     
