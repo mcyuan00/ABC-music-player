@@ -17,8 +17,18 @@ public class Measure implements Music {
      * @param m array of Music
      * @param duration duration in beats, must be >= 0
      */
-    public Measure(List<Music> m){
+    public Measure(List<Music> m, boolean startRepeat, boolean endRepeat, boolean firstEnding, boolean doubleBar){
         this.m = m;
+        //TODO
+    }
+    
+    public Measure(Measure prevMeasure, boolean startRepeat, boolean endRepeat, boolean firstEnding, boolean doubleBar){
+        this.m = prevMeasure.getElements();
+        //TODO
+    }
+    
+    public List<Music> getElements(){
+        return new ArrayList<Music>(m);
     }
 
     @Override

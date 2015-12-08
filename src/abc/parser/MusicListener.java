@@ -31,6 +31,16 @@ public interface MusicListener extends ParseTreeListener {
    */
   void exitMusic(MusicParser.MusicContext ctx);
   /**
+   * Enter a parse tree produced by {@link MusicParser#line}.
+   * @param ctx the parse tree
+   */
+  void enterLine(MusicParser.LineContext ctx);
+  /**
+   * Exit a parse tree produced by {@link MusicParser#line}.
+   * @param ctx the parse tree
+   */
+  void exitLine(MusicParser.LineContext ctx);
+  /**
    * Enter a parse tree produced by {@link MusicParser#midtune}.
    * @param ctx the parse tree
    */
@@ -41,35 +51,15 @@ public interface MusicListener extends ParseTreeListener {
    */
   void exitMidtune(MusicParser.MidtuneContext ctx);
   /**
-   * Enter a parse tree produced by {@link MusicParser#voice}.
+   * Enter a parse tree produced by {@link MusicParser#measureline}.
    * @param ctx the parse tree
    */
-  void enterVoice(MusicParser.VoiceContext ctx);
+  void enterMeasureline(MusicParser.MeasurelineContext ctx);
   /**
-   * Exit a parse tree produced by {@link MusicParser#voice}.
+   * Exit a parse tree produced by {@link MusicParser#measureline}.
    * @param ctx the parse tree
    */
-  void exitVoice(MusicParser.VoiceContext ctx);
-  /**
-   * Enter a parse tree produced by {@link MusicParser#section}.
-   * @param ctx the parse tree
-   */
-  void enterSection(MusicParser.SectionContext ctx);
-  /**
-   * Exit a parse tree produced by {@link MusicParser#section}.
-   * @param ctx the parse tree
-   */
-  void exitSection(MusicParser.SectionContext ctx);
-  /**
-   * Enter a parse tree produced by {@link MusicParser#repeat}.
-   * @param ctx the parse tree
-   */
-  void enterRepeat(MusicParser.RepeatContext ctx);
-  /**
-   * Exit a parse tree produced by {@link MusicParser#repeat}.
-   * @param ctx the parse tree
-   */
-  void exitRepeat(MusicParser.RepeatContext ctx);
+  void exitMeasureline(MusicParser.MeasurelineContext ctx);
   /**
    * Enter a parse tree produced by {@link MusicParser#measure}.
    * @param ctx the parse tree
@@ -81,6 +71,76 @@ public interface MusicListener extends ParseTreeListener {
    */
   void exitMeasure(MusicParser.MeasureContext ctx);
   /**
+   * Enter a parse tree produced by {@link MusicParser#firstendingmeasure}.
+   * @param ctx the parse tree
+   */
+  void enterFirstendingmeasure(MusicParser.FirstendingmeasureContext ctx);
+  /**
+   * Exit a parse tree produced by {@link MusicParser#firstendingmeasure}.
+   * @param ctx the parse tree
+   */
+  void exitFirstendingmeasure(MusicParser.FirstendingmeasureContext ctx);
+  /**
+   * Enter a parse tree produced by {@link MusicParser#secondendingmeasure}.
+   * @param ctx the parse tree
+   */
+  void enterSecondendingmeasure(MusicParser.SecondendingmeasureContext ctx);
+  /**
+   * Exit a parse tree produced by {@link MusicParser#secondendingmeasure}.
+   * @param ctx the parse tree
+   */
+  void exitSecondendingmeasure(MusicParser.SecondendingmeasureContext ctx);
+  /**
+   * Enter a parse tree produced by {@link MusicParser#doublebarmeasure}.
+   * @param ctx the parse tree
+   */
+  void enterDoublebarmeasure(MusicParser.DoublebarmeasureContext ctx);
+  /**
+   * Exit a parse tree produced by {@link MusicParser#doublebarmeasure}.
+   * @param ctx the parse tree
+   */
+  void exitDoublebarmeasure(MusicParser.DoublebarmeasureContext ctx);
+  /**
+   * Enter a parse tree produced by {@link MusicParser#startrepeatmeasure}.
+   * @param ctx the parse tree
+   */
+  void enterStartrepeatmeasure(MusicParser.StartrepeatmeasureContext ctx);
+  /**
+   * Exit a parse tree produced by {@link MusicParser#startrepeatmeasure}.
+   * @param ctx the parse tree
+   */
+  void exitStartrepeatmeasure(MusicParser.StartrepeatmeasureContext ctx);
+  /**
+   * Enter a parse tree produced by {@link MusicParser#endrepeatmeasure}.
+   * @param ctx the parse tree
+   */
+  void enterEndrepeatmeasure(MusicParser.EndrepeatmeasureContext ctx);
+  /**
+   * Exit a parse tree produced by {@link MusicParser#endrepeatmeasure}.
+   * @param ctx the parse tree
+   */
+  void exitEndrepeatmeasure(MusicParser.EndrepeatmeasureContext ctx);
+  /**
+   * Enter a parse tree produced by {@link MusicParser#normalmeasure}.
+   * @param ctx the parse tree
+   */
+  void enterNormalmeasure(MusicParser.NormalmeasureContext ctx);
+  /**
+   * Exit a parse tree produced by {@link MusicParser#normalmeasure}.
+   * @param ctx the parse tree
+   */
+  void exitNormalmeasure(MusicParser.NormalmeasureContext ctx);
+  /**
+   * Enter a parse tree produced by {@link MusicParser#element}.
+   * @param ctx the parse tree
+   */
+  void enterElement(MusicParser.ElementContext ctx);
+  /**
+   * Exit a parse tree produced by {@link MusicParser#element}.
+   * @param ctx the parse tree
+   */
+  void exitElement(MusicParser.ElementContext ctx);
+  /**
    * Enter a parse tree produced by {@link MusicParser#noteelement}.
    * @param ctx the parse tree
    */
@@ -91,36 +151,6 @@ public interface MusicListener extends ParseTreeListener {
    */
   void exitNoteelement(MusicParser.NoteelementContext ctx);
   /**
-   * Enter a parse tree produced by {@link MusicParser#tuplet}.
-   * @param ctx the parse tree
-   */
-  void enterTuplet(MusicParser.TupletContext ctx);
-  /**
-   * Exit a parse tree produced by {@link MusicParser#tuplet}.
-   * @param ctx the parse tree
-   */
-  void exitTuplet(MusicParser.TupletContext ctx);
-  /**
-   * Enter a parse tree produced by {@link MusicParser#tupletspec}.
-   * @param ctx the parse tree
-   */
-  void enterTupletspec(MusicParser.TupletspecContext ctx);
-  /**
-   * Exit a parse tree produced by {@link MusicParser#tupletspec}.
-   * @param ctx the parse tree
-   */
-  void exitTupletspec(MusicParser.TupletspecContext ctx);
-  /**
-   * Enter a parse tree produced by {@link MusicParser#chord}.
-   * @param ctx the parse tree
-   */
-  void enterChord(MusicParser.ChordContext ctx);
-  /**
-   * Exit a parse tree produced by {@link MusicParser#chord}.
-   * @param ctx the parse tree
-   */
-  void exitChord(MusicParser.ChordContext ctx);
-  /**
    * Enter a parse tree produced by {@link MusicParser#note}.
    * @param ctx the parse tree
    */
@@ -130,6 +160,26 @@ public interface MusicListener extends ParseTreeListener {
    * @param ctx the parse tree
    */
   void exitNote(MusicParser.NoteContext ctx);
+  /**
+   * Enter a parse tree produced by {@link MusicParser#notetype}.
+   * @param ctx the parse tree
+   */
+  void enterNotetype(MusicParser.NotetypeContext ctx);
+  /**
+   * Exit a parse tree produced by {@link MusicParser#notetype}.
+   * @param ctx the parse tree
+   */
+  void exitNotetype(MusicParser.NotetypeContext ctx);
+  /**
+   * Enter a parse tree produced by {@link MusicParser#pitch}.
+   * @param ctx the parse tree
+   */
+  void enterPitch(MusicParser.PitchContext ctx);
+  /**
+   * Exit a parse tree produced by {@link MusicParser#pitch}.
+   * @param ctx the parse tree
+   */
+  void exitPitch(MusicParser.PitchContext ctx);
   /**
    * Enter a parse tree produced by {@link MusicParser#rest}.
    * @param ctx the parse tree
@@ -150,6 +200,36 @@ public interface MusicListener extends ParseTreeListener {
    * @param ctx the parse tree
    */
   void exitNotelength(MusicParser.NotelengthContext ctx);
+  /**
+   * Enter a parse tree produced by {@link MusicParser#tupletelement}.
+   * @param ctx the parse tree
+   */
+  void enterTupletelement(MusicParser.TupletelementContext ctx);
+  /**
+   * Exit a parse tree produced by {@link MusicParser#tupletelement}.
+   * @param ctx the parse tree
+   */
+  void exitTupletelement(MusicParser.TupletelementContext ctx);
+  /**
+   * Enter a parse tree produced by {@link MusicParser#tupletspec}.
+   * @param ctx the parse tree
+   */
+  void enterTupletspec(MusicParser.TupletspecContext ctx);
+  /**
+   * Exit a parse tree produced by {@link MusicParser#tupletspec}.
+   * @param ctx the parse tree
+   */
+  void exitTupletspec(MusicParser.TupletspecContext ctx);
+  /**
+   * Enter a parse tree produced by {@link MusicParser#chord}.
+   * @param ctx the parse tree
+   */
+  void enterChord(MusicParser.ChordContext ctx);
+  /**
+   * Exit a parse tree produced by {@link MusicParser#chord}.
+   * @param ctx the parse tree
+   */
+  void exitChord(MusicParser.ChordContext ctx);
   /**
    * Enter a parse tree produced by {@link MusicParser#comment}.
    * @param ctx the parse tree
