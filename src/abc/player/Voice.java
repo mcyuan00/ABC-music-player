@@ -70,5 +70,13 @@ public class Voice implements Music {
         return allDurations;
     }
 
+    @Override
+    public void transposeKey(char note, int semitonesUp) {
+        for (Music m: musicElements){
+            m.transposeKey(note, semitonesUp);
+        }
+        
+    }
+
 
 }

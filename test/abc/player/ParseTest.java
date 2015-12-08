@@ -4,6 +4,7 @@ package abc.player;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
@@ -384,7 +385,7 @@ public class ParseTest {
      * Note:
      *      - Lowercase and uppercase notes
      *      - , vs ' signaling octave change: 0, 1, multiple
-     *      - duration in form n/m, /m, /, n
+     *      - duration in form n/m, /m, n/, /, n
      *      
      * Tuplet:
      *      - contains notes

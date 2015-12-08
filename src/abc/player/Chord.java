@@ -67,6 +67,15 @@ public class Chord implements Music{
     }
 
 
+    @Override
+    public void transposeKey(char note, int semitonesUp) {
+        for (Music m : notes){
+            m.transposeKey(note, semitonesUp);
+        }
+        
+    }
+
+
     
 
 }
