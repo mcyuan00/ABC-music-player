@@ -13,7 +13,7 @@ import java.util.List;
  * Quadruplet: 4 notes in the time of 3 notes
  */
 public class Tuplet implements Music{
-    private final int numNotes;
+    private final int tupletType;
     private final Fraction noteDuration; // duration of each note in tuplet i.e. quarter/eighth etc
     private final List<Music> notes;
     
@@ -23,15 +23,15 @@ public class Tuplet implements Music{
      * @param notes notes in the tuplet
      * @param noteDuration the length of each note in the tuplet
      */
-    public Tuplet(int numNotes, List<Music> notes, Fraction noteDuration){
-        this.numNotes = numNotes;
+    public Tuplet(int tupletType, List<Music> notes, Fraction noteDuration){
+        this.tupletType = tupletType;
         this.noteDuration = noteDuration;
         this.notes = notes;
     }
 
     @Override
     public Fraction duration() {
-        return new Fraction(noteDuration.numerator()*numNotes, noteDuration.denominator()).simplify();
+        return new Fraction(noteDuration.numerator()*notes.size(), noteDuration.denominator()).simplify();
     }
     
     /**
@@ -44,8 +44,8 @@ public class Tuplet implements Music{
     /**
      * @return the number of notes in the tuplet (i.e. 2 for duplet, 3 for triplet, 4 for quaduplet)
      */
-    public int numNotes(){
-        return numNotes;
+    public int tupletType(){
+        return tupletType;
         
     }
     
@@ -58,6 +58,7 @@ public class Tuplet implements Music{
 
     @Override
     public List<PlayerElement> getPlayerElements(int startTick, int ticksPerBeat, Fraction pieceNoteLength) {
+        //TODO: fix so that tuplets play the right amount time
         List<PlayerElement> elements = new ArrayList<PlayerElement>();
         int currentStart = startTick;
         for (Music music : notes){
@@ -78,9 +79,9 @@ public class Tuplet implements Music{
     }
 
     @Override
-    public void transposeKey(char note, int semitonesUp) {
+    public void transposeKey(char note,int octave, int semitonesUp) {
         for (Music m : notes){
-            m.transposeKey(note, semitonesUp);
+            m.transposeKey(note, octave,semitonesUp);
         }
         
     }

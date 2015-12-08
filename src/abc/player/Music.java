@@ -70,7 +70,7 @@ public interface Music {
      * @param note a note from A-G to be transposed
      * @param semitonesUp the number of semitones to tranpose. Flats are represented as negative numbers.
      */
-    public void transposeKey(char note, int semitonesUp);
+    public void transposeKey(char note, int octave, int semitonesUp);
     @Override String toString();
     
     @Override boolean equals(Object obj);

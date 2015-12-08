@@ -10,14 +10,14 @@ import java.util.List;
  * in one measure as defined by the piece's time signature.
  */
 public class Measure implements Music {
-    private final Music[] m;
+    private final List<Music> m;
     
     /**
      * Make a Measure with certain notes and rests.
      * @param m array of Music
      * @param duration duration in beats, must be >= 0
      */
-    public Measure(Music[] m){
+    public Measure(List<Music> m){
         this.m = m;
     }
 
@@ -56,9 +56,9 @@ public class Measure implements Music {
     }
 
     @Override
-    public void transposeKey(char note, int semitonesUp) {
+    public void transposeKey(char note, int octave, int semitonesUp) {
         for (Music music: m){
-            music.transposeKey(note, semitonesUp);
+            music.transposeKey(note, octave, semitonesUp);
         }
         
     }

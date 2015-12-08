@@ -68,9 +68,9 @@ public class Chord implements Music{
 
 
     @Override
-    public void transposeKey(char note, int semitonesUp) {
+    public void transposeKey(char note,int octave, int semitonesUp) {
         for (Music m : notes){
-            m.transposeKey(note, semitonesUp);
+            m.transposeKey(note, octave, semitonesUp);
         }
         
     }
