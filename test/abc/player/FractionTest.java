@@ -27,13 +27,6 @@ public class FractionTest {
     //      simplified fractions, unsimplified fractions
     //      same denominator, different denominators
     //      on empty list, just one, more than one
-    //  getDenominatorsGCD:
-    //      same denominators, thisDenominator > thatDenominator, thisDenominator < thatDenominator
-    //  getDenominatorsLCM:
-    //      same denominators, this > that, this < that
-    //  getAllDenominatorsGCD:
-    //      list size: 0, 1, >1
-    //      denominators equal, not relatively prime but not equal, relatively prime
     
     @Test(expected=AssertionError.class)
     public void testNegativeNumerator(){
@@ -175,90 +168,6 @@ public class FractionTest {
         Fraction sum = Fraction.sumAllFractions(fractions);
         assertEquals(281, sum.numerator());
         assertEquals(84, sum.denominator());
-    }
-    
-    //test getDenominatorGCD with two denominators equal
-    @Test
-    public void testGetDenominatorGCDEqualDenominators(){
-        Fraction firstFraction = new Fraction(3, 7);
-        Fraction secondFraction = new Fraction(8, 7);
-        int gcd = firstFraction.getDenominatorsGCD(secondFraction);
-        assertEquals(7, gcd);
-    }
-    
-    //test getDenominatorsGCD with thisDenom > thatDenom
-    @Test
-    public void testGetDenominatorsGCDThisDenomBigger(){
-        Fraction firstFraction = new Fraction(3, 8);
-        Fraction secondFraction = new Fraction(8, 6);
-        int gcd = firstFraction.getDenominatorsGCD(secondFraction);
-        assertEquals(2, gcd);
-    }
-    
-    //test getDenominatorsGCD with thatDenom < thisDenom
-    @Test
-    public void testGetDenominatorsGCDThatDenomBigger(){
-        Fraction firstFraction = new Fraction(3, 7);
-        Fraction secondFraction = new Fraction(8, 4);
-        int gcd = firstFraction.getDenominatorsGCD(secondFraction);
-        assertEquals(1, gcd);
-    }
-    
-    //test getDenominatorsLCM with two denom equal
-    @Test
-    public void testGetDenominatorsLCMEqualDenom(){
-        Fraction firstFraction = new Fraction(2, 8);
-        Fraction secondFraction = new Fraction(13, 8);
-        int lcm = firstFraction.getDenominatorsLCM(secondFraction);
-        assertEquals(8, lcm);
-    }
-    
-    //test getDenominatorsLCM with this > that
-    @Test
-    public void testGetDenominatorsLCMThisDenomBigger(){
-        Fraction firstFraction = new Fraction(2, 14);
-        Fraction secondFraction = new Fraction(13, 7);
-        int lcm = firstFraction.getDenominatorsLCM(secondFraction);
-        assertEquals(14, lcm);
-    }
-    
-    //test getDenominatorsLCM with this < that
-    @Test
-    public void testGetDenominatorsLCMThisDenomSmaller(){
-        Fraction firstFraction = new Fraction(2, 32);
-        Fraction secondFraction = new Fraction(13, 5);
-        int lcm = firstFraction.getDenominatorsLCM(secondFraction);
-        assertEquals(160, lcm);
-    }
-    
-    //test getAllDenominatorsLCM with list size 0
-    @Test
-    public void testGetAllDenominatorsLCMEmptyList(){
-        List<Fraction> fractions = new ArrayList<>();
-        int lcm = Fraction.getAllDenominatorsLCM(fractions);
-        assertEquals(1, lcm);
-    }
-    
-    //test getAllDenominatorsLCM with list size 1
-    @Test
-    public void testGetAllDenominatorsLCMSizeOne(){
-        List<Fraction> fractions = new ArrayList<>();
-        fractions.add(new Fraction(4, 13));
-        int lcm = Fraction.getAllDenominatorsLCM(fractions);
-        assertEquals(13, lcm);
-    }
-    
-    //test getAllDenominatorsLCM with large list
-    @Test
-    public void testGetAllDenominatorsLCMLarge(){
-        List<Fraction> fractions = new ArrayList<>();
-        fractions.add(new Fraction(1, 12));
-        fractions.add(new Fraction(14, 12));
-        fractions.add(new Fraction(15, 4));
-        fractions.add(new Fraction(118, 10));
-        fractions.add(new Fraction(1, 7));
-        int lcm = Fraction.getAllDenominatorsLCM(fractions);
-        assertEquals(420, lcm);
     }
 
 }

@@ -61,43 +61,6 @@ public class Fraction {
         return new Fraction(numerator, denominator);
     }
     
-    /**
-     * Finds the greatest common divisor between the denominators of two fractions
-     * @param other the other fraction
-     * @return the greatest common divisor of the denominators
-     */
-    public int getDenominatorsGCD(Fraction other){
-        int thisDenominator = this.denominator;
-        int otherDenominator = other.denominator();
-        while (true){
-            if(thisDenominator == otherDenominator){
-                return thisDenominator;
-            }
-            else if (thisDenominator > otherDenominator){
-                thisDenominator = (thisDenominator % otherDenominator);
-                if (thisDenominator == 0){
-                    return otherDenominator;
-                }
-            }
-            else if (thisDenominator < otherDenominator){
-                otherDenominator = (otherDenominator % thisDenominator);
-                if (otherDenominator == 0){
-                    return thisDenominator;
-                }
-            }
-        }
-        
-    }
-    
-    /**
-     * Finds the least common multiple between the denomintors of two fractions
-     * @param other the other fraction
-     * @return the least common multiple of the denominators
-     */
-    public int getDenominatorsLCM(Fraction other){
-        int denominatorsMultiplied = this.denominator * other.denominator();
-        return denominatorsMultiplied / this.getDenominatorsGCD(other);
-    }
     
     /**
      * Sums up all the fractions in the list
@@ -115,23 +78,10 @@ public class Fraction {
     }
     
     /**
-     * Finds the least common multiple among all the fractions
-     * @param fractions the fractions from which to get the least common denominator from
-     * @return the least common multiple of the denominators; returns 1 if the list is empty
-     */
-    public static int getAllDenominatorsLCM(List<Fraction> fractions){
-        Fraction lcmFraction = new Fraction(1, 1);
-        for (Fraction fraction : fractions){
-            lcmFraction = new Fraction(1, lcmFraction.getDenominatorsLCM(fraction));
-        }
-        return lcmFraction.denominator();
-    }
-    
-    /**
      * @return the fraction object as a double
      */
     public double toDecimal(){
-        return numerator/denominator;
+        return ((double)numerator)/denominator;
     }
     
     @Override
