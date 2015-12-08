@@ -452,6 +452,7 @@ public class Parser {
         @Override
         public void exitMeasure(MeasureContext ctx) { }
 
+        //TODO add accidentals to first ending measure
         @Override
         public void exitFirstendingmeasure(FirstendingmeasureContext ctx) { 
             int numNorm = ctx.normalmeasure().size();
@@ -478,7 +479,25 @@ public class Parser {
             for (int i = 0; i < numElements; i++){
                 noteElements.add(stack.pop());
             }
-            Collections.reverse(noteElements);      
+            Collections.reverse(noteElements);
+            
+            boolean transpose = false;
+            char note = 'y';
+            int octave = 0;
+            int semitonesUp= 0;
+            for (Music m : noteElements){
+                if(m instanceof Note && ((Note)m).getTransposeTag()){
+                    Note n = (Note)m;
+                    transpose = true;
+                    note = n.getNoteLetter();
+                    octave = n.getOctave();
+                    semitonesUp = n.getAccidental();
+                }
+                if(transpose){
+                    m.transposeKey(note, octave, semitonesUp);
+                }
+            }
+            
             Measure m = new Measure(noteElements, false, false, false, true);
             stack.push(m);
         }
@@ -490,7 +509,25 @@ public class Parser {
             for (int i = 0; i < numElements; i++){
                 noteElements.add(stack.pop());
             }
-            Collections.reverse(noteElements);      
+            Collections.reverse(noteElements);
+            
+            boolean transpose = false;
+            char note = 'y';
+            int octave = 0;
+            int semitonesUp= 0;
+            for (Music m : noteElements){
+                if(m instanceof Note && ((Note)m).getTransposeTag()){
+                    Note n = (Note)m;
+                    transpose = true;
+                    note = n.getNoteLetter();
+                    octave = n.getOctave();
+                    semitonesUp = n.getAccidental();
+                }
+                if(transpose){
+                    m.transposeKey(note, octave, semitonesUp);
+                }
+            }
+            
             Measure m = new Measure(noteElements, true, false, false, false);
             stack.push(m);
         }
@@ -502,7 +539,25 @@ public class Parser {
             for (int i = 0; i < numElements; i++){
                 noteElements.add(stack.pop());
             }
-            Collections.reverse(noteElements);      
+            Collections.reverse(noteElements);  
+            
+            boolean transpose = false;
+            char note = 'y';
+            int octave = 0;
+            int semitonesUp= 0;
+            for (Music m : noteElements){
+                if(m instanceof Note && ((Note)m).getTransposeTag()){
+                    Note n = (Note)m;
+                    transpose = true;
+                    note = n.getNoteLetter();
+                    octave = n.getOctave();
+                    semitonesUp = n.getAccidental();
+                }
+                if(transpose){
+                    m.transposeKey(note, octave, semitonesUp);
+                }
+            }
+            
             Measure m = new Measure(noteElements, false, true, false, false);
             stack.push(m);
         }
@@ -514,7 +569,25 @@ public class Parser {
             for (int i = 0; i < numElements; i++){
                 noteElements.add(stack.pop());
             }
-            Collections.reverse(noteElements);      
+            Collections.reverse(noteElements);  
+            
+            boolean transpose = false;
+            char note = 'y';
+            int octave = 0;
+            int semitonesUp= 0;
+            for (Music m : noteElements){
+                if(m instanceof Note && ((Note)m).getTransposeTag()){
+                    Note n = (Note)m;
+                    transpose = true;
+                    note = n.getNoteLetter();
+                    octave = n.getOctave();
+                    semitonesUp = n.getAccidental();
+                }
+                if(transpose){
+                    m.transposeKey(note, octave, semitonesUp);
+                }
+            }
+            
             Measure m = new Measure(noteElements, false, false, false, false);
             stack.push(m);
         }
