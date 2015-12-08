@@ -25,6 +25,9 @@ public class RestTest {
         List<Fraction> allDurations = new ArrayList<>();
         allDurations.add(new Fraction(2, 7));
         assertEquals(allDurations, rest.getAllDurations());
+        List<PlayerElement> playerElements = new ArrayList<>();
+        playerElements.add(new PlayerElement(13, 4));
+        assertEquals(playerElements, rest.getPlayerElements(13, 2, new Fraction(1, 7)));
     }
     
     @Test
@@ -34,6 +37,9 @@ public class RestTest {
         List<Fraction> allDurations = new ArrayList<>();
         allDurations.add(new Fraction(24, 24));
         assertEquals(allDurations, rest.getAllDurations());
+        List<PlayerElement> playerElements = new ArrayList<>();
+        playerElements.add(new PlayerElement(0, 1));
+        assertEquals(playerElements, rest.getPlayerElements(0, 1, new Fraction(1, 1)));
     }
     
     @Test
@@ -43,5 +49,8 @@ public class RestTest {
         List<Fraction> allDurations = new ArrayList<>();
         allDurations.add(new Fraction(15, 3));
         assertEquals(allDurations, rest.getAllDurations());
+        List<PlayerElement> playerElements = new ArrayList<>();
+        playerElements.add(new PlayerElement(21, 15));
+        assertEquals(playerElements, rest.getPlayerElements(21, 1, new Fraction(1, 3)));
     }
 }

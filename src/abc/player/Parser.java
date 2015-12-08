@@ -46,9 +46,11 @@ import abc.parser.MusicListener;
 import abc.parser.MusicParser;
 import abc.parser.MusicParser.ChordContext;
 import abc.parser.MusicParser.ElementContext;
+import abc.parser.MusicParser.MeasureContext;
 import abc.parser.MusicParser.MidtuneContext;
 import abc.parser.MusicParser.MusicContext;
 import abc.parser.MusicParser.NoteContext;
+import abc.parser.MusicParser.NoteelementContext;
 import abc.parser.MusicParser.NotelengthContext;
 import abc.parser.MusicParser.RestContext;
 import abc.parser.MusicParser.TupletContext;
@@ -75,12 +77,12 @@ public class Parser {
         // Other grammars may have different names for the starter rule.
         ParseTree tree = parser.root();
 
-//        Future<JDialog> inspect = Trees.inspect(tree, parser);
-//        try {
-//            Utils.waitForClose(inspect.get());
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+        //        Future<JDialog> inspect = Trees.inspect(tree, parser);
+        //        try {
+        //            Utils.waitForClose(inspect.get());
+        //        } catch (Exception e) {
+        //            e.printStackTrace();
+        //        }
 
         MakeHeader headerMaker = new MakeHeader();
         new ParseTreeWalker().walk(headerMaker, tree);
@@ -347,7 +349,7 @@ public class Parser {
 
     }
 
-    public static Music parseMusic(String input){
+    public static Music parseMusic(String input, Fraction defaultNoteLength, KeySignature keySig){
         //        try{
         // Create a stream of characters from the string
         CharStream stream = new ANTLRInputStream(input);
@@ -364,7 +366,7 @@ public class Parser {
         // Other grammars may have different names for the starter rule.
         ParseTree tree = parser.root();
 
-        MakeMusic musicMaker = new MakeMusic();
+        MakeMusic musicMaker = new MakeMusic(keySig, defaultNoteLength);
         new ParseTreeWalker().walk(musicMaker, tree);
         return musicMaker.getMusic();
 
@@ -374,24 +376,28 @@ public class Parser {
         //            throw new IllegalArgumentException();
         //        }
     }
+    
+    
     static class MakeMusic implements MusicListener{
-        Map<NoteLetter, Accidental> keySig;
-        Map<Accidental, Integer> accidental = new HashMap<Accidental, Integer>();
+        private final Map<NoteLetter, Accidental> keySig;
+        private final Fraction defaultNoteLength;
+        private final Map<Accidental, Integer> accidental = new HashMap<Accidental, Integer>();
         private final Stack<Music> stack = new Stack<>();
 
-        public MakeMusic(){
-            KeySignatureMap map = new KeySignatureMap();
-            this.keySig = KeySignatureMap.KEY_SIGNATURE_MAP.get(KeySignature.valueOf("C_MAJOR"));
-            accidental.put(Accidental.valueOf("DOUBLESHARP"), 2);
-            accidental.put(Accidental.valueOf("SHARP"), 1);
-            accidental.put(Accidental.valueOf("NATURAL"), 0);
-            accidental.put(Accidental.valueOf("FLAT"), -1);
-            accidental.put(Accidental.valueOf("DOUBLEFLAT"), -2);
+        //        public MakeMusic(){
+        //            KeySignatureMap map = new KeySignatureMap();
+        //            this.keySig = KeySignatureMap.KEY_SIGNATURE_MAP.get(KeySignature.valueOf("C_MAJOR"));
+        //            accidental.put(Accidental.valueOf("DOUBLESHARP"), 2);
+        //            accidental.put(Accidental.valueOf("SHARP"), 1);
+        //            accidental.put(Accidental.valueOf("NATURAL"), 0);
+        //            accidental.put(Accidental.valueOf("FLAT"), -1);
+        //            accidental.put(Accidental.valueOf("DOUBLEFLAT"), -2);
+        //
+        //        }
 
-        }
-
-        public MakeMusic(KeySignature keysig){
+        public MakeMusic(KeySignature keysig, Fraction defaultNoteLength){
             KeySignatureMap map = new KeySignatureMap();
+            this.defaultNoteLength = defaultNoteLength;
             this.keySig = map.KEY_SIGNATURE_MAP.get(keysig);
             accidental.put(Accidental.valueOf("DOUBLESHARP"), 2);
             accidental.put(Accidental.valueOf("SHARP"), 1);
@@ -447,7 +453,7 @@ public class Parser {
                 tupletNotes.add(stack.pop());
             }
             Collections.reverse(tupletNotes);
-            Music m = new Tuplet(tupletNum, tupletNotes, tupletNotes.get(0).duration());
+            Music m = new Tuplet(tupletNum, tupletNotes);
             stack.push(m);
         }
 
@@ -483,7 +489,7 @@ public class Parser {
         @Override
         public void exitNote(MusicParser.NoteContext ctx) {
             System.out.println(ctx.NOTELETTER().getText());
-            Fraction noteLength = new Fraction(1,1);
+            Fraction noteLength = defaultNoteLength;
             int octave = 0;
             char noteLetter = 'y';
             int numAccidental = 0;
@@ -525,7 +531,7 @@ public class Parser {
 
         @Override
         public void exitRest(MusicParser.RestContext ctx) {
-            Fraction noteLength = new Fraction(1,1);
+            Fraction noteLength = defaultNoteLength;
             if (ctx.notelength()!= null){
                 String length = ctx.notelength().getText();
                 noteLength = parseNoteLength(length);
@@ -605,6 +611,34 @@ public class Parser {
 
         @Override
         public void enterChord(ChordContext ctx) { }
+
+
+        @Override
+        public void enterNoteelement(NoteelementContext ctx) {
+            // TODO Auto-generated method stub
+            
+        }
+
+
+        @Override
+        public void exitNoteelement(NoteelementContext ctx) {
+            // TODO Auto-generated method stub
+            
+        }
+
+
+        @Override
+        public void enterMeasure(MeasureContext ctx) {
+            // TODO Auto-generated method stub
+            
+        }
+
+
+        @Override
+        public void exitMeasure(MeasureContext ctx) {
+            // TODO Auto-generated method stub
+            
+        }
 
     }
 }

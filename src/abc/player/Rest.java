@@ -28,8 +28,14 @@ public class Rest implements Music {
 
     @Override
     public List<PlayerElement> getPlayerElements(int startTick, int ticksPerBeat, Fraction pieceNoteLength) {
-        // TODO Auto-generated method stub
-        return null;
+        List<PlayerElement> playerElements = new ArrayList<>();
+        
+        //find the number of ticks the note is played for
+        Fraction numBeats = new Fraction(duration.numerator()*pieceNoteLength.denominator(), duration.denominator()*pieceNoteLength.numerator()).simplify();
+        int noteDuration = ticksPerBeat*numBeats.numerator()/numBeats.denominator();
+        
+        playerElements.add(new PlayerElement(startTick, noteDuration));
+        return playerElements;
     }
 
     @Override

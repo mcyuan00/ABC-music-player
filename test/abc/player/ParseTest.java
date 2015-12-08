@@ -402,7 +402,7 @@ public class ParseTest {
     // test single uppercase note with duration in form /m
     //    @Test
     public void testMusicParserSingleUppercaseNote(){
-        Note note = (Note)Parser.parseMusic("A/3\n");
+        Note note = (Note)Parser.parseMusic("A/3\n", new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
         assertEquals(new Fraction(1,3), note.duration());
         assertEquals(new Pitch('A'), note.pitch());
     }
@@ -410,7 +410,7 @@ public class ParseTest {
     // test single lowercase note with duration in form n/m
     @Test
     public void testMusicParserSingleLowerCaseNote(){
-        Note note = (Note)Parser.parseMusic("a2/3\n");
+        Note note = (Note)Parser.parseMusic("a2/3\n", new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
         assertEquals(new Fraction(2,3), note.duration());
         assertEquals(new Pitch('A').transpose(Pitch.OCTAVE), note.pitch());
     }

@@ -13,39 +13,58 @@ import java.util.List;
  * Quadruplet: 4 notes in the time of 3 notes
  */
 public class Tuplet implements Music{
-    private final int numNotes;
-    private final Fraction noteDuration; // duration of each note in tuplet i.e. quarter/eighth etc
+    private final Fraction noteLength;
+    private final int tupletNumber;
     private final List<Music> notes;
+    private final Fraction adjustmentFactor;
     
     /**
      * Make a Tuplet with certain notes.
-     * @param numNotes number of notes in the tuplet
-     * @param notes notes in the tuplet
-     * @param noteDuration the length of each note in the tuplet
+     * @param tupletNumber type of tuplet (2 for duplet, 3 for triplet, and 4 for quadruplet)
+     * @param notes notes in the tuplet; each note are required to have the same duration
      */
-    public Tuplet(int numNotes, List<Music> notes, Fraction noteDuration){
-        this.numNotes = numNotes;
-        this.noteDuration = noteDuration;
+    public Tuplet(int tupletNumber, List<Music> notes){
+        this.tupletNumber = tupletNumber;
         this.notes = notes;
+        noteLength = notes.get(0).duration();
+        if (tupletNumber == 2){
+            adjustmentFactor = new Fraction(3, 2);
+        }
+        else if (tupletNumber == 3){
+            adjustmentFactor = new Fraction(2, 3);
+        }
+        else{
+            adjustmentFactor = new Fraction(3, 4);
+        }
+        checkRep();
+    }
+    
+    //checks that numNotes == notes.size() and that 1 < numNotes < 5;
+    private void checkRep(){
+        assert (tupletNumber > 1);
+        assert (tupletNumber < 5);
+        for (Music note : notes){
+            assert noteLength.equals(note.duration());
+        }
     }
 
     @Override
     public Fraction duration() {
-        return new Fraction(noteDuration.numerator()*numNotes, noteDuration.denominator()).simplify();
+        return new Fraction(notes.size() * noteLength.numerator() * adjustmentFactor.numerator(), noteLength.denominator() * adjustmentFactor.denominator());
     }
     
     /**
      * @return the length of the individual notes of the tuplet as a fraction of a whole note
      */
     public Fraction noteDuration(){
-        return noteDuration;
+        return noteLength;
     }
     
     /**
-     * @return the number of notes in the tuplet (i.e. 2 for duplet, 3 for triplet, 4 for quaduplet)
+     * @return the tuplet number (i.e. 2 for duplet, 3 for triplet, 4 for quaduplet)
      */
-    public int numNotes(){
-        return numNotes;
+    public int tupletNumber(){
+        return tupletNumber;
         
     }
     
@@ -61,9 +80,15 @@ public class Tuplet implements Music{
         List<PlayerElement> elements = new ArrayList<PlayerElement>();
         int currentStart = startTick;
         for (Music music : notes){
-            PlayerElement noteElement = music.getPlayerElements(currentStart, ticksPerBeat, pieceNoteLength).get(0);
-            elements.add(noteElement);
-            currentStart = currentStart + noteElement.numTicks();
+            List<PlayerElement> noteElements = music.getPlayerElements(currentStart, ticksPerBeat, pieceNoteLength);
+            List<PlayerElement> elementsLengthFixed = new ArrayList<>();
+            int adjustedNumTicks = noteElements.get(0).numTicks() 
+                    * adjustmentFactor.numerator() / adjustmentFactor.denominator();
+            for (PlayerElement playerElement : noteElements){
+                elementsLengthFixed.add(new PlayerElement(playerElement.pitch(), currentStart, adjustedNumTicks));
+            }
+            elements.addAll(elementsLengthFixed);
+            currentStart += adjustedNumTicks;
         }
         return elements;
     }
