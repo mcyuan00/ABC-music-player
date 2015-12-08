@@ -430,7 +430,7 @@ public class Parser {
                 tupletNotes.add(stack.pop());
             }
             Collections.reverse(tupletNotes);
-            Music m = new Tuplet(tupletNum, tupletNotes, tupletNotes.get(0).duration());
+            Music m = new Tuplet(tupletNum, tupletNotes);
             stack.push(m);
         }
 

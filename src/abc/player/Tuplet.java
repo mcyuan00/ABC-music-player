@@ -13,20 +13,18 @@ import java.util.List;
  * Quadruplet: 4 notes in the time of 3 notes
  */
 public class Tuplet implements Music{
-    private final int numNotes;
-    private final Fraction noteDuration; // duration of each note in tuplet i.e. quarter/eighth etc
     private final List<Music> notes;
     
     /**
      * Make a Tuplet with certain notes.
+     * @param defaultNoteLength the length of the default note as specified by the Header
      * @param numNotes number of notes in the tuplet
-     * @param notes notes in the tuplet
-     * @param noteDuration the length of each note in the tuplet
+     * @param notes notes in the tuplet; each note are required to have the same duration
      */
-    public Tuplet(int numNotes, List<Music> notes, Fraction noteDuration){
-        this.numNotes = numNotes;
-        this.noteDuration = noteDuration;
-        this.notes = notes;
+    public Tuplet(Fraction defaultNoteLength, int numNotes, List<Music> notes){
+        if (numNotes == 2){
+            Fraction totalLength = 
+        }
     }
 
     @Override
