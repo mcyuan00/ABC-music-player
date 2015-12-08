@@ -1,7 +1,9 @@
 package abc.player;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Measure represents a group of notes and rests, for which an accidental applied to 
@@ -11,6 +13,10 @@ import java.util.List;
  */
 public class Measure implements Music {
     private final List<Music> m;
+    private final boolean startRepeat;
+    private final boolean endRepeat;
+    private final boolean firstEnding;
+    private final boolean doubleBar;
     
     /**
      * Make a Measure with certain notes and rests.
@@ -19,14 +25,24 @@ public class Measure implements Music {
      */
     public Measure(List<Music> m, boolean startRepeat, boolean endRepeat, boolean firstEnding, boolean doubleBar){
         this.m = m;
-        //TODO
+        this.startRepeat = startRepeat;
+        this.endRepeat = endRepeat;
+        this.firstEnding = firstEnding;
+        this.doubleBar = doubleBar;
     }
     
     public Measure(Measure prevMeasure, boolean startRepeat, boolean endRepeat, boolean firstEnding, boolean doubleBar){
         this.m = prevMeasure.getElements();
-        //TODO
+        this.startRepeat = startRepeat;
+        this.endRepeat = endRepeat;
+        this.firstEnding = firstEnding;
+        this.doubleBar = doubleBar;
     }
     
+    /**
+     * 
+     * @return a list of all the Music elements in the measure in order
+     */
     public List<Music> getElements(){
         return new ArrayList<Music>(m);
     }
@@ -38,6 +54,22 @@ public class Measure implements Music {
             durations.add(music.duration());
         }
         return Fraction.sumAllFractions(durations);
+    }
+    
+    public boolean isStartRepeat(){
+        return startRepeat;
+    }
+    
+    public boolean isEndRepeat(){
+        return endRepeat;
+    }
+    
+    public boolean isFirstEnding(){
+        return firstEnding;
+    }
+    
+    public boolean isDoubleBar(){
+        return doubleBar;
     }
     
     
@@ -57,12 +89,12 @@ public class Measure implements Music {
     }
 
     @Override
-    public List<Fraction> getAllDurations() {
-        List<Fraction> allDurations = new ArrayList<>();
+    public Set<Integer> getAllDurationDenominators() {
+        Set<Integer> denominators = new HashSet<>();
         for (Music music : m){
-            allDurations.addAll(music.getAllDurations());
+            denominators.addAll(music.getAllDurationDenominators());
         }
-        return allDurations;
+        return denominators;
     }
 
     @Override

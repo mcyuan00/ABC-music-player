@@ -3,7 +3,10 @@ package abc.player;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.Test;
 
@@ -17,7 +20,8 @@ public class ChordTest {
     //testing strategy:
     //  number of notes: 1, >1
     //  lengths: first note longest, shortest, middle length, same (check duration works)
-    //  check all observer functions: numNotes(), chordNotes(), duration(), getPlayerElements(), getAllDurations()
+    //  check all observer functions: numNotes(), chordNotes(), duration(), getPlayerElements(), getAllDurationDenominators()
+    //  equals: different notes completely, one has more notes, same notes in different order
     
     @Test(expected=AssertionError.class)
     public void testNotesEmptyNotes(){
@@ -41,7 +45,11 @@ public class ChordTest {
         //check getPlayerElements
         List<PlayerElement> playerElements = new ArrayList<>();
         playerElements.add(new PlayerElement(new Pitch('A'), 10, 5));
-        assertEquals(playerElements, chord.getPlayerElements(10, 5, new Fraction(1, 5)));        
+        assertEquals(playerElements, chord.getPlayerElements(10, 5, new Fraction(1, 5)));
+        //getAllDurationDenominators
+        Set<Integer> denominators = new HashSet<>();
+        denominators.add(5);
+        assertEquals(denominators, chord.getAllDurationDenominators());
     }
     
     @Test
@@ -68,6 +76,11 @@ public class ChordTest {
 //        System.out.println(elements.get(0).startTick());
 //        System.out.println(elements.get(0).numTicks());
         assertEquals(playerElements, chord.getPlayerElements(3, 8, new Fraction(1, 1)));
+        //getAllDurationDenominators
+        Set<Integer> denominators = new HashSet<>();
+        denominators.add(4);
+        denominators.add(8);
+        assertEquals(denominators, chord.getAllDurationDenominators());
     }
     
     @Test
@@ -90,6 +103,11 @@ public class ChordTest {
         playerElements.add(new PlayerElement(new Pitch('D').transpose(Pitch.OCTAVE), 14, 3));
         playerElements.add(new PlayerElement(new Pitch('B').transpose(-2 * Pitch.OCTAVE), 14, 24));
         assertEquals(playerElements, chord.getPlayerElements(14, 3, new Fraction(1, 16)));
+        //getAllDurationDenominators
+        Set<Integer> denominators = new HashSet<>();
+        denominators.add(16);
+        denominators.add(2);
+        assertEquals(denominators, chord.getAllDurationDenominators());
     }
     
     @Test
@@ -115,6 +133,67 @@ public class ChordTest {
         playerElements.add(new PlayerElement(new Pitch('D'), 5, 6));
         playerElements.add(new PlayerElement(new Pitch('F'), 5, 3));
         assertEquals(playerElements, chord.getPlayerElements(5, 6, new Fraction(1, 4)));
+        //getAllDurationDenominators
+        Set<Integer> denominators = new HashSet<>();
+        denominators.addAll(Arrays.asList(6, 4, 8));
+        assertEquals(denominators, chord.getAllDurationDenominators());
+    }
+    
+    //notes are different
+    @Test
+    public void testEqualsDifferent(){
+        List<Music> notes1 = new ArrayList<>();
+        notes1.add(new Note(new Fraction(1, 6), 'A', 0));
+        notes1.add(new Note(new Fraction(1, 4), 'D', 1));
+        List<Music> notes2 = new ArrayList<>();
+        notes2.add(new Note(new Fraction(1, 6), 'A', 0));
+        notes2.add(new Note(new Fraction(1, 4), 'D', 0));
+        Chord chord1 = new Chord(notes1);
+        Chord chord2 = new Chord(notes2);
+        assertTrue(!chord1.equals(chord2));
+    }
+    
+    //notes are the same except one chord has more notes
+    @Test
+    public void testEqualsDifferentLenghts(){
+        List<Music> notes1 = new ArrayList<>();
+        notes1.add(new Note(new Fraction(1, 3), 'A', 0));
+        notes1.add(new Note(new Fraction(2, 6), 'D', 1));
+        List<Music> notes2 = new ArrayList<>();
+        notes2.add(new Note(new Fraction(1, 3), 'A', 0));
+        notes2.add(new Note(new Fraction(2, 6), 'D', 1));
+        notes2.add(new Note(new Fraction(1, 5), 'C', 0));
+        Chord chord1 = new Chord(notes1);
+        Chord chord2 = new Chord(notes2);
+        assertTrue(!chord1.equals(chord2));
+    }
+    
+    //same notes but in different order
+    @Test
+    public void testEqualsDifferentOrder(){
+        List<Music> notes1 = new ArrayList<>();
+        notes1.add(new Note(new Fraction(1, 3), 'A', 0));
+        notes1.add(new Note(new Fraction(2, 6), 'D', 1));
+        List<Music> notes2 = new ArrayList<>();
+        notes2.add(new Note(new Fraction(2, 6), 'D', 1));
+        notes2.add(new Note(new Fraction(1, 3), 'A', 0));        
+        Chord chord1 = new Chord(notes1);
+        Chord chord2 = new Chord(notes2);
+        assertTrue(!chord1.equals(chord2));
+    }
+    
+    //actually equals
+    @Test
+    public void testEqualsSame(){
+        List<Music> notes1 = new ArrayList<>();
+        notes1.add(new Note(new Fraction(1, 3), 'E', -1));
+        notes1.add(new Note(new Fraction(2, 6), 'C', 1));
+        List<Music> notes2 = new ArrayList<>();
+        notes2.add(new Note(new Fraction(1, 3), 'E', -1));        
+        notes2.add(new Note(new Fraction(2, 6), 'C', 1));
+        Chord chord1 = new Chord(notes1);
+        Chord chord2 = new Chord(notes2);
+        assertTrue(chord1.equals(chord2));
     }
 
 }

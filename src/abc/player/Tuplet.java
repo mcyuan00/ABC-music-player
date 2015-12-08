@@ -1,7 +1,9 @@
 package abc.player;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Tuplet represents a consecutive group of notes that are to
@@ -13,6 +15,8 @@ import java.util.List;
  * Quadruplet: 4 notes in the time of 3 notes
  */
 public class Tuplet implements Music{
+    //noteLength * adjustmentFactor is the actual length of individual notes
+    //noteLength keeps track of the length of notes that are passed in
     private final Fraction noteLength;
     private final int tupletNumber;
     private final List<Music> notes;
@@ -51,14 +55,16 @@ public class Tuplet implements Music{
 
     @Override
     public Fraction duration() {
-        return new Fraction(notes.size() * noteLength.numerator() * adjustmentFactor.numerator(), noteLength.denominator() * adjustmentFactor.denominator());
+        return new Fraction(notes.size() * noteLength.numerator() * adjustmentFactor.numerator(), 
+                noteLength.denominator() * adjustmentFactor.denominator());
     }
     
     /**
      * @return the length of the individual notes of the tuplet as a fraction of a whole note
      */
     public Fraction noteDuration(){
-        return noteLength;
+        return new Fraction(noteLength.numerator() * adjustmentFactor.numerator(), 
+                noteLength.denominator() * adjustmentFactor.denominator());
     }
     
     /**
@@ -97,12 +103,13 @@ public class Tuplet implements Music{
     }
 
     @Override
-    public List<Fraction> getAllDurations() {
-       List<Fraction> allDurations = new ArrayList<>();
+    public Set<Integer> getAllDurationDenominators() {
+       Set<Integer> denominators = new HashSet<>();
        for (Music note : notes){
-           allDurations.add(note.duration());
+           denominators.addAll(note.getAllDurationDenominators());
        }
-       return allDurations;
+       denominators.add(adjustmentFactor.denominator());
+       return denominators;
     }
 
     @Override
@@ -111,6 +118,16 @@ public class Tuplet implements Music{
             m.transposeKey(note, octave,semitonesUp);
         }
         
+    }
+    
+    @Override
+    public boolean equals(Object obj){
+        if(! (obj instanceof Tuplet)) {return false;}
+        Tuplet that = (Tuplet) obj;
+        if (this.tupletNumber() != that.tupletNumber()){
+            return false;
+        }
+        return this.tupletNotes().equals(that.tupletNotes());
     }
     
 

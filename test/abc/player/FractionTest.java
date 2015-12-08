@@ -121,6 +121,15 @@ public class FractionTest {
         assertEquals(7, simplifiedFraction.denominator());
     }
     
+    //test simplify() on 2/8
+    @Test
+    public void testSimplifyTwoEighths(){
+        Fraction fraction = new Fraction(2, 8);
+        Fraction simplifiedFraction = fraction.simplify();
+        assertEquals(1, simplifiedFraction.numerator());
+        assertEquals(4, simplifiedFraction.denominator());
+    }
+    
     //test sumAllFractions on an empty list
     @Test
     public void testSumAllFractionsEmptyList(){

@@ -1,7 +1,9 @@
 package abc.player;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Chord represents one or more notes played simultaneously.
@@ -54,12 +56,12 @@ public class Chord implements Music{
 
 
     @Override
-    public List<Fraction> getAllDurations() {
-        List<Fraction> allDurations = new ArrayList<>();
+    public Set<Integer> getAllDurationDenominators() {
+        Set<Integer> denominators = new HashSet<>();
         for (Music note : notes){
-            allDurations.add(note.duration());
+            denominators.addAll(note.getAllDurationDenominators());
         }
-        return allDurations;
+        return denominators;
     }
     
     private void checkRep(){
@@ -74,8 +76,13 @@ public class Chord implements Music{
         }
         
     }
-
-
+    
+    @Override
+    public boolean equals(Object obj){
+        if(! (obj instanceof Chord)) {return false;}
+        Chord that = (Chord) obj;
+        return this.chordNotes().equals(that.chordNotes());
+    }
     
 
 }
