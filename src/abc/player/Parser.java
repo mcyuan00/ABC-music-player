@@ -75,12 +75,12 @@ public class Parser {
         // Other grammars may have different names for the starter rule.
         ParseTree tree = parser.root();
 
-        //                        Future<JDialog> inspect = Trees.inspect(tree, parser);
-        //                        try {
-        //                            Utils.waitForClose(inspect.get());
-        //                        } catch (Exception e) {
-        //                            e.printStackTrace();
-        //                        }
+//        Future<JDialog> inspect = Trees.inspect(tree, parser);
+//        try {
+//            Utils.waitForClose(inspect.get());
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
         MakeHeader headerMaker = new MakeHeader();
         new ParseTreeWalker().walk(headerMaker, tree);
@@ -225,6 +225,7 @@ public class Parser {
             int denominator = Integer.valueOf(nums[1]);
             return new Fraction(numerator, denominator);
         }
+
         @Override
         public void exitRoot(HeaderParser.RootContext ctx) { }
 
@@ -347,31 +348,31 @@ public class Parser {
     }
 
     public static Music parseMusic(String input){
-//        try{
-            // Create a stream of characters from the string
-            CharStream stream = new ANTLRInputStream(input);
+        //        try{
+        // Create a stream of characters from the string
+        CharStream stream = new ANTLRInputStream(input);
 
-            MusicLexer lexer = new MusicLexer(stream);
-            TokenStream tokens = new CommonTokenStream(lexer);
-            MusicParser parser = new MusicParser(tokens);
-            
-            lexer.reportErrorsAsExceptions();
-            parser.reportErrorsAsExceptions();
+        MusicLexer lexer = new MusicLexer(stream);
+        TokenStream tokens = new CommonTokenStream(lexer);
+        MusicParser parser = new MusicParser(tokens);
 
-            // Generate the parse tree using the starter rule.
-            // root is the starter rule for this grammar.
-            // Other grammars may have different names for the starter rule.
-            ParseTree tree = parser.root();
+        lexer.reportErrorsAsExceptions();
+        parser.reportErrorsAsExceptions();
 
-            MakeMusic musicMaker = new MakeMusic();
-            new ParseTreeWalker().walk(musicMaker, tree);
-            return musicMaker.getMusic();
+        // Generate the parse tree using the starter rule.
+        // root is the starter rule for this grammar.
+        // Other grammars may have different names for the starter rule.
+        ParseTree tree = parser.root();
 
-//        }
-//        catch(RuntimeException e){
-//            System.out.println(e.getMessage()); //not used after debugging
-//            throw new IllegalArgumentException();
-//        }
+        MakeMusic musicMaker = new MakeMusic();
+        new ParseTreeWalker().walk(musicMaker, tree);
+        return musicMaker.getMusic();
+
+        //        }
+        //        catch(RuntimeException e){
+        //            System.out.println(e.getMessage()); //not used after debugging
+        //            throw new IllegalArgumentException();
+        //        }
     }
     static class MakeMusic implements MusicListener{
         Map<NoteLetter, Accidental> keySig;
@@ -403,7 +404,7 @@ public class Parser {
         public Music getMusic(){
             return stack.get(0);
         }
-       
+
         @Override
         public void exitRoot(MusicParser.RootContext ctx) {
             // TODO Auto-generated method stub
@@ -473,12 +474,12 @@ public class Parser {
                 return new Fraction(Integer.valueOf(length), 1);
             }
             String[] nums = length.split("/");
-            
+
             int numerator = (nums[0].equals("")) ? 1 : Integer.valueOf(nums[0]);
             int denominator = (nums[1].equals("")) ? 2 : Integer.valueOf(nums[1]);
             return new Fraction(numerator, denominator);
         }
-        
+
         @Override
         public void exitNote(MusicParser.NoteContext ctx) {
             System.out.println(ctx.NOTELETTER().getText());
@@ -516,7 +517,7 @@ public class Parser {
                 if (accidental.contains("^")){
                     numAccidental = accidental.length();
                 }
-                
+
             }
             Music m = new Note(noteLength, noteLetter, octave, numAccidental);
             stack.push(m);
