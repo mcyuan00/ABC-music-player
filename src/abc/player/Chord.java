@@ -16,6 +16,7 @@ public class Chord implements Music{
      */
     public Chord(List<Music> notes){
         this.notes = notes;
+        checkRep();
     }
     
     
@@ -59,6 +60,10 @@ public class Chord implements Music{
             allDurations.add(note.duration());
         }
         return allDurations;
+    }
+    
+    private void checkRep(){
+        assert !notes.isEmpty();
     }
 
 

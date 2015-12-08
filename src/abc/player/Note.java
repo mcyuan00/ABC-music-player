@@ -80,6 +80,12 @@ public class Note implements Music {
         return allDurations;
     }
     
+    @Override
+    public boolean equals(Object obj){
+        if(! (obj instanceof Note)) {return false;}
+        Note that = (Note) obj;
+        return ((this.duration.equals(that.duration())) && this.pitch.equals(that.pitch()));
+    }
 
 
 }

@@ -18,6 +18,7 @@ public class NoteTest {
     //  test both constructors
     //  test observers: pitch(), duration(), getPlayerElement()
     //  test getAllDuratinos()
+    //  test equals(): different length, different pitch, same pitch but different constructor, same everything
     
     @Test
     public void testNoteNoAccidentalMiddleOctave(){
@@ -56,5 +57,41 @@ public class NoteTest {
         List<PlayerElement> playerElements = new ArrayList<>();
         playerElements.add(new PlayerElement(new Pitch('G').transpose(Pitch.OCTAVE * -2 - 1), 12, 16));
         assertEquals(playerElements, note.getPlayerElements(12, 16, new Fraction(1, 1)));
+    }
+    
+    @Test
+    public void testNoteEqualsDifferentLength(){
+        Note note1 = new Note(new Fraction(1, 5), 'B', 0);
+        Note note2 = new Note(new Fraction(4, 8), 'B', 0);
+        assertTrue(!note1.equals(note2));
+    }
+    
+    @Test
+    public void testNoteEqualsDifferentPitch(){
+        Note note1 = new Note(new Fraction(3, 8), 'B', 0);
+        Note note2 = new Note(new Fraction(3, 8), 'C', 0);
+        assertTrue(!note1.equals(note2));
+    }
+    
+    @Test
+    public void testNoteEqualsDifferentConstructor(){
+        Note note1 = new Note(new Fraction(3, 8), 'G', -1);
+        Note note2 = new Note(new Fraction(3, 8), 'G', -1, 0);
+        assertEquals(note1, note2);
+    }
+    
+    // test that D is the same as C##
+    @Test
+    public void testNoteEqualsDoubleSharp(){
+        Note note1 = new Note(new Fraction(3, 8), 'C', 0, 2);
+        Note note2 = new Note(new Fraction(3, 8), 'D', 0);
+        assertEquals(note1, note2);
+    }
+    
+    @Test
+    public void testNoteEqualsSameEverything(){
+        Note note1 = new Note(new Fraction(3, 8), 'A', 3);
+        Note note2 = new Note(new Fraction(3, 8), 'A', 3);
+        assertEquals(note1, note2);
     }
 }
