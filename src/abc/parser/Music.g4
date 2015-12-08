@@ -9,6 +9,8 @@ import Configuration;
 root : music EOF;
 music : element+ NEWLINE | midtune | comment;
 element : note | rest | chord | tuplet | BARLINE | NUMREPEAT | WHITESPACE;
+noteelement : note | rest | chord | tuplet;
+measure : NUMREPEAT? noteelement+ BARLINE;
 midtune : voice;
 voice : 'V:' text NEWLINE;
 tuplet : tupletspec (note | chord)+;
@@ -25,6 +27,6 @@ ACCIDENTAL : '_' | '__' | '^' | '^^' | '=';
 BARLINE : '|' | '||' | '|:' | ':|' | '[|' | '|]'; 
 NUMREPEAT: '[1' | '[2';
 NEWLINE : [\r]? [\n];
-WHITESPACE : [\s\t]+;
+WHITESPACE : [\t]+;
 DIGIT : [0-9];
 

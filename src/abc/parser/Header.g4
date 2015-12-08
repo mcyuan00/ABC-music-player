@@ -6,7 +6,6 @@
 grammar Header;
 import Configuration;
     
-
 root : header EOF;
 header : index comment* title otherfields* key;
 index : 'X:' DIGIT+ NEWLINE;
@@ -25,5 +24,5 @@ KEYACCIDENTAL : '#' | 'b';
 MINOR : 'm';
 NEWLINE : [\r]? [\n];
 DIGIT : [0-9];
-OTHER :[a-zH-Z] | ~[A-Za-z0-9\n\t\s\r];
-WHITESPACE : [ ]+ -> skip;
+OTHER : [a-zH-Z] | ~[A-Za-z0-9\n\r];
+WHITESPACE : [\t\s]+ -> skip;
