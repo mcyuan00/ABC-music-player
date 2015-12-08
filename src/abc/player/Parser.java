@@ -3,15 +3,22 @@ package abc.player;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
+import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.swing.JDialog;
+
+import org.antlr.v4.gui.Trees;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.TokenStream;
+import org.antlr.v4.runtime.misc.Utils;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
@@ -50,7 +57,7 @@ import abc.parser.MusicParser.TupletspecContext;
 public class Parser {
 
     public static Header parseHeader(String input){
-        try{
+//        try{
             // Create a stream of characters from the string
             CharStream stream = new ANTLRInputStream(input);
 
@@ -63,17 +70,23 @@ public class Parser {
             // root is the starter rule for this grammar.
             // Other grammars may have different names for the starter rule.
             ParseTree tree = parser.root();
+            
+//                        Future<JDialog> inspect = Trees.inspect(tree, parser);
+//                        try {
+//                            Utils.waitForClose(inspect.get());
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        }
 
             MakeHeader headerMaker = new MakeHeader();
             new ParseTreeWalker().walk(headerMaker, tree);
             return headerMaker.getHeader();
-        }
-        catch(RuntimeException e){
-            System.out.println(e.getMessage()); //not used after debugging
-            throw new IllegalArgumentException();
-        }
+//        }
+//        catch(Exception e){
+//            System.out.println(e.getMessage()); //not used after debugging
+//            throw new IllegalArgumentException();
+//        }
     }
-
 
     static class MakeHeader implements HeaderListener {
         private final Stack<String> requiredStack = new Stack<>();
@@ -88,10 +101,18 @@ public class Parser {
             int index = -1;
             String title = "";
             KeySignature keySignature= KeySignature.valueOf("NEGATIVE");
+
+            // parse/check existence of required fields index, header, keySignature
             while (!requiredStack.isEmpty()){
                 String context = requiredStack.pop();
+//                System.out.println(context);
+                if (context.contains("missing")){
+                    throw new IllegalArgumentException();  
+                }
+
+                //parse out index, header, and keySignature
                 if (context.contains("X:")){
-                    Pattern pattern = Pattern.compile("[0-9]+");
+                    Pattern pattern = Pattern.compile("[0-9-]+");
                     Matcher matcher = pattern.matcher(context);
                     if (matcher.find()){
                         index = Integer.valueOf( matcher.group());
@@ -124,19 +145,28 @@ public class Parser {
                     keySignature = KeySignature.valueOf(key);
                 }   
             }
-            if(index == -1 || title.equals("") || keySignature.equals(KeySignature.valueOf("NEGATIVE"))){
+            //missing one of index, header or keySig
+            if(index < 0 || title.equals("") || keySignature.equals(KeySignature.valueOf("NEGATIVE"))){
                 throw new IllegalArgumentException();
             }
 
             Header header = new Header(index, title, keySignature);
 
+            //parse other fields
             while (!optionalStack.isEmpty()){
                 String context = optionalStack.pop();
+                System.out.println(context);
+                if (context.contains("missing")|| !(context.contains(":"))){
+                    throw new IllegalArgumentException();  
+                }
+
                 if (context.contains("C:")){
                     String composer = context.replace("C:", "").replace("\n", "");
                     header.setComposer(composer);
                 }
                 if (context.contains("M:")){
+                    //TODO: 
+                    System.out.println(context);
                     if(context.contains("C|")){
                         header.setMeter(new Fraction(2,2));
                     }
@@ -145,19 +175,15 @@ public class Parser {
                     }
                     else{
                         context = context.replace("M:", "").replace("\n", "");
-                        String[] nums = context.split("/");
-                        int numerator = Integer.valueOf(nums[0]);
-                        int denominator = Integer.valueOf(nums[1]);
-                        header.setMeter(new Fraction(numerator,denominator));
+                        Fraction meter = parseFraction(context);
+                        header.setMeter(meter);
                     }
 
                 }
                 if (context.contains("L:")){
                     context = context.replace("L:", "").replace("\n", "");
-                    String[] nums = context.split("/");
-                    int numerator = Integer.valueOf(nums[0]);
-                    int denominator = Integer.valueOf(nums[1]);
-                    header.setMeter(new Fraction(numerator,denominator)); 
+                    Fraction noteLength = parseFraction(context);
+                    header.setNoteLength(noteLength);; 
                 }
                 if (context.contains("Q:")){
                     Pattern pattern = Pattern.compile("=[0-9]+");
@@ -166,14 +192,15 @@ public class Parser {
                     if (matcher.find()){
                         String group = matcher.group();
                         tempo = Integer.valueOf(group.replace("=", "")); 
-                        context = context.replace(group, "").replace("\n", "");
+                        context = context.replace(group, "").replace("\n", "").replace("Q:", "");
                     }
-                    String[] nums = context.split("/");
-                    // in case tempo has a different base note length than the given meter, must calculate offset
-                    int numerator = Integer.valueOf(nums[0]);
-                    int denominator = Integer.valueOf(nums[1]);
-                    Fraction headerMeter = header.meter();
-                    double tempoOffset = numerator*headerMeter.denominator()/(denominator*headerMeter.numerator());
+                    else{
+                        throw new IllegalArgumentException();
+                    }
+                    
+                    Fraction given = parseFraction(context);
+                    Fraction headerLength = header.noteLength();
+                    double tempoOffset = given.numerator()*headerLength.denominator()/(given.denominator()*headerLength.numerator());
                     header.setTempo((int)(tempo/tempoOffset)); 
                 }
                 if (context.contains("V:")){
@@ -185,6 +212,16 @@ public class Parser {
             return header;
         }
 
+        private Fraction parseFraction(String context){
+            String[] nums = context.split("/");
+            // fraction doesn't have correct number of /
+            if (nums.length >2){
+                throw new IllegalArgumentException();
+            }
+            int numerator = Integer.valueOf(nums[0]);
+            int denominator = Integer.valueOf(nums[1]);
+            return new Fraction(numerator, denominator);
+        }
         @Override
         public void exitRoot(HeaderParser.RootContext ctx) { }
 
@@ -217,6 +254,7 @@ public class Parser {
 
         @Override
         public void exitMeter(HeaderParser.MeterContext ctx) {
+            System.out.println(ctx.getText());
             optionalStack.push(ctx.getText());
 
         }
@@ -331,12 +369,22 @@ public class Parser {
         }
     }
     static class MakeMusic implements MusicListener{
+        Map<NoteLetter, Accidental> keySig;
+
+        public MakeMusic(){
+            this.keySig = KeySignatureMap.KEY_SIGNATURE_MAP.get(KeySignature.valueOf("C_MAJOR"));
+        }
+
+        public MakeMusic(KeySignature keysig){
+            this.keySig = KeySignatureMap.KEY_SIGNATURE_MAP.get(keysig);
+        }
+
         private final Stack<Music> stack = new Stack<>();
 
         public Music getMusic(){
             return stack.get(0);
         }
-        
+
         @Override
         public void exitRoot(MusicParser.RootContext ctx) {
             // TODO Auto-generated method stub
@@ -374,7 +422,7 @@ public class Parser {
             assert stack.size()> tupletNum;
             assert tupletNum > 1 && tupletNum < 5;
             List<Music> tupletNotes = new ArrayList<Music>();
-            
+
             for (int i = 0; i < tupletNum; i++){
                 tupletNotes.add(stack.pop());
             }
@@ -385,14 +433,14 @@ public class Parser {
 
         @Override
         public void exitTupletspec(MusicParser.TupletspecContext ctx) { }
-        
+
         @Override
         public void exitChord(MusicParser.ChordContext ctx) {
             List<MusicParser.NoteContext> notes = ctx.note();
             assert stack.size() >= notes.size();
             assert notes.size()>= 1;
             List<Music> chordNotes = new ArrayList<Music>();
-            
+
             for (int i = 0; i < notes.size(); i++){
                 chordNotes.add(stack.pop());
             }
@@ -400,7 +448,7 @@ public class Parser {
             Music m = new Chord(chordNotes);
             stack.push(m);
         }
-        
+
         @Override
         public void exitNote(MusicParser.NoteContext ctx) {
             System.out.println(ctx.NOTELETTER().getText());
@@ -412,7 +460,7 @@ public class Parser {
                 if (Character.isLowerCase(note)){
                     octave +=1;
                 }
-                noteLetter = note;
+                noteLetter = Character.toUpperCase(note);
             }
             if (ctx.OCTAVE()!= null){
                 String octaves = ctx.OCTAVE().getText();

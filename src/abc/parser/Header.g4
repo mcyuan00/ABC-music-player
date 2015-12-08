@@ -5,6 +5,7 @@
  */
 grammar Header;
 import Configuration;
+    
 
 root : header EOF;
 header : index comment* title otherfields* key;
@@ -14,12 +15,12 @@ otherfields : composer | length | meter | tempo | voice+ | comment;
 composer : 'C:' text+ NEWLINE;
 length : 'L:' DIGIT+ '/' DIGIT+ NEWLINE;
 tempo : 'Q:' (DIGIT+ '/' DIGIT+) '=' DIGIT+ NEWLINE;
-meter : 'M:' (DIGIT+ '/' DIGIT+) | 'C' | 'C|' NEWLINE;
+meter : 'M:' ((DIGIT+ '/' DIGIT+) | 'C' | 'C|') NEWLINE;
 voice : 'V:' text+ NEWLINE;
 key : 'K:' NOTE KEYACCIDENTAL? MINOR? NEWLINE;
 comment : '%' text+ NEWLINE;
 text : DIGIT | NOTE | MINOR | KEYACCIDENTAL | OTHER;
-OTHER :[a-zH-Z] | [-_=:;'"//\<>];
+OTHER :[a-zH-Z] | ~[A-Za-z0-9\n\t\s\r];
 NOTE: [A-G];
 KEYACCIDENTAL : '#' | 'b';
 MINOR : 'm';
