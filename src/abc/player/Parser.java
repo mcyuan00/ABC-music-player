@@ -2,6 +2,7 @@ package abc.player;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
@@ -57,39 +58,38 @@ import abc.parser.MusicParser.TupletspecContext;
 public class Parser {
 
     public static Header parseHeader(String input){
-//        try{
-            // Create a stream of characters from the string
-            CharStream stream = new ANTLRInputStream(input);
+        //        try{
+        // Create a stream of characters from the string
+        CharStream stream = new ANTLRInputStream(input);
 
-            HeaderLexer lexer = new HeaderLexer(stream);
-            TokenStream tokens = new CommonTokenStream(lexer);
+        HeaderLexer lexer = new HeaderLexer(stream);
+        TokenStream tokens = new CommonTokenStream(lexer);
 
-            HeaderParser parser = new HeaderParser(tokens);
-            
-            lexer.reportErrorsAsExceptions();
+        HeaderParser parser = new HeaderParser(tokens);
 
-            parser.reportErrorsAsExceptions();
+        lexer.reportErrorsAsExceptions();
+        parser.reportErrorsAsExceptions();
 
-            // Generate the parse tree using the starter rule.
-            // root is the starter rule for this grammar.
-            // Other grammars may have different names for the starter rule.
-            ParseTree tree = parser.root();
-            
-//                        Future<JDialog> inspect = Trees.inspect(tree, parser);
-//                        try {
-//                            Utils.waitForClose(inspect.get());
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                        }
+        // Generate the parse tree using the starter rule.
+        // root is the starter rule for this grammar.
+        // Other grammars may have different names for the starter rule.
+        ParseTree tree = parser.root();
 
-            MakeHeader headerMaker = new MakeHeader();
-            new ParseTreeWalker().walk(headerMaker, tree);
-            return headerMaker.getHeader();
-//        }
-//        catch(Exception e){
-//            System.out.println(e.getMessage()); //not used after debugging
-//            throw new IllegalArgumentException();
-//        }
+        //                        Future<JDialog> inspect = Trees.inspect(tree, parser);
+        //                        try {
+        //                            Utils.waitForClose(inspect.get());
+        //                        } catch (Exception e) {
+        //                            e.printStackTrace();
+        //                        }
+
+        MakeHeader headerMaker = new MakeHeader();
+        new ParseTreeWalker().walk(headerMaker, tree);
+        return headerMaker.getHeader();
+        //        }
+        //        catch(Exception e){
+        //            System.out.println(e.getMessage()); //not used after debugging
+        //            throw new IllegalArgumentException();
+        //        }
     }
 
     static class MakeHeader implements HeaderListener {
@@ -109,10 +109,10 @@ public class Parser {
             // parse/check existence of required fields index, header, keySignature
             while (!requiredStack.isEmpty()){
                 String context = requiredStack.pop();
-//                System.out.println(context);
-//                if (context.contains("missing")){
-//                    throw new IllegalArgumentException();  
-//                }
+                //                System.out.println(context);
+                //                if (context.contains("missing")){
+                //                    throw new IllegalArgumentException();  
+                //                }
 
                 //parse out index, header, and keySignature
                 if (context.contains("X:")){
@@ -150,26 +150,26 @@ public class Parser {
                 }   
             }
             //missing one of index, header or keySig
-//            if(index < 0 || title.equals("") || keySignature.equals(KeySignature.valueOf("NEGATIVE"))){
-//                throw new IllegalArgumentException();
-//            }
+            //            if(index < 0 || title.equals("") || keySignature.equals(KeySignature.valueOf("NEGATIVE"))){
+            //                throw new IllegalArgumentException();
+            //            }
 
             Header header = new Header(index, title, keySignature);
 
             //parse other fields
             while (!optionalStack.isEmpty()){
                 String context = optionalStack.pop();
-//                System.out.println(context);
-//                if (context.contains("missing")|| !(context.contains(":"))){
-//                    throw new IllegalArgumentException();  
-//                }
+                //                System.out.println(context);
+                //                if (context.contains("missing")|| !(context.contains(":"))){
+                //                    throw new IllegalArgumentException();  
+                //                }
 
                 if (context.contains("C:")){
                     String composer = context.replace("C:", "").replace("\n", "");
                     header.setComposer(composer);
                 }
                 if (context.contains("M:")){
-//                    System.out.println(context);
+                    //                    System.out.println(context);
                     if(context.contains("C|")){
                         header.setMeter(new Fraction(2,2));
                     }
@@ -200,7 +200,7 @@ public class Parser {
                     else{
                         throw new IllegalArgumentException();
                     }
-                    
+
                     Fraction given = parseFraction(context);
                     Fraction headerLength = header.noteLength();
                     double tempoOffset = given.numerator()*headerLength.denominator()/(given.denominator()*headerLength.numerator());
@@ -218,9 +218,9 @@ public class Parser {
         private Fraction parseFraction(String context){
             String[] nums = context.split("/");
             // fraction doesn't have correct number of /
-//            if (nums.length >2){
-//                throw new IllegalArgumentException();
-//            }
+            //            if (nums.length >2){
+            //                throw new IllegalArgumentException();
+            //            }
             int numerator = Integer.valueOf(nums[0]);
             int denominator = Integer.valueOf(nums[1]);
             return new Fraction(numerator, denominator);
@@ -346,48 +346,66 @@ public class Parser {
 
     }
 
-    public static Music parseMusic(String input){
-        try{
+    public static Music parseMusic(String input, Fraction defaultNoteLength, KeySignature keySig){
+//        try{
             // Create a stream of characters from the string
             CharStream stream = new ANTLRInputStream(input);
 
             MusicLexer lexer = new MusicLexer(stream);
             TokenStream tokens = new CommonTokenStream(lexer);
-
             MusicParser parser = new MusicParser(tokens);
+            
+            lexer.reportErrorsAsExceptions();
+            parser.reportErrorsAsExceptions();
 
             // Generate the parse tree using the starter rule.
             // root is the starter rule for this grammar.
             // Other grammars may have different names for the starter rule.
             ParseTree tree = parser.root();
 
-            MakeMusic musicMaker = new MakeMusic();
+            MakeMusic musicMaker = new MakeMusic(keySig, defaultNoteLength);
             new ParseTreeWalker().walk(musicMaker, tree);
             return musicMaker.getMusic();
 
-        }
-        catch(RuntimeException e){
-            System.out.println(e.getMessage()); //not used after debugging
-            throw new IllegalArgumentException();
-        }
+//        }
+//        catch(RuntimeException e){
+//            System.out.println(e.getMessage()); //not used after debugging
+//            throw new IllegalArgumentException();
+//        }
     }
     static class MakeMusic implements MusicListener{
-        Map<NoteLetter, Accidental> keySig;
-
-        public MakeMusic(){
-            this.keySig = KeySignatureMap.KEY_SIGNATURE_MAP.get(KeySignature.valueOf("C_MAJOR"));
-        }
-
-        public MakeMusic(KeySignature keysig){
-            this.keySig = KeySignatureMap.KEY_SIGNATURE_MAP.get(keysig);
-        }
-
+        private final Map<NoteLetter, Accidental> keySig;
+        private final Fraction defaultNoteLength;
+        private final Map<Accidental, Integer> accidental = new HashMap<Accidental, Integer>();
         private final Stack<Music> stack = new Stack<>();
+
+//        public MakeMusic(){
+//            KeySignatureMap map = new KeySignatureMap();
+//            this.keySig = KeySignatureMap.KEY_SIGNATURE_MAP.get(KeySignature.valueOf("C_MAJOR"));
+//            accidental.put(Accidental.valueOf("DOUBLESHARP"), 2);
+//            accidental.put(Accidental.valueOf("SHARP"), 1);
+//            accidental.put(Accidental.valueOf("NATURAL"), 0);
+//            accidental.put(Accidental.valueOf("FLAT"), -1);
+//            accidental.put(Accidental.valueOf("DOUBLEFLAT"), -2);
+//
+//        }
+
+        public MakeMusic(KeySignature keysig, Fraction defaultNoteLength){
+            KeySignatureMap map = new KeySignatureMap();
+            this.defaultNoteLength = defaultNoteLength;
+            this.keySig = map.KEY_SIGNATURE_MAP.get(keysig);
+            accidental.put(Accidental.valueOf("DOUBLESHARP"), 2);
+            accidental.put(Accidental.valueOf("SHARP"), 1);
+            accidental.put(Accidental.valueOf("NATURAL"), 0);
+            accidental.put(Accidental.valueOf("FLAT"), -1);
+            accidental.put(Accidental.valueOf("DOUBLEFLAT"), -2);
+        }
+
 
         public Music getMusic(){
             return stack.get(0);
         }
-
+       
         @Override
         public void exitRoot(MusicParser.RootContext ctx) {
             // TODO Auto-generated method stub
@@ -452,18 +470,32 @@ public class Parser {
             stack.push(m);
         }
 
+        private Fraction parseNoteLength(String length){
+            if(!length.contains("/")){
+                return new Fraction(Integer.valueOf(length), 1);
+            }
+            String[] nums = length.split("/");
+            
+            int numerator = (nums[0].equals("")) ? 1 : Integer.valueOf(nums[0]);
+            int denominator = (nums[1].equals("")) ? 2 : Integer.valueOf(nums[1]);
+            return new Fraction(numerator, denominator);
+        }
+        
         @Override
         public void exitNote(MusicParser.NoteContext ctx) {
             System.out.println(ctx.NOTELETTER().getText());
-            Fraction noteLength = new Fraction(1,1);
+            Fraction noteLength = defaultNoteLength;
             int octave = 0;
             char noteLetter = 'y';
+            int numAccidental = 0;
             if (ctx.NOTELETTER()!= null){
                 char note = ctx.NOTELETTER().getText().charAt(0);
                 if (Character.isLowerCase(note)){
                     octave +=1;
                 }
                 noteLetter = Character.toUpperCase(note);
+                Accidental acc = keySig.get(NoteLetter.valueOf(Character.toString(noteLetter)));
+                numAccidental += accidental.get(acc);
             }
             if (ctx.OCTAVE()!= null){
                 String octaves = ctx.OCTAVE().getText();
@@ -476,72 +508,28 @@ public class Parser {
             }
             if (ctx.notelength()!= null){
                 String length = ctx.notelength().getText();
-                int numerator = 1;
-                int denominator = 1;
-                Pattern fullFrac = Pattern.compile("[0-9]+/[0-9]+");
-                Matcher fullFracMatcher = fullFrac.matcher(length);
-                Pattern halfFrac = Pattern.compile("/[0-9]+");
-                Matcher halfFracMatcher = halfFrac.matcher(length);
-                if(fullFracMatcher.matches()){
-                    String[] nums = length.split("/");
-                    numerator = Integer.valueOf(nums[0]);
-                    denominator = Integer.valueOf(nums[1]);
-                }
-                else if(halfFracMatcher.matches()){
-                    denominator = Integer.valueOf(length.replace("/", ""));
-                }
-                else if(length.contains("/")){
-                    denominator = 2;
-                }
-                else{
-                    numerator = Integer.valueOf(length);
-                }
-                noteLength = new Fraction(numerator, denominator);
+                noteLength = parseNoteLength(length);
             }
             if (ctx.ACCIDENTAL()!= null){
                 String accidental = ctx.ACCIDENTAL().getText();
-                int numAccidental = 0;
                 if (accidental.contains("_")){
-                    numAccidental -= accidental.length();
+                    numAccidental = accidental.length();
                 }
                 if (accidental.contains("^")){
-                    numAccidental += accidental.length();
+                    numAccidental = accidental.length();
                 }
-                Music m = new Note(noteLength, noteLetter, octave, numAccidental);
-                stack.push(m);
+                
             }
-            else{
-                Music m = new Note(noteLength, noteLetter, octave);
-                stack.push(m);
-            }
+            Music m = new Note(noteLength, noteLetter, octave, numAccidental);
+            stack.push(m);
         }
 
         @Override
         public void exitRest(MusicParser.RestContext ctx) {
-            Fraction noteLength = new Fraction(1,1);
+            Fraction noteLength = defaultNoteLength;
             if (ctx.notelength()!= null){
                 String length = ctx.notelength().getText();
-                int numerator = 1;
-                int denominator = 1;
-                Pattern fullFrac = Pattern.compile("[0-9]+/[0-9]+");
-                Matcher fullFracMatcher = fullFrac.matcher(length);
-                Pattern halfFrac = Pattern.compile("/[0-9]+");
-                Matcher halfFracMatcher = halfFrac.matcher(length);
-                if(fullFracMatcher.matches()){
-                    String[] nums = length.split("/");
-                    numerator = Integer.valueOf(nums[0]);
-                    denominator = Integer.valueOf(nums[1]);
-                }
-                else if(halfFracMatcher.matches()){
-                    denominator = Integer.valueOf(length.replace("/", ""));
-                }
-                else if(length.contains("/")){
-                    denominator = 2;
-                }
-                else{
-                    numerator = Integer.valueOf(length);
-                }
-                noteLength = new Fraction(numerator, denominator);
+                noteLength = parseNoteLength(length);
             }
             Music m = new Rest(noteLength);
             stack.push(m);

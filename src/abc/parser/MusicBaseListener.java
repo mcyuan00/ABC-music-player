@@ -55,6 +55,30 @@ public class MusicBaseListener implements MusicListener {
    *
    * <p>The default implementation does nothing.</p>
    */
+  @Override public void enterNoteelement(MusicParser.NoteelementContext ctx) { }
+  /**
+   * {@inheritDoc}
+   *
+   * <p>The default implementation does nothing.</p>
+   */
+  @Override public void exitNoteelement(MusicParser.NoteelementContext ctx) { }
+  /**
+   * {@inheritDoc}
+   *
+   * <p>The default implementation does nothing.</p>
+   */
+  @Override public void enterMeasure(MusicParser.MeasureContext ctx) { }
+  /**
+   * {@inheritDoc}
+   *
+   * <p>The default implementation does nothing.</p>
+   */
+  @Override public void exitMeasure(MusicParser.MeasureContext ctx) { }
+  /**
+   * {@inheritDoc}
+   *
+   * <p>The default implementation does nothing.</p>
+   */
   @Override public void enterMidtune(MusicParser.MidtuneContext ctx) { }
   /**
    * {@inheritDoc}

@@ -4,6 +4,7 @@ package abc.player;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
@@ -384,7 +385,7 @@ public class ParseTest {
      * Note:
      *      - Lowercase and uppercase notes
      *      - , vs ' signaling octave change: 0, 1, multiple
-     *      - duration in form n/m, /m, /, n
+     *      - duration in form n/m, /m, n/, /, n
      *      
      * Tuplet:
      *      - contains notes
@@ -395,7 +396,7 @@ public class ParseTest {
     // test single uppercase note with duration in form /m
 //    @Test
     public void testMusicParserSingleUppercaseNote(){
-        Note note = (Note)Parser.parseMusic("A/3\n");
+        Note note = (Note)Parser.parseMusic("A/3\n", new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
         assertEquals(new Fraction(1,3), note.duration());
         assertEquals(new Pitch('A'), note.pitch());
     }
@@ -403,7 +404,7 @@ public class ParseTest {
     // test single lowercase note with duration in form n/m
     @Test
     public void testMusicParserSingleLowerCaseNote(){
-        Note note = (Note)Parser.parseMusic("a2/3\n");
+        Note note = (Note)Parser.parseMusic("a2/3\n", new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
         assertEquals(new Fraction(2,3), note.duration());
         assertEquals(new Pitch('A').transpose(Pitch.OCTAVE), note.pitch());
     }

@@ -41,6 +41,26 @@ public interface MusicListener extends ParseTreeListener {
    */
   void exitElement(MusicParser.ElementContext ctx);
   /**
+   * Enter a parse tree produced by {@link MusicParser#noteelement}.
+   * @param ctx the parse tree
+   */
+  void enterNoteelement(MusicParser.NoteelementContext ctx);
+  /**
+   * Exit a parse tree produced by {@link MusicParser#noteelement}.
+   * @param ctx the parse tree
+   */
+  void exitNoteelement(MusicParser.NoteelementContext ctx);
+  /**
+   * Enter a parse tree produced by {@link MusicParser#measure}.
+   * @param ctx the parse tree
+   */
+  void enterMeasure(MusicParser.MeasureContext ctx);
+  /**
+   * Exit a parse tree produced by {@link MusicParser#measure}.
+   * @param ctx the parse tree
+   */
+  void exitMeasure(MusicParser.MeasureContext ctx);
+  /**
    * Enter a parse tree produced by {@link MusicParser#midtune}.
    * @param ctx the parse tree
    */

@@ -10,8 +10,8 @@ import java.util.List;
 public class Note implements Music {
     private final Fraction duration;
     private final char noteLetter;
-    private final int octave;
-    private final int accidental;
+//    private final int octave;
+//    private final int accidental;
     private final Pitch pitch;
 
     /**
@@ -24,8 +24,8 @@ public class Note implements Music {
     public Note(Fraction duration, char noteLetter, int octave){
         this.duration = duration;
         this.noteLetter = noteLetter;
-        this.octave = octave;
-        this.accidental = 0;
+//        this.octave = octave;
+//        this.accidental = 0;
         pitch = new Pitch(noteLetter).transpose(Pitch.OCTAVE*octave);
     }
     
@@ -42,8 +42,8 @@ public class Note implements Music {
     public Note(Fraction duration, char noteLetter, int octave, int accidental){
         this.duration = duration;
         this.noteLetter = noteLetter;
-        this.octave = octave;
-        this.accidental = accidental;
+//        this.octave = octave;
+//        this.accidental = accidental;
         pitch = new Pitch(noteLetter).transpose(Pitch.OCTAVE*octave + accidental);
     }
     
@@ -60,7 +60,20 @@ public class Note implements Music {
         return duration;
     }
 
-
+    @Override
+    public List<Fraction> getAllDurations() {
+        List<Fraction> allDurations = new ArrayList<>();
+        allDurations.add(duration);
+        return allDurations;
+    }
+    
+    @Override
+    public void transposeKey(char note, int semitonesUp) {
+        if(note == noteLetter){
+            pitch.transpose(semitonesUp);
+        }  
+    }
+    
     @Override
     public List<PlayerElement> getPlayerElements(int startTick, int ticksPerBeat, Fraction pieceNoteLength) {
         List<PlayerElement> elements = new ArrayList<PlayerElement>();
@@ -73,12 +86,6 @@ public class Note implements Music {
         return elements;
     }
 
-    @Override
-    public List<Fraction> getAllDurations() {
-        List<Fraction> allDurations = new ArrayList<>();
-        allDurations.add(duration);
-        return allDurations;
-    }
     
     @Override
     public boolean equals(Object obj){
@@ -86,6 +93,7 @@ public class Note implements Music {
         Note that = (Note) obj;
         return ((this.duration.equals(that.duration())) && this.pitch.equals(that.pitch()));
     }
+
 
 
 }

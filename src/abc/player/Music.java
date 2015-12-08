@@ -63,8 +63,14 @@ public interface Music {
      * @param pieceNoteLength the default note length in the piece
      * @return the list of PlayerElements for the entire music
      */
-    List<PlayerElement> getPlayerElements(int startTick, int ticksPerBeat, Fraction pieceNoteLength);
+    public List<PlayerElement> getPlayerElements(int startTick, int ticksPerBeat, Fraction pieceNoteLength);
     
+    /**
+     * Transposes a certain note in this music object the specified number of semitones up. N
+     * @param note a note from A-G to be transposed
+     * @param semitonesUp the number of semitones to tranpose. Flats are represented as negative numbers.
+     */
+    public void transposeKey(char note, int semitonesUp);
     @Override String toString();
     
     @Override boolean equals(Object obj);
