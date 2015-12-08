@@ -65,6 +65,10 @@ public class Parser {
             TokenStream tokens = new CommonTokenStream(lexer);
 
             HeaderParser parser = new HeaderParser(tokens);
+            
+            lexer.reportErrorsAsExceptions();
+
+            parser.reportErrorsAsExceptions();
 
             // Generate the parse tree using the starter rule.
             // root is the starter rule for this grammar.
@@ -106,9 +110,9 @@ public class Parser {
             while (!requiredStack.isEmpty()){
                 String context = requiredStack.pop();
 //                System.out.println(context);
-                if (context.contains("missing")){
-                    throw new IllegalArgumentException();  
-                }
+//                if (context.contains("missing")){
+//                    throw new IllegalArgumentException();  
+//                }
 
                 //parse out index, header, and keySignature
                 if (context.contains("X:")){
@@ -146,27 +150,26 @@ public class Parser {
                 }   
             }
             //missing one of index, header or keySig
-            if(index < 0 || title.equals("") || keySignature.equals(KeySignature.valueOf("NEGATIVE"))){
-                throw new IllegalArgumentException();
-            }
+//            if(index < 0 || title.equals("") || keySignature.equals(KeySignature.valueOf("NEGATIVE"))){
+//                throw new IllegalArgumentException();
+//            }
 
             Header header = new Header(index, title, keySignature);
 
             //parse other fields
             while (!optionalStack.isEmpty()){
                 String context = optionalStack.pop();
-                System.out.println(context);
-                if (context.contains("missing")|| !(context.contains(":"))){
-                    throw new IllegalArgumentException();  
-                }
+//                System.out.println(context);
+//                if (context.contains("missing")|| !(context.contains(":"))){
+//                    throw new IllegalArgumentException();  
+//                }
 
                 if (context.contains("C:")){
                     String composer = context.replace("C:", "").replace("\n", "");
                     header.setComposer(composer);
                 }
                 if (context.contains("M:")){
-                    //TODO: 
-                    System.out.println(context);
+//                    System.out.println(context);
                     if(context.contains("C|")){
                         header.setMeter(new Fraction(2,2));
                     }
@@ -215,9 +218,9 @@ public class Parser {
         private Fraction parseFraction(String context){
             String[] nums = context.split("/");
             // fraction doesn't have correct number of /
-            if (nums.length >2){
-                throw new IllegalArgumentException();
-            }
+//            if (nums.length >2){
+//                throw new IllegalArgumentException();
+//            }
             int numerator = Integer.valueOf(nums[0]);
             int denominator = Integer.valueOf(nums[1]);
             return new Fraction(numerator, denominator);
