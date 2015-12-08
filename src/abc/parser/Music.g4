@@ -8,9 +8,11 @@ import Configuration;
 
 root : music EOF;
 music : element+ NEWLINE | midtune | comment;
-element : note | rest | chord | tuplet | BARLINE | NUMREPEAT | WHITESPACE;
+element :  | NUMREPEAT | WHITESPACE;
 midtune : voice;
 voice : 'V:' text NEWLINE;
+
+measure: note | rest | chord | tuplet | BARLINE
 tuplet : tupletspec (note | chord)+;
 tupletspec : '(' DIGIT ;
 chord : '[' note+ ']';
@@ -23,6 +25,7 @@ NOTELETTER : [a-gA-G];
 OCTAVE : '\''+ | ','+;
 ACCIDENTAL : '_' | '__' | '^' | '^^' | '=';
 BARLINE : '|' | '||' | '|:' | ':|' | '[|' | '|]'; 
+BEGINREPEAT: 
 NUMREPEAT: '[1' | '[2';
 NEWLINE : [\r]? [\n];
 WHITESPACE : [\s\t]+;

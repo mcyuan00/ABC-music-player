@@ -39,12 +39,11 @@ public class Rest implements Music {
         return allDurations;
     }
 
-    /**
-     * Transpose this rest.
-     */
-//    @Override
-//    public Music transpose(int semitonesUp) {
-//        return this;
-//    }
+    @Override
+    public void transposeKey(char note, int semitonesUp) {
+        //rests cannot be transposed
+    }
+
+
 
 }

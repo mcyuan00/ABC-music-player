@@ -55,5 +55,13 @@ public class Measure implements Music {
         return allDurations;
     }
 
+    @Override
+    public void transposeKey(char note, int semitonesUp) {
+        for (Music music: m){
+            music.transposeKey(note, semitonesUp);
+        }
+        
+    }
+
 
 }

@@ -76,6 +76,14 @@ public class Tuplet implements Music{
        }
        return allDurations;
     }
+
+    @Override
+    public void transposeKey(char note, int semitonesUp) {
+        for (Music m : notes){
+            m.transposeKey(note, semitonesUp);
+        }
+        
+    }
     
 
 
