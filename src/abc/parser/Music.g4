@@ -7,15 +7,13 @@ grammar Music;
 import Configuration;
 
 root : music EOF;
-music : element+ NEWLINE | midtune | comment;
-
-element : note | rest | chord | tuplet | BARLINE | NUMREPEAT | WHITESPACE;
-noteelement : note | rest | chord | tuplet;
-measure : NUMREPEAT? noteelement+ BARLINE;
-
-midtune : voice;
+music : section | midtune | comment;
+midtune : voice section;
 voice : 'V:' text NEWLINE;
-
+section : repeat+  NEWLINE;
+repeat : STARTREPEAT? (((measure BARLINE)+ measure (DOUBLEBAR | ENDREPEAT)) | (ONEREPEAT (measure BARLINE)* measure ENDREPEAT TWOREPEAT (measure BARLINE)* measure DOUBLEBAR?));
+measure : WHITESPACE noteelement+ WHITESPACE+ ;
+noteelement : note | rest | chord | tuplet;
 tuplet : tupletspec (note | chord)+;
 tupletspec : '(' DIGIT ;
 chord : '[' note+ ']';
@@ -27,9 +25,15 @@ text : ~NEWLINE;
 NOTELETTER : [a-gA-G];
 OCTAVE : '\''+ | ','+;
 ACCIDENTAL : '_' | '__' | '^' | '^^' | '=';
-BARLINE : '|' | '||' | '|:' | ':|' | '[|' | '|]'; 
-NUMREPEAT: '[1' | '[2';
+BARLINE : '|';
+DOUBLEBAR : '||' | '[|' | '|]'; 
+STARTREPEAT : '|:';
+ENDREPEAT : ':|';
+ONEREPEAT: '[1';
+TWOREPEAT: '[2';
 NEWLINE : [\r]? [\n];
-WHITESPACE : [\t]+;
+WHITESPACE : [ \t]+;
 DIGIT : [0-9];
+
+
 

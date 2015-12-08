@@ -46,14 +46,15 @@ import abc.parser.MusicLexer;
 import abc.parser.MusicListener;
 import abc.parser.MusicParser;
 import abc.parser.MusicParser.ChordContext;
-import abc.parser.MusicParser.ElementContext;
 import abc.parser.MusicParser.MeasureContext;
 import abc.parser.MusicParser.MidtuneContext;
 import abc.parser.MusicParser.MusicContext;
 import abc.parser.MusicParser.NoteContext;
 import abc.parser.MusicParser.NoteelementContext;
 import abc.parser.MusicParser.NotelengthContext;
+import abc.parser.MusicParser.RepeatContext;
 import abc.parser.MusicParser.RestContext;
+import abc.parser.MusicParser.SectionContext;
 import abc.parser.MusicParser.TupletContext;
 import abc.parser.MusicParser.TupletspecContext;
 
@@ -396,6 +397,7 @@ public class Parser {
         private final Fraction defaultNoteLength;
         private final Map<Accidental, Integer> accidental = new HashMap<Accidental, Integer>();
         private final Stack<Music> stack = new Stack<>();
+        private final Stack<List<Music>> listStack = new Stack<>();
 
         //        public MakeMusic(){
         //            KeySignatureMap map = new KeySignatureMap();
@@ -437,12 +439,6 @@ public class Parser {
         }
 
         @Override
-        public void exitElement(MusicParser.ElementContext ctx) {
-            // TODO Auto-generated method stub
-
-        }
-
-        @Override
         public void exitMidtune(MusicParser.MidtuneContext ctx) {
             // TODO Auto-generated method stub
 
@@ -453,21 +449,79 @@ public class Parser {
             // TODO Auto-generated method stub
 
         }
+        
+        
+        @Override
+        public void exitSection(SectionContext ctx) {  
+        }
+        
+        @Override
+        public void exitRepeat(RepeatContext ctx) {
+            int numMeasures = ctx.measure().size();
+            List<Music> baseMeasures = new ArrayList<Music>();
+            for (int i = 0; i < numMeasures; i++){
+                baseMeasures.add(stack.pop());
+            }
+            Collections.reverse(baseMeasures);
+            
+            // parse through repeats 
+            List<Music> finalMeasures = new ArrayList<Music>();
+            
+            
+            
+            
+            
+            
+          
+        }
 
+        @Override
+        public void exitMeasure(MeasureContext ctx) {
+            int numElements = ctx.noteelement().size();
+            List<Music> noteElements = new ArrayList<Music>();
+            for (int i = 0; i < numElements; i++){
+                noteElements.add(stack.pop());
+            }
+            Collections.reverse(noteElements);
+            
+            boolean transpose = false;
+            char note = 'y';
+            int octave = 0;
+            int semitonesUp= 0;
+            for (Music m : noteElements){
+                if(m instanceof Note && ((Note)m).getTransposeTag()){
+                    Note n = (Note)m;
+                    transpose = true;
+                    note = n.getNoteLetter();
+                    octave = n.getOctave();
+                    semitonesUp = n.getAccidental();
+                }
+                if(transpose){
+                    m.transposeKey(note, octave, semitonesUp);
+                }
+            }
+            Measure m = new Measure(noteElements);
+            stack.push(m);
+        }
+        
+        @Override
+        public void exitNoteelement(NoteelementContext ctx) { }
 
         @Override
         public void exitTuplet(MusicParser.TupletContext ctx) {
             int tupletNum = Integer.valueOf(ctx.tupletspec().getText().replace("(", ""));
             assert stack.size()> tupletNum;
             assert tupletNum > 1 && tupletNum < 5;
+            
+            int tupletSize = ctx.note().size() + ctx.chord().size();
             List<Music> tupletNotes = new ArrayList<Music>();
 
-            for (int i = 0; i < tupletNum; i++){
+            for (int i = 0; i < tupletSize; i++){
                 tupletNotes.add(stack.pop());
             }
             Collections.reverse(tupletNotes);
-            Music m = new Tuplet(tupletNum, tupletNotes);
-            stack.push(m);
+            Tuplet t = new Tuplet(tupletNum, tupletNotes);
+            stack.push(t);
         }
 
         @Override
@@ -506,6 +560,7 @@ public class Parser {
             int octave = 0;
             char noteLetter = 'y';
             int numAccidental = 0;
+            boolean transpose = false;
             if (ctx.NOTELETTER()!= null){
                 char note = ctx.NOTELETTER().getText().charAt(0);
                 if (Character.isLowerCase(note)){
@@ -536,10 +591,11 @@ public class Parser {
                 if (accidental.contains("^")){
                     numAccidental = accidental.length();
                 }
-
+                transpose = true;
             }
-            Music m = new Note(noteLength, noteLetter, octave, numAccidental);
-            stack.push(m);
+            Note n = new Note(noteLength, noteLetter, octave, numAccidental);
+            n.setTransposeTag(transpose);
+            stack.push(n);
         }
 
         @Override
@@ -549,8 +605,8 @@ public class Parser {
                 String length = ctx.notelength().getText();
                 noteLength = parseNoteLength(length);
             }
-            Music m = new Rest(noteLength);
-            stack.push(m);
+            Rest r = new Rest(noteLength);
+            stack.push(r);
 
         }
 
@@ -593,9 +649,6 @@ public class Parser {
         public void enterMusic(MusicContext ctx) {}
 
         @Override
-        public void enterElement(ElementContext ctx) { }
-
-        @Override
         public void enterMidtune(MidtuneContext ctx) {}
 
         @Override
@@ -625,33 +678,20 @@ public class Parser {
         @Override
         public void enterChord(ChordContext ctx) { }
 
-
         @Override
-        public void enterNoteelement(NoteelementContext ctx) {
-            // TODO Auto-generated method stub
-            
-        }
-
-
+        public void enterNoteelement(NoteelementContext ctx) { }
+        
         @Override
-        public void exitNoteelement(NoteelementContext ctx) {
-            // TODO Auto-generated method stub
-            
-        }
+        public void enterMeasure(MeasureContext ctx) { }
 
 
         @Override
-        public void enterMeasure(MeasureContext ctx) {
-            // TODO Auto-generated method stub
-            
-        }
+        public void enterSection(SectionContext ctx) { }
 
 
         @Override
-        public void exitMeasure(MeasureContext ctx) {
-            // TODO Auto-generated method stub
-            
-        }
+        public void enterRepeat(RepeatContext ctx) { }
+
 
     }
 }

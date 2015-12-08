@@ -46,7 +46,7 @@ public class Rest implements Music {
     }
 
     @Override
-    public void transposeKey(char note, int semitonesUp) {
+    public void transposeKey(char note,int octave, int semitonesUp) {
         //rests cannot be transposed
     }
 
