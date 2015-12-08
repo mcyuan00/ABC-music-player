@@ -27,6 +27,7 @@ public class Tuplet implements Music{
      * @param tupletNumber type of tuplet (2 for duplet, 3 for triplet, and 4 for quadruplet)
      * @param notes notes in the tuplet; each note are required to have the same duration
      */
+
     public Tuplet(int tupletNumber, List<Music> notes){
         this.tupletNumber = tupletNumber;
         this.notes = notes;
@@ -69,6 +70,7 @@ public class Tuplet implements Music{
     /**
      * @return the tuplet number (i.e. 2 for duplet, 3 for triplet, 4 for quaduplet)
      */
+
     public int tupletNumber(){
         return tupletNumber;
         
@@ -83,6 +85,7 @@ public class Tuplet implements Music{
 
     @Override
     public List<PlayerElement> getPlayerElements(int startTick, int ticksPerBeat, Fraction pieceNoteLength) {
+        //TODO: fix so that tuplets play the right amount time
         List<PlayerElement> elements = new ArrayList<PlayerElement>();
         int currentStart = startTick;
         for (Music music : notes){
@@ -110,9 +113,9 @@ public class Tuplet implements Music{
     }
 
     @Override
-    public void transposeKey(char note, int semitonesUp) {
+    public void transposeKey(char note,int octave, int semitonesUp) {
         for (Music m : notes){
-            m.transposeKey(note, semitonesUp);
+            m.transposeKey(note, octave,semitonesUp);
         }
         
     }

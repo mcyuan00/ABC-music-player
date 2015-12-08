@@ -151,6 +151,18 @@ public class HeaderBaseListener implements HeaderListener {
    *
    * <p>The default implementation does nothing.</p>
    */
+  @Override public void enterEndline(HeaderParser.EndlineContext ctx) { }
+  /**
+   * {@inheritDoc}
+   *
+   * <p>The default implementation does nothing.</p>
+   */
+  @Override public void exitEndline(HeaderParser.EndlineContext ctx) { }
+  /**
+   * {@inheritDoc}
+   *
+   * <p>The default implementation does nothing.</p>
+   */
   @Override public void enterComment(HeaderParser.CommentContext ctx) { }
   /**
    * {@inheritDoc}

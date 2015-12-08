@@ -359,7 +359,7 @@ public class ParseTest {
     // comment
     @Test
     public void testComment(){
-        Header header = Parser.parseHeader("X:1\n%comment\nT:hello world\nK:A\n");
+        Header header = Parser.parseHeader("X:1%comment\nT:hello world\nK:A\n");
         assertEquals(1, header.index());
         assertEquals("helloworld", header.title());
         assertEquals(KeySignature.valueOf("A_MAJOR"), header.keySignature());

@@ -12,9 +12,10 @@ import java.util.Set;
 public class Note implements Music {
     private final Fraction duration;
     private final char noteLetter;
-//    private final int octave;
-//    private final int accidental;
+    private final int octave;
+    private final int accidental;
     private final Pitch pitch;
+    private boolean wasTransposed = false;
 
     /**
      * Make a Note with a certain pitch (without an accidental) played for duration beats.
@@ -26,8 +27,8 @@ public class Note implements Music {
     public Note(Fraction duration, char noteLetter, int octave){
         this.duration = duration.simplify();
         this.noteLetter = noteLetter;
-//        this.octave = octave;
-//        this.accidental = 0;
+        this.octave = octave;
+        this.accidental = 0;
         pitch = new Pitch(noteLetter).transpose(Pitch.OCTAVE*octave);
     }
     
@@ -44,8 +45,8 @@ public class Note implements Music {
     public Note(Fraction duration, char noteLetter, int octave, int accidental){
         this.duration = duration.simplify();
         this.noteLetter = noteLetter;
-//        this.octave = octave;
-//        this.accidental = accidental;
+        this.octave = octave;
+        this.accidental = accidental;
         pitch = new Pitch(noteLetter).transpose(Pitch.OCTAVE*octave + accidental);
     }
     
@@ -70,10 +71,30 @@ public class Note implements Music {
     }
     
     @Override
-    public void transposeKey(char note, int semitonesUp) {
-        if(note == noteLetter){
+    public void transposeKey(char note, int octave, int semitonesUp) {
+        if(note == noteLetter && this.octave == octave){
             pitch.transpose(semitonesUp);
         }  
+    }
+
+    public void setTransposeTag(boolean transpose){
+        this.wasTransposed = transpose;
+    }
+    
+    public boolean getTransposeTag(){
+        return wasTransposed;
+    }
+    
+    public char getNoteLetter(){
+        return noteLetter;
+    }
+    
+    public int getOctave(){
+        return octave;
+    }
+    
+    public int getAccidental(){
+        return accidental;
     }
     
     @Override
