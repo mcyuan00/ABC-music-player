@@ -30,6 +30,7 @@ import abc.parser.HeaderListener;
 import abc.parser.HeaderParser;
 import abc.parser.HeaderParser.CommentContext;
 import abc.parser.HeaderParser.ComposerContext;
+import abc.parser.HeaderParser.EndlineContext;
 import abc.parser.HeaderParser.HeaderContext;
 import abc.parser.HeaderParser.IndexContext;
 import abc.parser.HeaderParser.KeyContext;
@@ -346,6 +347,18 @@ public class Parser {
 
         @Override
         public void enterText(TextContext ctx) { }
+
+        @Override
+        public void enterEndline(EndlineContext ctx) {
+            // TODO Auto-generated method stub
+            
+        }
+
+        @Override
+        public void exitEndline(EndlineContext ctx) {
+            // TODO Auto-generated method stub
+            
+        }
 
     }
 

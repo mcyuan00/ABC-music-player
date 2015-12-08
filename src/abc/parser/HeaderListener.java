@@ -121,6 +121,16 @@ public interface HeaderListener extends ParseTreeListener {
    */
   void exitKey(HeaderParser.KeyContext ctx);
   /**
+   * Enter a parse tree produced by {@link HeaderParser#endline}.
+   * @param ctx the parse tree
+   */
+  void enterEndline(HeaderParser.EndlineContext ctx);
+  /**
+   * Exit a parse tree produced by {@link HeaderParser#endline}.
+   * @param ctx the parse tree
+   */
+  void exitEndline(HeaderParser.EndlineContext ctx);
+  /**
    * Enter a parse tree produced by {@link HeaderParser#comment}.
    * @param ctx the parse tree
    */
