@@ -78,12 +78,12 @@ public class Parser {
         // Other grammars may have different names for the starter rule.
         ParseTree tree = parser.root();
 
-        //                        Future<JDialog> inspect = Trees.inspect(tree, parser);
-        //                        try {
-        //                            Utils.waitForClose(inspect.get());
-        //                        } catch (Exception e) {
-        //                            e.printStackTrace();
-        //                        }
+        //        Future<JDialog> inspect = Trees.inspect(tree, parser);
+        //        try {
+        //            Utils.waitForClose(inspect.get());
+        //        } catch (Exception e) {
+        //            e.printStackTrace();
+        //        }
 
         MakeHeader headerMaker = new MakeHeader();
         new ParseTreeWalker().walk(headerMaker, tree);
@@ -228,6 +228,7 @@ public class Parser {
             int denominator = Integer.valueOf(nums[1]);
             return new Fraction(numerator, denominator);
         }
+
         @Override
         public void exitRoot(HeaderParser.RootContext ctx) { }
 
@@ -350,32 +351,34 @@ public class Parser {
     }
 
     public static Music parseMusic(String input, Fraction defaultNoteLength, KeySignature keySig){
-//        try{
-            // Create a stream of characters from the string
-            CharStream stream = new ANTLRInputStream(input);
+        //        try{
+        // Create a stream of characters from the string
+        CharStream stream = new ANTLRInputStream(input);
 
-            MusicLexer lexer = new MusicLexer(stream);
-            TokenStream tokens = new CommonTokenStream(lexer);
-            MusicParser parser = new MusicParser(tokens);
-            
-            lexer.reportErrorsAsExceptions();
-            parser.reportErrorsAsExceptions();
+        MusicLexer lexer = new MusicLexer(stream);
+        TokenStream tokens = new CommonTokenStream(lexer);
+        MusicParser parser = new MusicParser(tokens);
 
-            // Generate the parse tree using the starter rule.
-            // root is the starter rule for this grammar.
-            // Other grammars may have different names for the starter rule.
-            ParseTree tree = parser.root();
+        lexer.reportErrorsAsExceptions();
+        parser.reportErrorsAsExceptions();
 
-            MakeMusic musicMaker = new MakeMusic(keySig, defaultNoteLength);
-            new ParseTreeWalker().walk(musicMaker, tree);
-            return musicMaker.getMusic();
+        // Generate the parse tree using the starter rule.
+        // root is the starter rule for this grammar.
+        // Other grammars may have different names for the starter rule.
+        ParseTree tree = parser.root();
 
-//        }
-//        catch(RuntimeException e){
-//            System.out.println(e.getMessage()); //not used after debugging
-//            throw new IllegalArgumentException();
-//        }
+        MakeMusic musicMaker = new MakeMusic(keySig, defaultNoteLength);
+        new ParseTreeWalker().walk(musicMaker, tree);
+        return musicMaker.getMusic();
+
+        //        }
+        //        catch(RuntimeException e){
+        //            System.out.println(e.getMessage()); //not used after debugging
+        //            throw new IllegalArgumentException();
+        //        }
     }
+    
+    
     static class MakeMusic implements MusicListener{
         private final Map<NoteLetter, Accidental> keySig;
         private final Fraction defaultNoteLength;
@@ -383,16 +386,16 @@ public class Parser {
         private final Stack<Music> stack = new Stack<>();
         private final Stack<List<Music>> listStack = new Stack<>();
 
-//        public MakeMusic(){
-//            KeySignatureMap map = new KeySignatureMap();
-//            this.keySig = KeySignatureMap.KEY_SIGNATURE_MAP.get(KeySignature.valueOf("C_MAJOR"));
-//            accidental.put(Accidental.valueOf("DOUBLESHARP"), 2);
-//            accidental.put(Accidental.valueOf("SHARP"), 1);
-//            accidental.put(Accidental.valueOf("NATURAL"), 0);
-//            accidental.put(Accidental.valueOf("FLAT"), -1);
-//            accidental.put(Accidental.valueOf("DOUBLEFLAT"), -2);
-//
-//        }
+        //        public MakeMusic(){
+        //            KeySignatureMap map = new KeySignatureMap();
+        //            this.keySig = KeySignatureMap.KEY_SIGNATURE_MAP.get(KeySignature.valueOf("C_MAJOR"));
+        //            accidental.put(Accidental.valueOf("DOUBLESHARP"), 2);
+        //            accidental.put(Accidental.valueOf("SHARP"), 1);
+        //            accidental.put(Accidental.valueOf("NATURAL"), 0);
+        //            accidental.put(Accidental.valueOf("FLAT"), -1);
+        //            accidental.put(Accidental.valueOf("DOUBLEFLAT"), -2);
+        //
+        //        }
 
         public MakeMusic(KeySignature keysig, Fraction defaultNoteLength){
             KeySignatureMap map = new KeySignatureMap();
@@ -409,8 +412,7 @@ public class Parser {
         public Music getMusic(){
             return stack.get(0);
         }
-       
-        
+
         @Override
         public void exitRoot(MusicParser.RootContext ctx) {
             // TODO Auto-generated method stub
@@ -490,24 +492,22 @@ public class Parser {
         }
         
         @Override
-        public void exitNoteelement(NoteelementContext ctx) {
-            // TODO Auto-generated method stub
-            
-        }
-
+        public void exitNoteelement(NoteelementContext ctx) { }
 
         @Override
         public void exitTuplet(MusicParser.TupletContext ctx) {
-            int tupletType = Integer.valueOf(ctx.tupletspec().getText().replace("(", ""));
-            assert stack.size()> tupletType;
-            assert tupletType > 1 && tupletType < 5;
+            int tupletNum = Integer.valueOf(ctx.tupletspec().getText().replace("(", ""));
+            assert stack.size()> tupletNum;
+            assert tupletNum > 1 && tupletNum < 5;
+            
+            int tupletSize = ctx.note().size() + ctx.chord().size();
             List<Music> tupletNotes = new ArrayList<Music>();
 
-            for (int i = 0; i < tupletType; i++){
+            for (int i = 0; i < tupletSize; i++){
                 tupletNotes.add(stack.pop());
             }
             Collections.reverse(tupletNotes);
-            Tuplet t = new Tuplet(tupletType, tupletNotes, tupletNotes.get(0).duration());
+            Tuplet t = new Tuplet(tupletNum, tupletNotes);
             stack.push(t);
         }
 
@@ -534,12 +534,12 @@ public class Parser {
                 return new Fraction(Integer.valueOf(length), 1);
             }
             String[] nums = length.split("/");
-            
+
             int numerator = (nums[0].equals("")) ? 1 : Integer.valueOf(nums[0]);
             int denominator = (nums[1].equals("")) ? 2 : Integer.valueOf(nums[1]);
             return new Fraction(numerator, denominator);
         }
-        
+
         @Override
         public void exitNote(MusicParser.NoteContext ctx) {
             System.out.println(ctx.NOTELETTER().getText());
@@ -678,7 +678,6 @@ public class Parser {
 
         @Override
         public void enterRepeat(RepeatContext ctx) { }
-
 
 
     }
