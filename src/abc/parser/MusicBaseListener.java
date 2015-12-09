@@ -79,6 +79,18 @@ public class MusicBaseListener implements MusicListener {
    *
    * <p>The default implementation does nothing.</p>
    */
+  @Override public void enterNormalmeasure(MusicParser.NormalmeasureContext ctx) { }
+  /**
+   * {@inheritDoc}
+   *
+   * <p>The default implementation does nothing.</p>
+   */
+  @Override public void exitNormalmeasure(MusicParser.NormalmeasureContext ctx) { }
+  /**
+   * {@inheritDoc}
+   *
+   * <p>The default implementation does nothing.</p>
+   */
   @Override public void enterDoublebarmeasure(MusicParser.DoublebarmeasureContext ctx) { }
   /**
    * {@inheritDoc}
@@ -122,18 +134,6 @@ public class MusicBaseListener implements MusicListener {
    * <p>The default implementation does nothing.</p>
    */
   @Override public void exitSinglerepeatmeasure(MusicParser.SinglerepeatmeasureContext ctx) { }
-  /**
-   * {@inheritDoc}
-   *
-   * <p>The default implementation does nothing.</p>
-   */
-  @Override public void enterNormalmeasure(MusicParser.NormalmeasureContext ctx) { }
-  /**
-   * {@inheritDoc}
-   *
-   * <p>The default implementation does nothing.</p>
-   */
-  @Override public void exitNormalmeasure(MusicParser.NormalmeasureContext ctx) { }
   /**
    * {@inheritDoc}
    *

@@ -388,12 +388,12 @@ public class Parser {
         ParseTree tree = parser.root();
 
         
-//        Future<JDialog> inspect = Trees.inspect(tree, parser);
-//        try {
-//            Utils.waitForClose(inspect.get());
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+        Future<JDialog> inspect = Trees.inspect(tree, parser);
+        try {
+            Utils.waitForClose(inspect.get());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         MakeMusic musicMaker = new MakeMusic(keySig, defaultNoteLength, voice);
         new ParseTreeWalker().walk(musicMaker, tree);
