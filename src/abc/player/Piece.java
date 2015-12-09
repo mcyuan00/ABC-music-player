@@ -3,7 +3,6 @@ package abc.player;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiUnavailableException;
 
@@ -39,7 +38,6 @@ public class Piece {
      */
     public void play() throws MidiUnavailableException, InvalidMidiDataException{
         int tempo = header.tempo();
-        
         Set<Integer> durationDenominators = new HashSet<Integer>();
         for (Music m: voices){
             durationDenominators.addAll(m.getAllDurationDenominators());
@@ -59,7 +57,33 @@ public class Piece {
     }
     
     private int getLCM(Set<Integer> durationDenominators){
-        return 0;
+        int currentLcm = 1;
+        for (int denominator : durationDenominators){
+            currentLcm = pairLCM(denominator, currentLcm);
+        }
+        return currentLcm;
+    }
+    
+    private int pairLCM(int firstNum, int secondNum){
+        int product = firstNum * secondNum;
+        int gcd = pairGCD(firstNum, secondNum);
+        return product / gcd;
+    }
+    
+    private int pairGCD(int firstNum, int secondNum){
+        if(firstNum == 0){
+            return secondNum;
+        }
+        if(secondNum == 0){
+            return firstNum;
+        }
+        if(firstNum == secondNum){
+            return firstNum;
+        }
+        if(firstNum < secondNum){
+            return pairGCD(firstNum, (secondNum%firstNum));
+        }
+        return pairGCD((firstNum % secondNum), secondNum);
     }
 
 }
