@@ -510,14 +510,12 @@ public class ParseTest {
     // covers normal measure (one element), note (lowercase note letter), note (natural)
     @Test
     public void testLowercaseNoteNatural(){
-        String test = "^a =a|";
-        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
+        String test = "=f|";
+        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("G_MAJOR"));
         assertEquals(new Fraction(1,4), measure.duration());
         List<Music> expected = new ArrayList<>();
-        Note note1 = new Note(new Fraction(1,4), 'A', 1, 1);
-        Note note2 = new Note(new Fraction(1,4), 'A', 1, 0);
-        expected.add(note1);
-        expected.add(note2);
+        Note note = new Note(new Fraction(1,4), 'F', 1, 0);
+        expected.add(note);
         assertEquals(expected, measure.getElements());
     }
     
