@@ -60,6 +60,7 @@ import abc.parser.MusicParser.NotelengthContext;
 import abc.parser.MusicParser.PitchContext;
 import abc.parser.MusicParser.RestContext;
 import abc.parser.MusicParser.SecondendingmeasureContext;
+import abc.parser.MusicParser.SinglerepeatmeasureContext;
 import abc.parser.MusicParser.StartrepeatmeasureContext;
 import abc.parser.MusicParser.TupletelementContext;
 import abc.parser.MusicParser.TupletspecContext;
@@ -556,6 +557,10 @@ public class Parser {
             Measure m = new Measure(newElements, false, true, false, false);
             stack.push(m);         
         }
+        
+        //TODO
+        @Override
+        public void exitSinglerepeatmeasure(SinglerepeatmeasureContext ctx) { }
 
 
         @Override
@@ -853,6 +858,11 @@ public class Parser {
 
         @Override
         public void enterPitch(PitchContext ctx) { }
+
+
+        @Override
+        public void enterSinglerepeatmeasure(SinglerepeatmeasureContext ctx) { }
+
 
     }
 }

@@ -23,6 +23,10 @@ public class Voice implements Music {
         this.name = name;
         this.musicElements = musicElements;
     }
+    
+    public List<Music> getElements(){
+        return musicElements;
+    }
 
     @Override
     public Fraction duration() {

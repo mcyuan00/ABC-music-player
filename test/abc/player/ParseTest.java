@@ -431,261 +431,275 @@ public class ParseTest {
     @Test
     public void testUppercaseNoteDefaultLength(){
         String test = "A|";
-        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
-        assertEquals(new Fraction(1,4), measure.duration());
+        Voice voice = (Voice) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"), "voice");
+        assertEquals(new Fraction(1,4), voice.duration());
         List<Music> expected = new ArrayList<>();
         Note note = new Note(new Fraction(1,4), 'A', 0);
         expected.add(note);
-        assertEquals(expected, measure.getElements());
+        Measure measure = new Measure(expected, false, false, false, false);
+        assertEquals(measure, voice.getElements());
     }
     
     // covers normal measure (one element), note (lowercase note letter), note (length n), note (one octave above)
     @Test
     public void testLowercaseNoteLengthN(){
         String test = "a2|";
-        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
-        assertEquals(new Fraction(1,2), measure.duration());
+        Voice voice = (Voice) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"), "voice");
+        assertEquals(new Fraction(1,2), voice.duration());
         List<Music> expected = new ArrayList<>();
         Note note = new Note(new Fraction(1,2), 'A', 1);
         expected.add(note);
-        assertEquals(expected, measure.getElements());
+        Measure measure = new Measure(expected, false, false, false, false);
+        assertEquals(measure, voice.getElements());
     }
     
     // covers normal measure (one element), note (lowercase note letter), note (length n/m)
     @Test
     public void testLowercaseNoteLengthNSlashM(){
         String test = "a3/2|";
-        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
-        assertEquals(new Fraction(3,8), measure.duration());
+        Voice voice = (Voice) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"), "voice");
+        assertEquals(new Fraction(3,8), voice.duration());
     }
     
     // covers normal measure (one element), note (lowercase note letter), note (length n/)
     @Test
     public void testLowercaseNoteLengthNSlash(){
         String test = "a3/|";
-        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
-        assertEquals(new Fraction(3,8), measure.duration());
+        Voice voice = (Voice) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"), "voice");
+        assertEquals(new Fraction(3,8), voice.duration());
     }
     
     // covers normal measure (one element), note (lowercase note letter), note (length /m)
     @Test
     public void testLowercaseNoteLengthSlashM(){
         String test = "a/3|";
-        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
-        assertEquals(new Fraction(1,12), measure.duration());
+        Voice voice = (Voice) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"), "voice");
+        assertEquals(new Fraction(1,12), voice.duration());
     }
     
     // covers normal measure (one element), note (lowercase note letter), note (length /)
     @Test
     public void testLowercaseNoteLengthSlash(){
         String test = "a/|";
-        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
-        assertEquals(new Fraction(1,8), measure.duration());
+        Voice voice = (Voice) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"), "voice");
+        assertEquals(new Fraction(1,8), voice.duration());
     }
     
     // covers normal measure (one element), note (lowercase note letter), note (sharp accidental)
     @Test
     public void testLowercaseNoteLengthNSharp(){
         String test = "^a|";
-        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
-        assertEquals(new Fraction(1,4), measure.duration());
+        Voice voice = (Voice) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"), "voice");
+        assertEquals(new Fraction(1,4), voice.duration());
         List<Music> expected = new ArrayList<>();
         Note note = new Note(new Fraction(1,4), 'A', 1, 1);
         expected.add(note);
-        assertEquals(expected, measure.getElements());
+        Measure measure = new Measure(expected, false, false, false, false);
+        assertEquals(measure, voice.getElements());
     }
     
     // covers normal measure (one element), note (lowercase note letter), note (double sharp accidental)
     @Test
     public void testLowercaseNoteDoubleSharp(){
         String test = "^^a|";
-        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
-        assertEquals(new Fraction(1,4), measure.duration());
+        Voice voice = (Voice) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"), "voice");
+        assertEquals(new Fraction(1,4), voice.duration());
         List<Music> expected = new ArrayList<>();
         Note note = new Note(new Fraction(1,4), 'A', 1, 2);
         expected.add(note);
-        assertEquals(expected, measure.getElements());
+        Measure measure = new Measure(expected, false, false, false, false);
+        assertEquals(measure, voice.getElements());
     }
     
     // covers normal measure (one element), note (lowercase note letter), note (natural)
     @Test
     public void testLowercaseNoteNatural(){
         String test = "=f|";
-        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("G_MAJOR"));
-        assertEquals(new Fraction(1,4), measure.duration());
+        Voice voice = (Voice) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("G_MAJOR"), "voice");
+        assertEquals(new Fraction(1,4), voice.duration());
         List<Music> expected = new ArrayList<>();
         Note note = new Note(new Fraction(1,4), 'F', 1, 0);
         expected.add(note);
-        assertEquals(expected, measure.getElements());
+        Measure measure = new Measure(expected, false, false, false, false);
+        assertEquals(measure, voice.getElements());
     }
     
     // covers normal measure (multiple elements), note (lowercase note letter), note (natural)
     @Test
     public void testLowercaseNoteSharpThenNatural(){
         String test = "^a =a|";
-        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
-        assertEquals(new Fraction(1,2), measure.duration());
+        Voice voice = (Voice) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"), "voice");
+        assertEquals(new Fraction(1,2), voice.duration());
         List<Music> expected = new ArrayList<>();
         Note note1 = new Note(new Fraction(1,4), 'A', 1, 1);
         Note note2 = new Note(new Fraction(1,4), 'A', 1, 0);
         expected.add(note1);
         expected.add(note2);
-        assertEquals(expected, measure.getElements());
+        Measure measure = new Measure(expected, false, false, false, false);
+        assertEquals(measure, voice.getElements());
     }
     
     // covers normal measure (one element), note (lowercase note letter), note (flat accidental)
     @Test
     public void testLowercaseNoteFlat(){
         String test = "_a|";
-        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
-        assertEquals(new Fraction(1,4), measure.duration());
+        Voice voice = (Voice) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"), "voice");
+        assertEquals(new Fraction(1,4), voice.duration());
         List<Music> expected = new ArrayList<>();
         Note note = new Note(new Fraction(1,4), 'A', 1, -1);
         expected.add(note);
-        assertEquals(expected, measure.getElements());
+        Measure measure = new Measure(expected, false, false, false, false);
+        assertEquals(measure, voice.getElements());
     }
     
     // covers normal measure (one element), note (lowercase note letter), note (double flat accidental)
     @Test
     public void testLowercaseNoteDoubleFlat(){
         String test = "__a|";
-        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
-        assertEquals(new Fraction(1,4), measure.duration());
+        Voice voice = (Voice) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"), "voice");
+        assertEquals(new Fraction(1,4), voice.duration());
         List<Music> expected = new ArrayList<>();
         Note note = new Note(new Fraction(1,4), 'A', 1, -2);
         expected.add(note);
-        assertEquals(expected, measure.getElements());
+        Measure measure = new Measure(expected, false, false, false, false);
+        assertEquals(measure, voice.getElements());
     }
     
     // covers normal measure (one element), note (lowercase note letter), note (two octaves above)
     @Test
     public void testLowercaseNoteOneApostrophe(){
         String test = "a'|";
-        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
-        assertEquals(new Fraction(1,4), measure.duration());
+        Voice voice = (Voice) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"), "voice");
+        assertEquals(new Fraction(1,4), voice.duration());
         List<Music> expected = new ArrayList<>();
         Note note = new Note(new Fraction(1,4), 'A', 2);
         expected.add(note);
-        assertEquals(expected, measure.getElements());
+        Measure measure = new Measure(expected, false, false, false, false);
+        assertEquals(measure, voice.getElements());
     }
     
     // covers normal measure (one element), note (lowercase note letter), note (three octaves above)
     @Test
     public void testLowercaseNoteTwoApostrophes(){
         String test = "a''|";
-        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
-        assertEquals(new Fraction(1,4), measure.duration());
+        Voice voice = (Voice) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"), "voice");
+        assertEquals(new Fraction(1,4), voice.duration());
         List<Music> expected = new ArrayList<>();
         Note note = new Note(new Fraction(1,4), 'A', 3);
         expected.add(note);
-        assertEquals(expected, measure.getElements());
+        Measure measure = new Measure(expected, false, false, false, false);
+        assertEquals(measure, voice.getElements());
     }
     
     // covers normal measure (one element), note (uppercase note letter), note (one octave below)
     @Test
     public void testUppercaseNoteOneComma(){
         String test = "A,|";
-        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
-        assertEquals(new Fraction(1,4), measure.duration());
+        Voice voice = (Voice) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"), "voice");
+        assertEquals(new Fraction(1,4), voice.duration());
         List<Music> expected = new ArrayList<>();
         Note note = new Note(new Fraction(1,4), 'A', -1);
         expected.add(note);
-        assertEquals(expected, measure.getElements());
+        Measure measure = new Measure(expected, false, false, false, false);
+        assertEquals(measure, voice.getElements());
     }
     
     // covers normal measure (one element), note (uppercase note letter), note (two octaves below)
     @Test
     public void testUppercaseNoteTwoCommas(){
         String test = "A,,|";
-        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
-        assertEquals(new Fraction(1,4), measure.duration());
+        Voice voice = (Voice) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"), "voice");
+        assertEquals(new Fraction(1,4), voice.duration());
         List<Music> expected = new ArrayList<>();
         Note note = new Note(new Fraction(1,4), 'A', -2);
         expected.add(note);
-        assertEquals(expected, measure.getElements());
+        Measure measure = new Measure(expected, false, false, false, false);
+        assertEquals(measure, voice.getElements());
     }
     
     // covers normal measure (one element), note (lowercase note letter), note (octaves cancel)
     @Test
     public void testLowercaseNoteOneComma(){
         String test = "a,|";
-        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
-        assertEquals(new Fraction(1,4), measure.duration());
+        Voice voice = (Voice) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"), "voice");
+        assertEquals(new Fraction(1,4), voice.duration());
         List<Music> expected = new ArrayList<>();
         Note note = new Note(new Fraction(1,4), 'A', 0);
         expected.add(note);
-        assertEquals(expected, measure.getElements());
+        Measure measure = new Measure(expected, false, false, false, false);
+        assertEquals(measure, voice.getElements());
     }
     
     // covers normal measure (one element), rest (default length)
     @Test
     public void testRestDefaultLength(){
         String test = "z|";
-        Music measure = Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
-        assertEquals(new Fraction(1,4), measure.duration());
+        Voice voice = (Voice) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"), "voice");
+        assertEquals(new Fraction(1,4), voice.duration());
     }
     
     // covers normal measure (one element), rest (length n)
     @Test
     public void testRestLengthN(){
         String test = "z2|";
-        Music measure = Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
-        assertEquals(new Fraction(1,2), measure.duration());
+        Voice voice = (Voice) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"), "voice");
+        assertEquals(new Fraction(1,2), voice.duration());
     }
     
     // covers normal measure (one element), rest (length n/m)
     @Test
     public void testRestLengthNSlashM(){
         String test = "z3/2|";
-        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
-        assertEquals(new Fraction(3,8), measure.duration());
+        Voice voice = (Voice) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"), "voice");
+        assertEquals(new Fraction(3,8), voice.duration());
     }
     
     // covers normal measure (one element), rest (length n/)
     @Test
     public void testRestLengthNSlash(){
         String test = "z3/|";
-        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
-        assertEquals(new Fraction(3,8), measure.duration());
+        Voice voice = (Voice) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"), "voice");
+        assertEquals(new Fraction(3,8), voice.duration());
     }
     
     // covers normal measure (one element), rest (length /m)
     @Test
     public void testRestLengthSlashM(){
         String test = "z/3|";
-        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
-        assertEquals(new Fraction(1,12), measure.duration());
+        Voice voice = (Voice) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"), "voice");
+        assertEquals(new Fraction(1,12), voice.duration());
     }
     
     // covers normal measure (one element), rest (length /)
     @Test
     public void testRestLengthSlash(){
         String test = "z/|";
-        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
-        assertEquals(new Fraction(1,8), measure.duration());
+        Voice voice = (Voice) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"), "voice");
+        assertEquals(new Fraction(1,8), voice.duration());
     }
     
     // covers chord (one note), chord (default length)
     @Test
     public void testChordOneNote(){
         String test = "[C]|";    
-        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
-        assertEquals(new Fraction(1,4), measure.duration());
+        Voice voice = (Voice) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"), "voice");
+        assertEquals(new Fraction(1,4), voice.duration());
         List<Music> expected = new ArrayList<>();
         List<Music> chordNotes = new ArrayList<>();
         Note note = new Note(new Fraction(1,4), 'C', 0);
         chordNotes.add(note);
         Chord chord = new Chord(chordNotes);
         expected.add(chord);
-        assertEquals(expected, measure.getElements());
+        Measure measure = new Measure(expected, false, false, false, false);
+        assertEquals(measure, voice.getElements());
     }
     
     // covers chord (two notes), chord (default length)
     @Test
     public void testChordTwoNotes(){
         String test = "[CE]|";    
-        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
-        assertEquals(new Fraction(1,4), measure.duration());
+        Voice voice = (Voice) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"), "voice");
+        assertEquals(new Fraction(1,4), voice.duration());
         List<Music> expected = new ArrayList<>();
         List<Music> chordNotes = new ArrayList<>();
         Note note1 = new Note(new Fraction(1,4), 'C', 0);
@@ -694,15 +708,16 @@ public class ParseTest {
         chordNotes.add(note2);
         Chord chord = new Chord(chordNotes);
         expected.add(chord);
-        assertEquals(expected, measure.getElements());
+        Measure measure = new Measure(expected, false, false, false, false);
+        assertEquals(measure, voice.getElements());
     }
     
     // covers chord (three notes), chord (default length)
     @Test
     public void testChordThreeNotesDefaultLength(){
         String test = "[CEG]|";    
-        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
-        assertEquals(new Fraction(1,4), measure.duration());
+        Voice voice = (Voice) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"), "voice");
+        assertEquals(new Fraction(1,4), voice.duration());
         List<Music> expected = new ArrayList<>();
         List<Music> chordNotes = new ArrayList<>();
         Note note1 = new Note(new Fraction(1,4), 'C', 0);
@@ -713,15 +728,16 @@ public class ParseTest {
         chordNotes.add(note3);
         Chord chord = new Chord(chordNotes);
         expected.add(chord);
-        assertEquals(expected, measure.getElements());
+        Measure measure = new Measure(expected, false, false, false, false);
+        assertEquals(measure, voice.getElements());
     }
     
     // covers chord (three notes), chord (modified length), chord (no different durations)
     @Test
     public void testChordThreeNotesModifiedLength(){
         String test = "[C2E2G2]|";    
-        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
-        assertEquals(new Fraction(1,2), measure.duration());
+        Voice voice = (Voice) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"), "voice");
+        assertEquals(new Fraction(1,2), voice.duration());
         List<Music> expected = new ArrayList<>();
         List<Music> chordNotes = new ArrayList<>();
         Note note1 = new Note(new Fraction(1,2), 'C', 0);
@@ -732,14 +748,15 @@ public class ParseTest {
         chordNotes.add(note3);
         Chord chord = new Chord(chordNotes);
         expected.add(chord);
-        assertEquals(expected, measure.getElements());
+        Measure measure = new Measure(expected, false, false, false, false);
+        assertEquals(measure, voice.getElements());
     }
     
     // covers chord (three notes), chord (length n), chord (yes different durations)
     @Test
     public void testChordTwoNotesDifferentDurations(){
         String test = "[C2E4]|";    
-        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
+        Voice voice = (Voice) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"), "voice");
         List<Music> expected = new ArrayList<>();
         List<Music> chordNotes = new ArrayList<>();
         Note note1 = new Note(new Fraction(1,2), 'C', 0);
@@ -749,14 +766,15 @@ public class ParseTest {
         Chord chord = new Chord(chordNotes);
         expected.add(chord);
         assertEquals(new Fraction(1,2), chord.duration());
-        assertEquals(expected, measure.getElements());
+        Measure measure = new Measure(expected, false, false, false, false);
+        assertEquals(measure, voice.getElements());
     }
     
     // covers tuplet (duplet), duplet (notes only)
     @Test
     public void testDupletNotesOnly(){
         String test = "(2CE|";    
-        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
+        Voice voice = (Voice) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"), "voice");
         List<Music> expected = new ArrayList<>();
         List<Music> tupletNotes = new ArrayList<>();
         Note note1 = new Note(new Fraction(1,4), 'C', 0);
@@ -766,15 +784,16 @@ public class ParseTest {
         Tuplet tuplet = new Tuplet(2, tupletNotes);
         expected.add(tuplet);
         assertEquals(new Fraction(3,4), tuplet.duration());
-        assertEquals(new Fraction(3,4), measure.duration());
-        assertEquals(expected, measure.getElements());
+        assertEquals(new Fraction(3,4), voice.duration());
+        Measure measure = new Measure(expected, false, false, false, false);
+        assertEquals(measure, voice.getElements());
     }
     
     // covers tuplet (duplet), duplet (chords only)
     @Test
     public void testDupletChordsOnly(){
         String test = "(2[CE][GB]|";    
-        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
+        Voice voice = (Voice) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"), "voice");
         List<Music> expected = new ArrayList<>();
         List<Music> chordNotes1 = new ArrayList<>();
         List<Music> chordNotes2 = new ArrayList<>();
@@ -794,15 +813,16 @@ public class ParseTest {
         Tuplet tuplet = new Tuplet(2, tupletNotes);
         expected.add(tuplet);
         assertEquals(new Fraction(3,4), tuplet.duration());
-        assertEquals(new Fraction(3,4), measure.duration());
-        assertEquals(expected, measure.getElements());
+        assertEquals(new Fraction(3,4), voice.duration());
+        Measure measure = new Measure(expected, false, false, false, false);
+        assertEquals(measure, voice.getElements());
     }
     
     // covers tuplet (duplet), duplet (notes and chords)
     @Test
     public void testDupletNotesAndChords(){
         String test = "(2[CE]G|";    
-        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
+        Voice voice = (Voice) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"), "voice");
         List<Music> expected = new ArrayList<>();
         List<Music> chordNotes1 = new ArrayList<>();
         List<Music> tupletNotes = new ArrayList<>();
@@ -817,15 +837,16 @@ public class ParseTest {
         Tuplet tuplet = new Tuplet(2, tupletNotes);
         expected.add(tuplet);
         assertEquals(new Fraction(3,4), tuplet.duration());
-        assertEquals(new Fraction(3,4), measure.duration());
-        assertEquals(expected, measure.getElements());
+        assertEquals(new Fraction(3,4), voice.duration());
+        Measure measure = new Measure(expected, false, false, false, false);
+        assertEquals(measure, voice.getElements());
     }
     
     // covers tuplet (triplet), triplet (notes only)
     @Test
     public void testTripletNotesOnly(){
         String test = "(3CEG|";    
-        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
+        Voice voice = (Voice) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"), "voice");
         List<Music> expected = new ArrayList<>();
         List<Music> tupletNotes = new ArrayList<>();
         Note note1 = new Note(new Fraction(1,4), 'C', 0);
@@ -837,15 +858,16 @@ public class ParseTest {
         Tuplet tuplet = new Tuplet(3, tupletNotes);
         expected.add(tuplet);
         assertEquals(new Fraction(1,2), tuplet.duration());
-        assertEquals(new Fraction(1,2), measure.duration());
-        assertEquals(expected, measure.getElements());
+        assertEquals(new Fraction(1,2), voice.duration());
+        Measure measure = new Measure(expected, false, false, false, false);
+        assertEquals(measure, voice.getElements());
     }
     
     // covers tuplet (triplet), triplet (chords only)
     @Test
     public void testTripletChordsOnly(){
         String test = "(3[CE][GB][DF]|";    
-        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
+        Voice voice = (Voice) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"), "voice");
         List<Music> expected = new ArrayList<>();
         List<Music> chordNotes1 = new ArrayList<>();
         List<Music> chordNotes2 = new ArrayList<>();
@@ -872,15 +894,16 @@ public class ParseTest {
         Tuplet tuplet = new Tuplet(3, tupletNotes);
         expected.add(tuplet);
         assertEquals(new Fraction(1,2), tuplet.duration());
-        assertEquals(new Fraction(1,2), measure.duration());
-        assertEquals(expected, measure.getElements());
+        assertEquals(new Fraction(1,2), voice.duration());
+        Measure measure = new Measure(expected, false, false, false, false);
+        assertEquals(measure, voice.getElements());
     }
     
     // covers tuplet (triplet), triplet (notes and chords)
     @Test
     public void testTripletNotesAndChords(){
         String test = "(3[CE][GB]D|";    
-        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
+        Voice voice = (Voice) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"), "voice");
         List<Music> expected = new ArrayList<>();
         List<Music> chordNotes1 = new ArrayList<>();
         List<Music> chordNotes2 = new ArrayList<>();
@@ -902,8 +925,139 @@ public class ParseTest {
         Tuplet tuplet = new Tuplet(3, tupletNotes);
         expected.add(tuplet);
         assertEquals(new Fraction(1,2), tuplet.duration());
-        assertEquals(new Fraction(1,2), measure.duration());
-        assertEquals(expected, measure.getElements());
+        assertEquals(new Fraction(1,2), voice.duration());
+        Measure measure = new Measure(expected, false, false, false, false);
+        assertEquals(measure, voice.getElements());
+    }
+    
+    // covers tuplet (quadruplet), quadruplet (notes only)
+    @Test
+    public void testQuadrupletNotesOnly(){
+        String test = "(4CEGB|";    
+        Voice voice = (Voice) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"), "voice");
+        List<Music> expected = new ArrayList<>();
+        List<Music> tupletNotes = new ArrayList<>();
+        Note note1 = new Note(new Fraction(1,4), 'C', 0);
+        Note note2 = new Note(new Fraction(1,4), 'E', 0);
+        Note note3 = new Note(new Fraction(1,4), 'G', 0);
+        Note note4 = new Note(new Fraction(1,4), 'B', 0);
+        tupletNotes.add(note1);
+        tupletNotes.add(note2);
+        tupletNotes.add(note3);
+        tupletNotes.add(note4);
+        Tuplet tuplet = new Tuplet(4, tupletNotes);
+        expected.add(tuplet);
+        assertEquals(new Fraction(3,4), tuplet.duration());
+        assertEquals(new Fraction(3,4), voice.duration());
+        Measure measure = new Measure(expected, false, false, false, false);
+        assertEquals(measure, voice.getElements());
+    }
+    
+    // covers tuplet (quadruplet), quadruplet (chords only)
+    @Test
+    public void testQuadrupletChordsOnly(){
+        String test = "(4[CE][GB][DF][Ac]|";    
+        Voice voice = (Voice) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"), "voice");
+        List<Music> expected = new ArrayList<>();
+        List<Music> chordNotes1 = new ArrayList<>();
+        List<Music> chordNotes2 = new ArrayList<>();
+        List<Music> chordNotes3 = new ArrayList<>();
+        List<Music> chordNotes4 = new ArrayList<>();
+        List<Music> tupletNotes = new ArrayList<>();
+        Note note1 = new Note(new Fraction(1,4), 'C', 0);
+        Note note2 = new Note(new Fraction(1,4), 'E', 0);
+        Note note3 = new Note(new Fraction(1,4), 'G', 0);
+        Note note4 = new Note(new Fraction(1,4), 'B', 0);
+        Note note5 = new Note(new Fraction(1,4), 'D', 0);
+        Note note6 = new Note(new Fraction(1,4), 'F', 0);
+        Note note7 = new Note(new Fraction(1,4), 'A', 0);
+        Note note8 = new Note(new Fraction(1,4), 'C', 1);
+        chordNotes1.add(note1);
+        chordNotes1.add(note2);
+        chordNotes2.add(note3);
+        chordNotes2.add(note4);
+        chordNotes3.add(note5);
+        chordNotes3.add(note6);
+        chordNotes4.add(note7);
+        chordNotes4.add(note8);
+        Chord chord1 = new Chord(chordNotes1);
+        Chord chord2 = new Chord(chordNotes2);
+        Chord chord3 = new Chord(chordNotes3);
+        Chord chord4 = new Chord(chordNotes4);
+        tupletNotes.add(chord1);
+        tupletNotes.add(chord2);
+        tupletNotes.add(chord3);
+        tupletNotes.add(chord4);
+        Tuplet tuplet = new Tuplet(4, tupletNotes);
+        expected.add(tuplet);
+        assertEquals(new Fraction(3,4), tuplet.duration());
+        assertEquals(new Fraction(3,4), voice.duration());
+        Measure measure = new Measure(expected, false, false, false, false);
+        assertEquals(measure, voice.getElements());
+    }
+    
+    // covers tuplet (quadruplet), quadruplet (notes and chords)
+    @Test
+    public void testQuadrupletNotesAndChords(){
+        String test = "(4[CE]G[BD]F|";    
+        Voice voice = (Voice) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"), "voice");
+        List<Music> expected = new ArrayList<>();
+        List<Music> chordNotes1 = new ArrayList<>();
+        List<Music> chordNotes2 = new ArrayList<>();
+        List<Music> tupletNotes = new ArrayList<>();
+        Note note1 = new Note(new Fraction(1,4), 'C', 0);
+        Note note2 = new Note(new Fraction(1,4), 'E', 0);
+        Note note3 = new Note(new Fraction(1,4), 'G', 0);
+        Note note4 = new Note(new Fraction(1,4), 'B', 0);
+        Note note5 = new Note(new Fraction(1,4), 'D', 0);
+        Note note6 = new Note(new Fraction(1,4), 'F', 0);
+        chordNotes1.add(note1);
+        chordNotes1.add(note2);
+        chordNotes2.add(note4);
+        chordNotes2.add(note5);
+        Chord chord1 = new Chord(chordNotes1);
+        Chord chord2 = new Chord(chordNotes2);
+        tupletNotes.add(chord1);
+        tupletNotes.add(chord2);
+        tupletNotes.add(note3);
+        tupletNotes.add(note6);
+        Tuplet tuplet = new Tuplet(4, tupletNotes);
+        expected.add(tuplet);
+        assertEquals(new Fraction(3,4), tuplet.duration());
+        assertEquals(new Fraction(3,4), voice.duration());
+        Measure measure = new Measure(expected, false, false, false, false);
+        assertEquals(measure, voice.getElements());
+    }
+    
+    // covers start repeat measure (|:)
+    @Test
+    public void testStartRepeatFirst(){
+        String test = "|:A";    
+        Voice voice = (Voice) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"), "voice");
+        List<Music> expected = new ArrayList<>();
+        Note note1 = new Note(new Fraction(1,4), 'A', 0);
+        expected.add(note1);
+        Measure measure = new Measure(expected, true, false, false, false);
+        assertEquals(measure, voice.getElements());
+    }
+    
+    // covers start repeat measure (:)
+    @Test
+    public void testStartRepeatSecond(){
+        String test = "A|:B|";    
+        Voice voice = (Voice) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"), "voice");
+        List<Music> expected = new ArrayList<>();
+        List<Music> measure1 = new ArrayList<>();
+        List<Music> measure2 = new ArrayList<>();
+        Note note1 = new Note(new Fraction(1,4), 'A', 0);
+        Note note2 = new Note(new Fraction(1,4), 'B', 0);
+        measure1.add(note1);
+        measure2.add(note2);
+        Measure expectedMeasure1 = new Measure(measure1, false, false, false, false);
+        Measure expectedMeasure2 = new Measure(measure2, true, false, false, false);
+        expected.add(expectedMeasure1);
+        expected.add(expectedMeasure2);
+        assertEquals(expected, voice.getElements());
     }
     
 }
