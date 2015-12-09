@@ -36,14 +36,14 @@ public class Piece {
     public Header getHeader(){
         return header;
     }
-    
+
     /**
      * @return the list of the piece's voices
      */
     public List<Music> getVoices(){
         return voices;
     }
-    
+
     /**
      * Uses information from the header and the music piece to create a SequencePlayer
      * object that plays the piece.
@@ -57,19 +57,21 @@ public class Piece {
             durationDenominators.addAll(m.getAllDurationDenominators());
         }
         int ticksPerBeat = getLCM(durationDenominators);
-        
+
         Fraction pieceNoteLength = header.noteLength();
         SequencePlayer player =  new SequencePlayer(tempo, ticksPerBeat);
         for (Music m: voices){
             List<PlayerElement> elements = m.getPlayerElements(0, ticksPerBeat, pieceNoteLength);
             for (PlayerElement e: elements){
-                player.addNote(e);
+                if(!e.isRest()){
+                    player.addNote(e);
+                }
             }
         }
-        
+
         player.play();
     }
-    
+
     /**
      * Utility function to find the LCM of a set of integers
      * @param durationDenominators a set of integers to find the LCM of
@@ -82,7 +84,7 @@ public class Piece {
         }
         return currentLcm;
     }
-    
+
     /**
      * Utility function to find the LCM of two integers
      * @param firstNum first integer
@@ -94,7 +96,7 @@ public class Piece {
         int gcd = pairGCD(firstNum, secondNum);
         return product / gcd;
     }
-    
+
     /**
      * Utility function to find the GCD of two integers
      * @param firstNum first integer
@@ -123,12 +125,12 @@ public class Piece {
         Piece that = (Piece)obj;
         return header.equals(that.getVoices()) && voices.equals(that.getVoices());
     }
-    
+
     @Override
     public int hashCode(){
         return header.hashCode() + voices.hashCode();
     }
-    
+
     @Override
     public String toString(){
         String toString = header.toString() + "\n";
