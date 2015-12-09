@@ -565,6 +565,8 @@ public class Parser {
         @Override
         public void exitNormalmeasure(NormalmeasureContext ctx) { 
             int numElements = ctx.element().size();
+            assert stack.size()>= numElements;
+            
             List<Music> noteElements = new ArrayList<Music>();
             for (int i = 0; i < numElements; i++){
                 noteElements.add(stack.pop());

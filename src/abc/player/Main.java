@@ -1,6 +1,8 @@
 package abc.player;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiUnavailableException;
@@ -23,10 +25,22 @@ public class Main {
      */
     public static void play(String file) {
         try {
-            String pieceReader = PieceReader.readPiece(file);
-            Header parseHeader = Parser.parseHeader(pieceReader);
-            Music parseMusic = Parser.parseMusic(pieceReader, defaultNoteLength, keySig);
-            System.out.println(parseHeader.getHeader());
+            PieceReader reader = new PieceReader(file);
+            String headerString = reader.getHeader();
+            Header header = Parser.parseHeader(headerString);
+            
+            Fraction defaultNoteLength = header.noteLength();
+            KeySignature keySig = header.keySignature();
+            Map<String, String> voices = reader.getVoices();
+            Map<String, Music> music = new HashMap<String, Music>();
+           
+            for (String key: voices.keySet()){
+                Music m = Parser.parseMusic(voices.get(key), defaultNoteLength, keySig);
+                music.put(key, m);
+            }
+
+            
+            
             try {
                 SequencePlayer sequencePlayer = Piece.Play();
                 sequencePlayer.play();
