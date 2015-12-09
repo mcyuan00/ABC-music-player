@@ -4,7 +4,9 @@ package abc.player;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
@@ -431,14 +433,84 @@ public class ParseTest {
         String test = "A|\n";
         Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
         assertEquals(new Fraction(1,4), measure.duration());
+        List<Music> expected = new ArrayList<>();
+        Note note = new Note(new Fraction(1,4), 'A', 0);
+        expected.add(note);
+        assertEquals(expected, measure.getElements());
     }
     
-    // covers normal measure (one element), note (lowercase note letter), note (length n)
+    // covers normal measure (one element), note (lowercase note letter), note (length n), note (one octave above)
     @Test
     public void testLowercaseNoteLengthN(){
         String test = "a2|\n";
         Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
         assertEquals(new Fraction(1,2), measure.duration());
+        List<Music> expected = new ArrayList<>();
+        Note note = new Note(new Fraction(1,2), 'A', 1);
+        expected.add(note);
+        assertEquals(expected, measure.getElements());
+    }
+    
+    // covers normal measure (one element), note (lowercase note letter), note (sharp accidental)
+    @Test
+    public void testLowercaseNoteLengthNSharp(){
+        String test = "^a|\n";
+        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
+        assertEquals(new Fraction(1,4), measure.duration());
+        List<Music> expected = new ArrayList<>();
+        Note note = new Note(new Fraction(1,4), 'A', 1, 1);
+        expected.add(note);
+        assertEquals(expected, measure.getElements());
+    }
+    
+    // covers normal measure (one element), note (lowercase note letter), note (double sharp accidental)
+    @Test
+    public void testLowercaseNoteDoubleSharp(){
+        String test = "^^a|\n";
+        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
+        assertEquals(new Fraction(1,4), measure.duration());
+        List<Music> expected = new ArrayList<>();
+        Note note = new Note(new Fraction(1,4), 'A', 1, 2);
+        expected.add(note);
+        assertEquals(expected, measure.getElements());
+    }
+    
+    // covers normal measure (one element), note (lowercase note letter), note (natural)
+    @Test
+    public void testLowercaseNoteNatural(){
+        String test = "^a =a|\n";
+        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
+        assertEquals(new Fraction(1,4), measure.duration());
+        List<Music> expected = new ArrayList<>();
+        Note note1 = new Note(new Fraction(1,4), 'A', 1, 1);
+        Note note2 = new Note(new Fraction(1,4), 'A', 1, 0);
+        expected.add(note1);
+        expected.add(note2);
+        assertEquals(expected, measure.getElements());
+    }
+    
+    // covers normal measure (one element), note (lowercase note letter), note (flat accidental)
+    @Test
+    public void testLowercaseNoteFlat(){
+        String test = "_a|\n";
+        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
+        assertEquals(new Fraction(1,4), measure.duration());
+        List<Music> expected = new ArrayList<>();
+        Note note = new Note(new Fraction(1,4), 'A', 1, -1);
+        expected.add(note);
+        assertEquals(expected, measure.getElements());
+    }
+    
+    // covers normal measure (one element), note (lowercase note letter), note (double flat accidental)
+    @Test
+    public void testLowercaseNoteDoubleFlat(){
+        String test = "__a|\n";
+        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
+        assertEquals(new Fraction(1,4), measure.duration());
+        List<Music> expected = new ArrayList<>();
+        Note note = new Note(new Fraction(1,4), 'A', 1, -2);
+        expected.add(note);
+        assertEquals(expected, measure.getElements());
     }
     
     // covers normal measure (one element), note (lowercase note letter), note (length n/m)
