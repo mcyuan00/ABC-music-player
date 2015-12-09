@@ -572,7 +572,7 @@ public class Parser {
         @Override
         public void exitNormalmeasure(NormalmeasureContext ctx) { 
             int numElements = ctx.element().size();
-
+            assert stack.size()>= numElements;
             List<Music> noteElements = new ArrayList<Music>();
             for (int i = 0; i < numElements; i++){
                 noteElements.add(stack.pop());
@@ -704,14 +704,22 @@ public class Parser {
         }
 
         private Fraction parseNoteLength(String length){
+            int numerator;
+            int denominator;
             if(!length.contains("/")){
-                return new Fraction(Integer.valueOf(length), 1);
+                numerator = Integer.valueOf(length);
+                denominator = 1;
             }
             String[] nums = length.split("/");
-
-            int numerator = (nums[0].equals("")) ? 1 : Integer.valueOf(nums[0]);
-            int denominator = (nums[1].equals("")) ? 2 : Integer.valueOf(nums[1]);
-            return new Fraction(numerator, denominator);
+            if (nums.length == 1){
+                numerator = (nums[0].equals("")) ? 1 : Integer.valueOf(nums[0]);
+                denominator = 2;
+            }
+            else{
+                numerator = (nums[0].equals("")) ? 1 : Integer.valueOf(nums[0]);
+                denominator = Integer.valueOf(nums[1]);
+            }
+            return new Fraction(numerator * defaultNoteLength.numerator(), denominator * defaultNoteLength.denominator()).simplify();
         }
 
         @Override
