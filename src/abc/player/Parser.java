@@ -522,8 +522,8 @@ public class Parser {
                 elements.add(stack.pop());
             }
             Collections.reverse(elements);
-            applyAccidentalsToMeasure(elements);
-            Measure m = new Measure(elements, false, false, false, true);
+            List<Music> newElements = applyAccidentalsToMeasure(elements);
+            Measure m = new Measure(newElements, false, false, false, true);
             stack.push(m);
         }
 
@@ -536,9 +536,9 @@ public class Parser {
             }
             Collections.reverse(elements);
 
-            applyAccidentalsToMeasure(elements);
+            List<Music> newElements = applyAccidentalsToMeasure(elements);
 
-            Measure m = new Measure(elements, true, false, false, false);
+            Measure m = new Measure(newElements, true, false, false, false);
             stack.push(m);
         }
 
@@ -551,9 +551,9 @@ public class Parser {
             }
             Collections.reverse(elements);  
 
-            applyAccidentalsToMeasure(elements);
+            List<Music> newElements = applyAccidentalsToMeasure(elements);
 
-            Measure m = new Measure(elements, false, true, false, false);
+            Measure m = new Measure(newElements, false, true, false, false);
             stack.push(m);         
         }
 
@@ -568,8 +568,8 @@ public class Parser {
             }
             Collections.reverse(elements);  
 
-            applyAccidentalsToMeasure(elements);
-            Measure m = new Measure(elements, false, false, false, false);
+            List<Music> newElements = applyAccidentalsToMeasure(elements);
+            Measure m = new Measure(newElements, false, false, false, false);
             stack.push(m);
         }
 
@@ -581,62 +581,69 @@ public class Parser {
          */
         private List<Music> applyAccidentalsToMeasure(List<Music> elements){
             // make sure accidentals apply to the entire line
-            boolean transpose = false;
-            char note = 'y';
-            int octave = 0;
-            int semitonesUp= 0;
+//            boolean transpose = false;
+//            char note = 'y';
+//            int octave = 0;
+//            int semitonesUp= 0;
+//            for (Music m : elements){
+//                List<Note> notesToCheck = new ArrayList<Note>();
+//                if(m instanceof Chord){
+//                    Chord chord = (Chord)m;
+//                    notesToCheck = extractChordNotes(chord);
+//                }
+//                else if(m instanceof Tuplet){
+//                    Tuplet tuplet = (Tuplet)m;
+//                    notesToCheck = extractTupletNotes(tuplet);
+//                }
+//                else if (m instanceof Note){
+//                    Note n = (Note)m;
+//                    notesToCheck= Arrays.asList(n);
+//                }
+//                for (Note n: notesToCheck){
+//                    if (n.getTransposeTag()){
+//                        transpose = true;
+//                        note = n.getNoteLetter();
+//                        octave = n.getOctave();
+//                        semitonesUp = n.getAccidental();
+//                    }
+//                    if(transpose){
+//                        n.transposeKey(note, octave, semitonesUp);
+//                    }
+//                }
+//            }
+//            return elements;
+            Map<String, Integer> accidentalsMap = new HashMap<>();
+            List<Music> newElements = new ArrayList<>();
             for (Music m : elements){
-                List<Note> notesToCheck = new ArrayList<Note>();
-                if(m instanceof Chord){
-                    Chord chord = (Chord)m;
-                    notesToCheck = extractChordNotes(chord);
-                }
-                else if(m instanceof Tuplet){
-                    Tuplet tuplet = (Tuplet)m;
-                    notesToCheck = extractTupletNotes(tuplet);
-                }
-                else if (m instanceof Note){
-                    Note n = (Note)m;
-                    notesToCheck= Arrays.asList(n);
-                }
-                for (Note n: notesToCheck){
-                    if (n.getTransposeTag()){
-                        transpose = true;
-                        note = n.getNoteLetter();
-                        octave = n.getOctave();
-                        semitonesUp = n.getAccidental();
-                    }
-                    if(transpose){
-                        n.transposeKey(note, octave, semitonesUp);
-                    }
-                }
+                Music newMusic = m.applyAccidentals(accidentalsMap);
+                newElements.add(newMusic);
             }
-            return elements;
+            return newElements;
         }
 
 
-        private List<Note> extractChordNotes(Chord chord){
-            List<Note> notes = new ArrayList<Note>();
-            for(Music music:chord.chordNotes()){
-                notes.add((Note)music);
-            }
-            return notes;
-        }
-
-        private List<Note> extractTupletNotes(Tuplet tuplet){
-            List<Note> notes = new ArrayList<Note>();
-            for(Music music: tuplet.tupletNotes()){
-                if (music instanceof Chord){
-                    Chord chord = (Chord)music;
-                    notes.addAll(extractChordNotes(chord));
-                }
-                else{
-                    Note note = (Note)music;
-                    notes.add(note);
-                }
-            }
-            return notes;
-        }
+//        private List<Note> extractChordNotes(Chord chord){
+//            List<Note> notes = new ArrayList<Note>();
+//            for(Music music:chord.chordNotes()){
+//                notes.add((Note)music);
+//            }
+//            return notes;
+//        }
+//
+//        private List<Note> extractTupletNotes(Tuplet tuplet){
+//            List<Note> notes = new ArrayList<Note>();
+//            for(Music music: tuplet.tupletNotes()){
+//                if (music instanceof Chord){
+//                    Chord chord = (Chord)music;
+//                    notes.addAll(extractChordNotes(chord));
+//                }
+//                else{
+//                    Note note = (Note)music;
+//                    notes.add(note);
+//                }
+//            }
+//            return notes;
+//        }
 
         @Override
         public void exitElement(ElementContext ctx) { }
