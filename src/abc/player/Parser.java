@@ -376,12 +376,12 @@ public class Parser {
         ParseTree tree = parser.root();
 
         
-//        Future<JDialog> inspect = Trees.inspect(tree, parser);
-//        try {
-//            Utils.waitForClose(inspect.get());
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+        Future<JDialog> inspect = Trees.inspect(tree, parser);
+        try {
+            Utils.waitForClose(inspect.get());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         MakeMusic musicMaker = new MakeMusic(keySig, defaultNoteLength, voice);
         new ParseTreeWalker().walk(musicMaker, tree);
@@ -574,38 +574,6 @@ public class Parser {
          * @return modified list of elements
          */
         private List<Music> applyAccidentalsToMeasure(List<Music> elements){
-            // make sure accidentals apply to the entire line
-//            boolean transpose = false;
-//            char note = 'y';
-//            int octave = 0;
-//            int semitonesUp= 0;
-//            for (Music m : elements){
-//                List<Note> notesToCheck = new ArrayList<Note>();
-//                if(m instanceof Chord){
-//                    Chord chord = (Chord)m;
-//                    notesToCheck = extractChordNotes(chord);
-//                }
-//                else if(m instanceof Tuplet){
-//                    Tuplet tuplet = (Tuplet)m;
-//                    notesToCheck = extractTupletNotes(tuplet);
-//                }
-//                else if (m instanceof Note){
-//                    Note n = (Note)m;
-//                    notesToCheck= Arrays.asList(n);
-//                }
-//                for (Note n: notesToCheck){
-//                    if (n.getTransposeTag()){
-//                        transpose = true;
-//                        note = n.getNoteLetter();
-//                        octave = n.getOctave();
-//                        semitonesUp = n.getAccidental();
-//                    }
-//                    if(transpose){
-//                        n.transposeKey(note, octave, semitonesUp);
-//                    }
-//                }
-//            }
-//            return elements;
             Map<String, Integer> accidentalsMap = new HashMap<>();
             List<Music> newElements = new ArrayList<>();
             for (Music m : elements){
@@ -614,30 +582,6 @@ public class Parser {
             }
             return newElements;
         }
-
-
-//        private List<Note> extractChordNotes(Chord chord){
-//            List<Note> notes = new ArrayList<Note>();
-//            for(Music music:chord.chordNotes()){
-//                notes.add((Note)music);
-//            }
-//            return notes;
-//        }
-//
-//        private List<Note> extractTupletNotes(Tuplet tuplet){
-//            List<Note> notes = new ArrayList<Note>();
-//            for(Music music: tuplet.tupletNotes()){
-//                if (music instanceof Chord){
-//                    Chord chord = (Chord)music;
-//                    notes.addAll(extractChordNotes(chord));
-//                }
-//                else{
-//                    Note note = (Note)music;
-//                    notes.add(note);
-//                }
-//            }
-//            return notes;
-//        }
 
         @Override
         public void exitElement(ElementContext ctx) { }

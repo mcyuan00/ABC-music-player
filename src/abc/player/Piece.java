@@ -9,13 +9,17 @@ import javax.sound.midi.MidiUnavailableException;
 import abc.sound.SequencePlayer;
 
 /**
- * A piece consists of a header and a music object
+ * A piece represents the entire music consisting of a header and the different voices
  */
 public class Piece {
 
-    /***
-     * Abstraction function:
-     */
+    //AF:
+    //      header contains the header information while voices contain all the voices of the music
+    //RI:
+    //      voices is not empty
+    //Safety from Rep Exposure:
+    //      all fields are private and final
+    //      none of header or voices is returned in any observer functions
 
     private final Header header;
     private final List<Music> voices;
@@ -28,6 +32,11 @@ public class Piece {
     public Piece(Header header, List<Music> voices){
         this.header = header;
         this.voices = voices;
+        checkRep();
+    }
+    
+    private void checkRep(){
+        assert !voices.isEmpty();
     }
 
     /**

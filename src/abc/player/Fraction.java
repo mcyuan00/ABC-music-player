@@ -3,13 +3,20 @@ package abc.player;
 import java.util.List;
 
 /**
- * Represents a positive fraction. This class is immutable.
+ * Represents a nonnegative fraction. This class is immutable.
  *
  */
 public class Fraction {
     
     private final int numerator;
     private final int denominator;
+    
+    //AF: 
+    //      numerator / denominator is the fraction this class represents
+    //RI:
+    //      numerator >=0 and denominator >0 to make it a nonnegative fraction
+    //Safety from Rep Exposure:
+    //      numerator and denominator is final and immutable
     
     /**
      * Asserts rep invariant

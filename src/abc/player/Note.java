@@ -17,6 +17,16 @@ public class Note implements Music {
     private final int accidental;
     private final Pitch pitch;
     private final boolean wasTransposed;
+    
+    //AF: 
+    //      Represents a note with a pitch, octave, accidental, and the duration of that pitch
+    //      wasTransposed - whether this note was directly transposed in the music
+    //RI:
+    //      duration > 0
+    //      -2 <= accidental <= 2
+    //Safety from Rep Exposure:
+    //      everything is final and immutable
+    //      all variables have private field so it cannot be accessed
 
     /**
      * Make a Note with a certain pitch (without an accidental) played for duration beats.
@@ -32,6 +42,7 @@ public class Note implements Music {
         this.accidental = 0;
         pitch = new Pitch(noteLetter).transpose(Pitch.OCTAVE*octave);
         wasTransposed = false;
+        checkRep();
     }
 
     /**
@@ -51,6 +62,7 @@ public class Note implements Music {
         this.accidental = accidental;
         pitch = new Pitch(noteLetter).transpose(Pitch.OCTAVE*octave + accidental);
         wasTransposed = false;
+        checkRep();
     }
 
     /**
@@ -72,6 +84,12 @@ public class Note implements Music {
         this.accidental = accidental;
         pitch = new Pitch(noteLetter).transpose(Pitch.OCTAVE*octave + accidental);
         this.wasTransposed = wasTransposed;
+        checkRep();
+    }
+    
+    private void checkRep(){
+        assert duration.toDecimal() != 0;
+        assert ((accidental > -3) && (accidental < 3));
     }
 
     /**
@@ -93,13 +111,14 @@ public class Note implements Music {
         return denominators;
     }
 
+    
     /**
      * @return the letter that represents the note (A, B, C, D, E, F, G)
      */
     public char getNoteLetter(){
         return noteLetter;
     }
-
+    
     /**
      * @return the octave relative to middle C this note is in (where the octave of middle C is 0)
      */
