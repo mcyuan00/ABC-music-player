@@ -719,7 +719,7 @@ public class Parser {
                 numerator = (nums[0].equals("")) ? 1 : Integer.valueOf(nums[0]);
                 denominator = Integer.valueOf(nums[1]);
             }
-            return new Fraction(numerator, denominator);
+            return new Fraction(numerator * defaultNoteLength.numerator(), denominator * defaultNoteLength.denominator()).simplify();
         }
 
         @Override
