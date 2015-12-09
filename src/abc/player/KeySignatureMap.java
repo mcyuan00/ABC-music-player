@@ -365,7 +365,5 @@ public class KeySignatureMap {
         KEY_SIGNATURE_MAP.put(KeySignature.B_FLAT_MINOR, B_FLAT_MINOR_MAP);
         KEY_SIGNATURE_MAP.put(KeySignature.E_FLAT_MINOR, E_FLAT_MINOR_MAP);
         KEY_SIGNATURE_MAP.put(KeySignature.A_FLAT_MINOR, A_FLAT_MINOR_MAP);
-
     }
-
 }

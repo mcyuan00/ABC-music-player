@@ -68,23 +68,34 @@ public class Measure implements Music {
         return Fraction.sumAllFractions(durations);
     }
     
+    /**
+     * @return true if this measure is start repeat, false otherwise
+     */
     public boolean isStartRepeat(){
         return startRepeat;
     }
     
+    /**
+     * @return true if this measure is end repeat, false otherwise
+     */
     public boolean isEndRepeat(){
         return endRepeat;
     }
     
+    /**
+     * @return true if this measure is first ending, false otherwise
+     */
     public boolean isFirstEnding(){
         return firstEnding;
     }
     
+    /**
+     * @return true if this measure is double bar, false otherwise
+     */
     public boolean isDoubleBar(){
         return doubleBar;
     }
-    
-    
+     
     @Override
     public List<PlayerElement> getPlayerElements(int startTick, int ticksPerBeat, Fraction pieceNoteLength) {
         List<PlayerElement> elements = new ArrayList<PlayerElement>();
@@ -108,14 +119,6 @@ public class Measure implements Music {
         }
         return denominators;
     }
-
-//    @Override
-//    public void transposeKey(char note, int octave, int semitonesUp) {
-//        for (Music music: m){
-//            music.transposeKey(note, octave, semitonesUp);
-//        }
-//        
-//    }
 
     @Override
     public Music applyAccidentals(Map<String, Integer> accidentalMap) {
@@ -142,22 +145,9 @@ public class Measure implements Music {
     @Override
     public String toString(){
         String toString = "";
-//        if (startRepeat){
-//            toString += "|:";
-//        }
-//        else if (firstEnding){
-//            toString += "[1";
-//        }
         for (Music music : m){
             toString+= music.toString() + " ";
         }
-//        if (endRepeat){
-//            toString += ":|";
-//        }
-//        else if(doubleBar){
-//            toString +=
-//        }
         return toString;
     }
-
 }

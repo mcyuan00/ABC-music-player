@@ -70,8 +70,12 @@ public class Header {
         checkRep();
     }
 
+    //assert rep invariant
+    private void checkRep(){
+        assert tempo > 0;
+    }
+
     /**
-     * 
      * @return the composer of the piece
      */
     public String composer(){
@@ -79,7 +83,6 @@ public class Header {
     }
 
     /**
-     * 
      * @return the key signature of the piece
      */
     public KeySignature keySignature(){
@@ -87,7 +90,6 @@ public class Header {
     }
 
     /**
-     * 
      * @return the note length of the default note
      */
     public Fraction noteLength(){
@@ -95,7 +97,6 @@ public class Header {
     }
 
     /**
-     * 
      * @return the meter of the piece.
      */
     public Fraction meter(){
@@ -103,7 +104,6 @@ public class Header {
     }
 
     /**
-     * 
      * @return the tempo of the piece
      */
     public int tempo(){
@@ -111,7 +111,6 @@ public class Header {
     }
 
     /**
-     * 
      * @return the title of the piece
      */
     public String title(){
@@ -127,7 +126,6 @@ public class Header {
     }
 
     /**
-     * 
      * @return the voice(s) of the piece
      */
     public List<String> voices(){
@@ -170,41 +168,23 @@ public class Header {
         checkRep();
     }
 
+    /**
+     * adds a voice to header's list of voicenames
+     * @param voiceName voice to add
+     */
     public void addVoice(String voiceName){
         this.voices.add(voiceName);
     }
-    private void checkRep(){
-        assert tempo > 0;
-    }
 
-    @Override
-    public boolean equals(Object obj){
-        if(! (obj instanceof Header)) {return false;}
-        Header that = (Header) obj;
-        return composer.equals(that.composer()) 
-                && key.toString().equals(that.keySignature().toString()) 
-                && noteLength.equals(that.noteLength())
-                && tempo == that.tempo()
-                && title.equals(that.title())
-                && index == that.index()
-                && voices == that.voices();
-    }
-    
-    @Override public int hashCode(){
-        return composer.hashCode() + key.hashCode() + noteLength.hashCode() + tempo + title.hashCode() + index + voices.hashCode();
-    }
-    
     @Override
     public String toString(){
         String toString = "Index: " + index + "\n"
-                            + "Title: " + title + "\n"
-                            + "Composer: " + composer + "\n"
-                            + "Meter: " + composer + "\n"
-                            + "Default note length: " + noteLength.toString() + "\n"
-                            + "Tempo: " + tempo + "\n"
-                            + "Key Signature: " + key + "\n";
+                + "Title: " + title + "\n"
+                + "Composer: " + composer + "\n"
+                + "Meter: " + composer + "\n"
+                + "Default note length: " + noteLength.toString() + "\n"
+                + "Tempo: " + tempo + "\n"
+                + "Key Signature: " + key + "\n";
         return toString;
     }
-
-
 }

@@ -112,14 +112,6 @@ public class Tuplet implements Music{
        denominators.add(adjustmentFactor.denominator());
        return denominators;
     }
-
-//    @Override
-//    public void transposeKey(char note,int octave, int semitonesUp) {
-//        for (Music m : notes){
-//            m.transposeKey(note, octave,semitonesUp);
-//        }
-//        
-//    }
     
     @Override
     public Music applyAccidentals(Map<String, Integer> accidentalMap) {

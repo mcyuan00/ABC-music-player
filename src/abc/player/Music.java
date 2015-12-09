@@ -81,11 +81,4 @@ public interface Music {
      * @return new Music with accidentals applied
      */
     public Music applyAccidentals(Map<String, Integer> accidentalMap);
-    
-    @Override String toString();
-
-    @Override boolean equals(Object obj);
-
-    @Override int hashCode();
-
 }
