@@ -3,6 +3,7 @@ package abc.player;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -21,7 +22,10 @@ public class Measure implements Music {
     /**
      * Make a Measure with certain notes and rests.
      * @param m array of Music
-     * @param duration duration in beats, must be >= 0
+     * @param startRepeat true if this measure is the measure following |: signifying start repeat
+     * @param endRepeat true if this measure is the last measure of the repeat
+     * @param firstEnding true if this measure is the start of the first ending of a repeat
+     * @param doubleBar true if this measure ends with a doublebar signifying the end of a major section
      */
     public Measure(List<Music> m, boolean startRepeat, boolean endRepeat, boolean firstEnding, boolean doubleBar){
         this.m = m;
@@ -31,6 +35,14 @@ public class Measure implements Music {
         this.doubleBar = doubleBar;
     }
     
+    /**
+     * Make a Measure using a different measure
+     * @param prevMeasure the measure containing all the notes that will be in this measure
+     * @param startRepeat true if this measure is the measure following |: signifying start repeat
+     * @param endRepeat true if this measure is the last measure of the repeat
+     * @param firstEnding true if this measure is the start of the first ending of a repeat
+     * @param doubleBar true if this measure ends with a doublebar signifying the end of a major section
+     */
     public Measure(Measure prevMeasure, boolean startRepeat, boolean endRepeat, boolean firstEnding, boolean doubleBar){
         this.m = prevMeasure.getElements();
         this.startRepeat = startRepeat;
@@ -97,12 +109,22 @@ public class Measure implements Music {
         return denominators;
     }
 
+//    @Override
+//    public void transposeKey(char note, int octave, int semitonesUp) {
+//        for (Music music: m){
+//            music.transposeKey(note, octave, semitonesUp);
+//        }
+//        
+//    }
+
     @Override
-    public void transposeKey(char note, int octave, int semitonesUp) {
-        for (Music music: m){
-            music.transposeKey(note, octave, semitonesUp);
+    public Music applyAccidentals(Map<String, Integer> accidentalMap) {
+        List<Music> newMusicParts = new ArrayList<>();
+        for (Music musicPart : m){
+            Music newMusicPart = musicPart.applyAccidentals(accidentalMap);
+            newMusicParts.add(newMusicPart);
         }
-        
+        return new Measure(newMusicParts, startRepeat, endRepeat, firstEnding, doubleBar);
     }
 
 

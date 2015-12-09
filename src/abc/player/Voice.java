@@ -1,7 +1,9 @@
 package abc.player;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -62,27 +64,31 @@ public class Voice implements Music {
         return elements;
     }
 
-    @Override
-    public List<Fraction> getAllDurations() {
-        List<Fraction> allDurations = new ArrayList<>();
-        for (Music music : musicElements){
-            allDurations.addAll(music.getAllDurations());
-        }
-        return allDurations;
-    }
-
-    @Override
-    public void transposeKey(char note,int octave, int semitonesUp) {
-        for (Music m: musicElements){
-            m.transposeKey(note,octave, semitonesUp);
-        }
-        
-    }
+//    @Override
+//    public void transposeKey(char note,int octave, int semitonesUp) {
+//        for (Music m: musicElements){
+//            m.transposeKey(note,octave, semitonesUp);
+//        }
+//        
+//    }
 
     @Override
     public Set<Integer> getAllDurationDenominators() {
-        // TODO Auto-generated method stub
-        return null;
+        Set<Integer> denominators = new HashSet<>();
+        for (Music measure : musicElements){
+            denominators.addAll(measure.getAllDurationDenominators());
+        }
+        return denominators;
+    }
+
+    @Override
+    public Music applyAccidentals(Map<String, Integer> accidentalMap) {
+        List<Music> newMeasures = new ArrayList<>();
+        for (Music measure : musicElements){
+            Music newMeasure = measure.applyAccidentals(accidentalMap);
+            newMeasures.add(newMeasure);
+        }
+        return new Voice(name, newMeasures);
     }
 
 

@@ -3,6 +3,7 @@ package abc.player;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -47,16 +48,21 @@ public class Rest implements Music {
         return denominators;
     }
 
-    @Override
-    public void transposeKey(char note,int octave, int semitonesUp) {
-        //rests cannot be transposed
-    }
+//    @Override
+//    public void transposeKey(char note,int octave, int semitonesUp) {
+//        //rests cannot be transposed
+//    }
     
     @Override
     public boolean equals(Object obj){
         if(! (obj instanceof Rest)) {return false;}
         Rest that = (Rest) obj;
         return this.duration.equals(that.duration());
+    }
+
+    @Override
+    public Music applyAccidentals(Map<String, Integer> accidentalMap) {
+        return new Rest(duration);
     }
 
 

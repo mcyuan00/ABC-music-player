@@ -3,6 +3,7 @@ package abc.player;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class Repeat implements Music {
@@ -79,15 +80,21 @@ public class Repeat implements Music {
         return elements;
     }
 
-    @Override
-    public void transposeKey(char note, int octave, int semitonesUp) {
-        for (Music m: repeat){
-            m.transposeKey(note, octave, semitonesUp);
-        }
-        for (Music m: firstEnding){
-            m.transposeKey(note, octave, semitonesUp);
-        }
+//    @Override
+//    public void transposeKey(char note, int octave, int semitonesUp) {
+//        for (Music m: repeat){
+//            m.transposeKey(note, octave, semitonesUp);
+//        }
+//        for (Music m: firstEnding){
+//            m.transposeKey(note, octave, semitonesUp);
+//        }
+//
+//    }
 
+    @Override
+    public Music applyAccidentals(Map<String, Integer> accidentalMap) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

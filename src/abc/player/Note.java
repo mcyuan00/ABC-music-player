@@ -3,6 +3,7 @@ package abc.player;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -15,7 +16,7 @@ public class Note implements Music {
     private final int octave;
     private final int accidental;
     private final Pitch pitch;
-    private boolean wasTransposed = false;
+    private final boolean wasTransposed;
 
     /**
      * Make a Note with a certain pitch (without an accidental) played for duration beats.
@@ -30,6 +31,7 @@ public class Note implements Music {
         this.octave = octave;
         this.accidental = 0;
         pitch = new Pitch(noteLetter).transpose(Pitch.OCTAVE*octave);
+        wasTransposed = false;
     }
     
     /**
@@ -48,6 +50,7 @@ public class Note implements Music {
         this.octave = octave;
         this.accidental = accidental;
         pitch = new Pitch(noteLetter).transpose(Pitch.OCTAVE*octave + accidental);
+        wasTransposed = false;
     }
     
     /**
@@ -90,17 +93,13 @@ public class Note implements Music {
         return denominators;
     }
     
-    @Override
-    public void transposeKey(char note, int octave, int semitonesUp) {
-        if(note == noteLetter && this.octave == octave){
-            int semitoneDifference = semitonesUp - accidental;
-            pitch.transpose(semitoneDifference);
-        }  
-    }
-
-    public void setTransposeTag(boolean transpose){
-        this.wasTransposed = transpose;
-    }
+//    @Override
+//    public void transposeKey(char note, int octave, int semitonesUp) {
+//        if(note == noteLetter && this.octave == octave){
+//            int semitoneDifference = semitonesUp - accidental;
+//            pitch.transpose(semitoneDifference);
+//        }  
+//    }
     
     public boolean getTransposeTag(){
         return wasTransposed;
@@ -116,6 +115,10 @@ public class Note implements Music {
     
     public int getAccidental(){
         return accidental;
+    }
+    
+    public boolean wasTransposed(){
+        return wasTransposed;
     }
     
     @Override
@@ -136,6 +139,24 @@ public class Note implements Music {
         if(! (obj instanceof Note)) {return false;}
         Note that = (Note) obj;
         return ((this.duration.equals(that.duration())) && this.pitch.equals(that.pitch()));
+    }
+
+    @Override
+    public Music applyAccidentals(Map<String, Integer> accidentalMap) {
+        String noteAndOctave = Character.toString(noteLetter);
+        noteAndOctave += Integer.toString(octave);
+        if (wasTransposed){
+            accidentalMap.put(noteAndOctave, accidental);
+            return new Note(duration, noteLetter, octave, accidental, wasTransposed);
+        }
+        else{
+            if (accidentalMap.containsKey(noteAndOctave)){
+                return new Note(duration, noteLetter, octave, accidentalMap.get(noteAndOctave), wasTransposed);
+            }
+            else{
+                return new Note(duration, noteLetter, octave, accidental, wasTransposed);
+            }
+        }
     }
 
 

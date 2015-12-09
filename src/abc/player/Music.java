@@ -2,6 +2,7 @@ package abc.player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.sound.midi.InvalidMidiDataException;
@@ -13,11 +14,11 @@ public interface Music {
     /**
      * Datatype definition:
      *      Music = Note (duration: double, pitch: Pitch) 
-     *              + Chord (duration:double, numNotes: int, notes: List<Note>)
-     *              + Tuplet (numNotes: int, notes List<Note>)
+     *              + Chord (duration:double, numNotes: int, notes: List<Music>)
+     *              + Tuplet (numNotes: int, notes List<Music>)
      *              + Rest (duration: duration)
-     *              + Measure (m: List<Note>)
-     *              + Voice (name: String, measures: List<Note>) 
+     *              + Measure (m: List<Music>)
+     *              + Voice (name: String, measures: List<Music>) 
      */
 
     /**
@@ -67,12 +68,19 @@ public interface Music {
      */
     public List<PlayerElement> getPlayerElements(int startTick, int ticksPerBeat, Fraction pieceNoteLength);
 
+//    /**
+//     * Transposes a certain note in this music object the specified number of semitones up. N
+//     * @param note a note from A-G to be transposed
+//     * @param semitonesUp the number of semitones to tranpose. Flats are represented as negative numbers.
+//     */
+//    public void transposeKey(char note, int octave, int semitonesUp);
+    
     /**
-     * Transposes a certain note in this music object the specified number of semitones up. N
-     * @param note a note from A-G to be transposed
-     * @param semitonesUp the number of semitones to tranpose. Flats are represented as negative numbers.
+     * Apply accidentals to the entire Music
+     * @param accidentalMap the map of "Note + octave" (e.g. "C0", "A-1", "D2") to the respective accidental
+     * @return new Music with accidentals applied
      */
-    public void transposeKey(char note, int octave, int semitonesUp);
+    public Music applyAccidentals(Map<String, Integer> accidentalMap);
     
     @Override String toString();
 

@@ -1,7 +1,9 @@
 package abc.player;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.sound.midi.InvalidMidiDataException;
@@ -31,13 +33,15 @@ public class Main {
             
             Fraction defaultNoteLength = header.noteLength();
             KeySignature keySig = header.keySignature();
-            Map<String, String> voices = reader.getVoices();
-            Map<String, Music> music = new HashMap<String, Music>();
+            Map<String, String> voicesString = reader.getVoices();
+            List<Music> voices = new ArrayList<Music>();
            
-            for (String key: voices.keySet()){
-                Music m = Parser.parseMusic(voices.get(key), defaultNoteLength, keySig);
-                music.put(key, m);
+            
+            for (String key: voicesString.keySet()){
+                Music m = Parser.parseMusic(voicesString.get(key), defaultNoteLength, keySig, key);
+                voices.add(m);
             }
+            Piece piece = new Piece(header, voices);
             
             //TODO: convert into pieces
             
