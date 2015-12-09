@@ -56,7 +56,7 @@ public class Main {
 
     public static void main(String[] args) {
         try {
-            play("sample_abc/paddy.abc");
+            play("sample_abc/fur_elise.abc");
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
