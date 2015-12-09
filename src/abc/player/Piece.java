@@ -13,7 +13,7 @@ import abc.sound.SequencePlayer;
  */
 public class Piece {
 
-    //AF: 
+    //AF:
     //      header contains the header information while voices contain all the voices of the music
     //RI:
     //      voices is not empty
