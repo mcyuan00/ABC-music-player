@@ -3,6 +3,7 @@ package abc.player;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -69,12 +70,22 @@ public class Chord implements Music{
     }
 
 
+//    @Override
+//    public void transposeKey(char note,int octave, int semitonesUp) {
+//        for (Music m : notes){
+//            m.transposeKey(note, octave, semitonesUp);
+//        }
+//        
+//    }
+    
     @Override
-    public void transposeKey(char note,int octave, int semitonesUp) {
+    public Music applyAccidentals(Map<String, Integer> accidentalMap) {
+        List<Music> newNotes = new ArrayList<>();
         for (Music m : notes){
-            m.transposeKey(note, octave, semitonesUp);
+            Music newNote = m.applyAccidentals(accidentalMap);
+            newNotes.add(newNote);
         }
-        
+        return new Chord(newNotes);
     }
     
     @Override
@@ -83,6 +94,6 @@ public class Chord implements Music{
         Chord that = (Chord) obj;
         return this.chordNotes().equals(that.chordNotes());
     }
-    
+        
 
 }
