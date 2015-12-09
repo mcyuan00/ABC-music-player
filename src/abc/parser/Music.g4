@@ -28,13 +28,13 @@ chord : '[' note+ ']';
 comment : '%' text+;
 text : DIGIT | NOTELETTER | LETTERS | SYMBOLS | ACCIDENTAL;
 
-SYMBOLS : '.' | '~' | '`' | '!' | '@' | '$' | '&' | '*' | '(' | ')' | '-' | '+' | '{' | '[' | '}' | ']' | '|' | '\\' | ';' | ':' | '\'' | '"' | '<' | '>' | ',' | '?';
+ACCIDENTAL : '_' | '__' | '^' | '^^' | '=';
+OCTAVE : '\''+ | ','+;
+SYMBOLS : '.' | '~' | '`' | '!' | '@' | '$' | '&' | '*' | '(' | ')' | '-' | '+' | '{' | '[' | '}' | ']' | '|' | '\\' | ';' | ':' | '"' | '<' | '>' | '?';
 LETTERS : [H-Zh-y];
 BARLINE : '|' | '||' | '[|' | '|]' | '|:' | ':|';
 NTHREPEAT : '[1' | '[2';
 NOTELETTER : [a-gA-G];
-ACCIDENTAL : '_' | '__' | '^' | '^^' | '=';
-OCTAVE : '\''+ | ','+;
 NEWLINE : [\r]? [\n];
 WHITESPACE : [ ]+;
 DIGIT : [0-9];
