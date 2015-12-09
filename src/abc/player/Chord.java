@@ -32,10 +32,12 @@ public class Chord implements Music{
         this.notes = notes;
         checkRep();
     }
-    
+    // asserts rep invariant
+    private void checkRep(){
+        assert !notes.isEmpty();
+    }
     
     /**
-     * 
      * @return the number of notes that are played together in this chord
      */
     public int numNotes(){
@@ -43,8 +45,7 @@ public class Chord implements Music{
     }
     
     /**
-     * 
-     * @return the notes that are in the chord
+     * @return the a list that contains the notes within in this chord
      */
     public List<Music> chordNotes(){
         return new ArrayList<Music>(notes);   
@@ -56,7 +57,6 @@ public class Chord implements Music{
         return notes.get(0).duration();
     }
 
-
     @Override
     public List<PlayerElement> getPlayerElements(int startTick, int ticksPerBeat, Fraction pieceNoteLength) {
         List<PlayerElement> elements = new ArrayList<PlayerElement>();
@@ -66,7 +66,6 @@ public class Chord implements Music{
         return elements;
     }
 
-
     @Override
     public Set<Integer> getAllDurationDenominators() {
         Set<Integer> denominators = new HashSet<>();
@@ -75,12 +74,7 @@ public class Chord implements Music{
         }
         return denominators;
     }
-    
-    private void checkRep(){
-        assert !notes.isEmpty();
-    }
 
-    
     @Override
     public Music applyAccidentals(Map<String, Integer> accidentalMap) {
         List<Music> newNotes = new ArrayList<>();
@@ -96,6 +90,25 @@ public class Chord implements Music{
         if(! (obj instanceof Chord)) {return false;}
         Chord that = (Chord) obj;
         return this.chordNotes().equals(that.chordNotes());
+    }
+    
+    @Override 
+    public int hashCode(){
+        int hashCode = 0;
+        for (Music m: notes){
+            hashCode+= m.hashCode();
+        }
+        return hashCode;
+    }
+    
+    @Override
+    public String toString(){
+        String toString = "[";
+        for (Music m: notes){
+            toString += m.toString();
+        }
+        toString += "]";
+        return toString;
     }
         
 

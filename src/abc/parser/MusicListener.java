@@ -61,6 +61,16 @@ public interface MusicListener extends ParseTreeListener {
    */
   void exitSecondendingmeasure(MusicParser.SecondendingmeasureContext ctx);
   /**
+   * Enter a parse tree produced by {@link MusicParser#normalmeasure}.
+   * @param ctx the parse tree
+   */
+  void enterNormalmeasure(MusicParser.NormalmeasureContext ctx);
+  /**
+   * Exit a parse tree produced by {@link MusicParser#normalmeasure}.
+   * @param ctx the parse tree
+   */
+  void exitNormalmeasure(MusicParser.NormalmeasureContext ctx);
+  /**
    * Enter a parse tree produced by {@link MusicParser#doublebarmeasure}.
    * @param ctx the parse tree
    */
@@ -91,15 +101,15 @@ public interface MusicListener extends ParseTreeListener {
    */
   void exitEndrepeatmeasure(MusicParser.EndrepeatmeasureContext ctx);
   /**
-   * Enter a parse tree produced by {@link MusicParser#normalmeasure}.
+   * Enter a parse tree produced by {@link MusicParser#singlerepeatmeasure}.
    * @param ctx the parse tree
    */
-  void enterNormalmeasure(MusicParser.NormalmeasureContext ctx);
+  void enterSinglerepeatmeasure(MusicParser.SinglerepeatmeasureContext ctx);
   /**
-   * Exit a parse tree produced by {@link MusicParser#normalmeasure}.
+   * Exit a parse tree produced by {@link MusicParser#singlerepeatmeasure}.
    * @param ctx the parse tree
    */
-  void exitNormalmeasure(MusicParser.NormalmeasureContext ctx);
+  void exitSinglerepeatmeasure(MusicParser.SinglerepeatmeasureContext ctx);
   /**
    * Enter a parse tree produced by {@link MusicParser#element}.
    * @param ctx the parse tree

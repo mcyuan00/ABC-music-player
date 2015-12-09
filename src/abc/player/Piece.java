@@ -40,6 +40,20 @@ public class Piece {
     }
 
     /**
+     * @return the header of the piece
+     */
+    public Header getHeader(){
+        return header;
+    }
+    
+    /**
+     * @return the list of the piece's voices
+     */
+    public List<Music> getVoices(){
+        return voices;
+    }
+    
+    /**
      * Uses information from the header and the music piece to create a SequencePlayer
      * object that plays the piece.
      * @throws InvalidMidiDataException 
@@ -66,9 +80,9 @@ public class Piece {
     }
     
     /**
-     * Finds the least common multiple among a set of integers
-     * @param durationDenominators the numbers to find the lcm of
-     * @return the least common multiple
+     * Utility function to find the LCM of a set of integers
+     * @param durationDenominators a set of integers to find the LCM of
+     * @return the LCM
      */
     private int getLCM(Set<Integer> durationDenominators){
         int currentLcm = 1;
@@ -79,10 +93,10 @@ public class Piece {
     }
     
     /**
-     * Finds the least common multiple of two numbers
-     * @param firstNum one of the numbers
-     * @param secondNum the other number
-     * @return the least common multiple
+     * Utility function to find the LCM of two integers
+     * @param firstNum first integer
+     * @param secondNum second integer
+     * @return the two integers' LCM
      */
     private int pairLCM(int firstNum, int secondNum){
         int product = firstNum * secondNum;
@@ -91,10 +105,10 @@ public class Piece {
     }
     
     /**
-     * Finds the greatest common divisor of two numbers
-     * @param firstNum one of the numbers to find GCD of
-     * @param secondNum the other number
-     * @return the greatest common divisor
+     * Utility function to find the GCD of two integers
+     * @param firstNum first integer
+     * @param secondNum second integer
+     * @return the two integers' GCD
      */
     private int pairGCD(int firstNum, int secondNum){
         if(firstNum == 0){
@@ -112,4 +126,24 @@ public class Piece {
         return pairGCD((firstNum % secondNum), secondNum);
     }
 
+    @Override
+    public boolean equals(Object obj){
+        if (!(obj instanceof Piece)){return false;}
+        Piece that = (Piece)obj;
+        return header.equals(that.getVoices()) && voices.equals(that.getVoices());
+    }
+    
+    @Override
+    public int hashCode(){
+        return header.hashCode() + voices.hashCode();
+    }
+    
+    @Override
+    public String toString(){
+        String toString = header.toString() + "\n";
+        for (Music m: voices){
+            toString += m.toString() + "\n";
+        }
+        return toString;
+    }
 }

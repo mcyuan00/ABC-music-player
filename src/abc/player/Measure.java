@@ -96,23 +96,34 @@ public class Measure implements Music {
         return Fraction.sumAllFractions(durations);
     }
     
+    /**
+     * @return true if this measure is start repeat, false otherwise
+     */
     public boolean isStartRepeat(){
         return startRepeat;
     }
     
+    /**
+     * @return true if this measure is end repeat, false otherwise
+     */
     public boolean isEndRepeat(){
         return endRepeat;
     }
     
+    /**
+     * @return true if this measure is first ending, false otherwise
+     */
     public boolean isFirstEnding(){
         return firstEnding;
     }
     
+    /**
+     * @return true if this measure is double bar, false otherwise
+     */
     public boolean isDoubleBar(){
         return doubleBar;
     }
-    
-    
+     
     @Override
     public List<PlayerElement> getPlayerElements(int startTick, int ticksPerBeat, Fraction pieceNoteLength) {
         List<PlayerElement> elements = new ArrayList<PlayerElement>();
@@ -147,5 +158,24 @@ public class Measure implements Music {
         return new Measure(newMusicParts, startRepeat, endRepeat, firstEnding, doubleBar);
     }
 
-
+    @Override 
+    public boolean equals(Object obj){
+        if (!(obj instanceof Measure)){return false;}
+        Measure that = (Measure)obj;
+        return m.equals(that.getElements()) && startRepeat == that.isStartRepeat() && endRepeat == that.isEndRepeat() && firstEnding == that.isFirstEnding() && doubleBar == that.isDoubleBar();
+    }
+    
+    @Override
+    public int hashCode(){
+        return m.hashCode();
+    }
+    
+    @Override
+    public String toString(){
+        String toString = "";
+        for (Music music : m){
+            toString+= music.toString() + " ";
+        }
+        return toString;
+    }
 }

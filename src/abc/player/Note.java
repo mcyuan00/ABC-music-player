@@ -44,7 +44,7 @@ public class Note implements Music {
         wasTransposed = false;
         checkRep();
     }
-    
+
     /**
      * Make a Note with a certain pitch (with an accidental) played for duration beats.
      * @param duration duration in beats, must be >= 0
@@ -64,7 +64,7 @@ public class Note implements Music {
         wasTransposed = false;
         checkRep();
     }
-    
+
     /**
      * Make a Note with a certain pitch (with an accidental) played for duration beats.
      * @param duration duration in beats, must be >= 0
@@ -91,7 +91,7 @@ public class Note implements Music {
         assert duration.toDecimal() != 0;
         assert ((accidental > -3) && (accidental < 3));
     }
-    
+
     /**
      * @return pitch of this note
      */
@@ -110,65 +110,49 @@ public class Note implements Music {
         denominators.add(duration.denominator());
         return denominators;
     }
-    
-//    @Override
-//    public void transposeKey(char note, int octave, int semitonesUp) {
-//        if(note == noteLetter && this.octave == octave){
-//            int semitoneDifference = semitonesUp - accidental;
-//            pitch.transpose(semitoneDifference);
-//        }  
-//    }
+
     
     /**
-     * @return whether this note was transposed with an accidental in the music
-     */
-    public boolean getTransposeTag(){
-        return wasTransposed;
-    }
-    
-    /**
-     * 
-     * @return the pitch of the note
+     * @return the letter that represents the note (A, B, C, D, E, F, G)
      */
     public char getNoteLetter(){
         return noteLetter;
     }
     
     /**
-     * 
-     * @return the octave of this note
+     * @return the octave relative to middle C this note is in (where the octave of middle C is 0)
      */
     public int getOctave(){
         return octave;
     }
-    
+
     /**
-     * 
-     * @return the accidental that was applied to the note
+     * @return the number of semitones away from a natural note 
+     *          (postive if the note is sharp, negative if note is flat)
      */
     public int getAccidental(){
         return accidental;
     }
-    
+
+    /**
+     * @return true if this note was transposed (constructed from a note with an accidental), false otherwise
+     */
+    public boolean wasTransposed(){
+        return wasTransposed;
+    }
+
     @Override
     public List<PlayerElement> getPlayerElements(int startTick, int ticksPerBeat, Fraction pieceNoteLength) {
         List<PlayerElement> elements = new ArrayList<PlayerElement>();
-        
+
         //find the number of ticks the note is played for
         Fraction numBeats = new Fraction(duration.numerator()*pieceNoteLength.denominator(), duration.denominator()*pieceNoteLength.numerator()).simplify();
         int noteDuration = ticksPerBeat*numBeats.numerator()/numBeats.denominator();
-        
+
         elements.add(new PlayerElement(pitch, startTick, noteDuration));
         return elements;
     }
 
-    
-    @Override
-    public boolean equals(Object obj){
-        if(! (obj instanceof Note)) {return false;}
-        Note that = (Note) obj;
-        return ((this.duration.equals(that.duration())) && this.pitch.equals(that.pitch()));
-    }
 
     @Override
     public Music applyAccidentals(Map<String, Integer> accidentalMap) {
@@ -188,6 +172,44 @@ public class Note implements Music {
         }
     }
 
+    @Override
+    public boolean equals(Object obj){
+        if(! (obj instanceof Note)) {return false;}
+        Note that = (Note) obj;
+        return ((this.duration.equals(that.duration())) && this.pitch.equals(that.pitch()));
+    }
 
+    @Override
+    public int hashCode(){
+        return duration.hashCode() + pitch.hashCode();
+    }
 
+    @Override
+    public String toString(){
+        String toString = "";
+        if(accidental > 0){
+            for(int i = 0; i < accidental; i++){
+                toString +="^";
+            }
+        }
+        else if(accidental < 0){
+            for(int i = 0; i > accidental; i--){
+                toString +="_";
+            }
+        }
+        toString += noteLetter;
+        if(octave > 0){
+            for(int i = 0; i < octave; i++){
+                toString +="'";
+            }
+        }
+        else if(octave < 0){
+            for(int i = 0; i > octave; i--){
+                toString +=",";
+            }
+        }
+        toString += duration.toString();
+
+        return toString;
+    }
 }

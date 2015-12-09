@@ -10,10 +10,20 @@ public class PieceReader {
     private final Map<String, String> voices = new HashMap<String,String>();
     private final String filePath;
     
+    /**
+     * Creates a pieceReader that reads in a piece from a file and parses it into a header string and a map
+     * containing voice strings
+     * @param filePath the filePath of the piece
+     */
     public PieceReader(String filePath){
         this.filePath = filePath;
     }
 
+    /**
+     * Parses piece that was passed in into a header string and a map
+     * containing voice strings
+     * @throws IOException
+     */
     public void readPiece() throws IOException {
         FileReader fileReader;
         String line = "";
@@ -66,10 +76,16 @@ public class PieceReader {
         
     }
     
+    /**
+     * @return the header section of the file as a String
+     */
     public String getHeader(){
         return header;
     }
     
+    /**
+     * @return a Map of voice name to a string that contains the lines that belong to that voice
+     */
     public Map<String, String> getVoices(){
         return voices;
     }

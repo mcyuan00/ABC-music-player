@@ -60,6 +60,7 @@ import abc.parser.MusicParser.NotelengthContext;
 import abc.parser.MusicParser.PitchContext;
 import abc.parser.MusicParser.RestContext;
 import abc.parser.MusicParser.SecondendingmeasureContext;
+import abc.parser.MusicParser.SinglerepeatmeasureContext;
 import abc.parser.MusicParser.StartrepeatmeasureContext;
 import abc.parser.MusicParser.TupletelementContext;
 import abc.parser.MusicParser.TupletspecContext;
@@ -107,8 +108,7 @@ public class Parser {
         private final Stack<String> optionalStack = new Stack<>();
 
         /**
-         * 
-         * @return
+         * @return the Header that was parsed
          * @Throws IllegalArgumentException of index, title, or keySignature is missing
          */
         public Header getHeader(){
@@ -225,12 +225,12 @@ public class Parser {
             return header;
         }
 
+        /**
+         * @param context the context containing the fraction to parse out
+         * @return the Fraction that the context represented
+         */
         private Fraction parseFraction(String context){
             String[] nums = context.split("/");
-            // fraction doesn't have correct number of /
-            //            if (nums.length >2){
-            //                throw new IllegalArgumentException();
-            //            }
             int numerator = Integer.valueOf(nums[0]);
             int denominator = Integer.valueOf(nums[1]);
             return new Fraction(numerator, denominator);
@@ -240,21 +240,16 @@ public class Parser {
         public void exitRoot(HeaderParser.RootContext ctx) { }
 
         @Override
-        public void exitHeader(HeaderParser.HeaderContext ctx) {
-
-
-        }
+        public void exitHeader(HeaderParser.HeaderContext ctx) { }
 
         @Override
         public void exitIndex(HeaderParser.IndexContext ctx) {
             requiredStack.push(ctx.getText());
-
         }
 
         @Override
         public void exitTitle(HeaderParser.TitleContext ctx) {
             requiredStack.push(ctx.getText());
-
         }
 
         @Override
@@ -356,16 +351,10 @@ public class Parser {
         public void enterText(TextContext ctx) { }
 
         @Override
-        public void enterEndline(EndlineContext ctx) {
-            // TODO Auto-generated method stub
-
-        }
+        public void enterEndline(EndlineContext ctx) { }
 
         @Override
-        public void exitEndline(EndlineContext ctx) {
-            // TODO Auto-generated method stub
-
-        }
+        public void exitEndline(EndlineContext ctx) { }
 
     }
 
@@ -387,12 +376,12 @@ public class Parser {
         ParseTree tree = parser.root();
 
         
-//        Future<JDialog> inspect = Trees.inspect(tree, parser);
-//        try {
-//            Utils.waitForClose(inspect.get());
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+        Future<JDialog> inspect = Trees.inspect(tree, parser);
+        try {
+            Utils.waitForClose(inspect.get());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         MakeMusic musicMaker = new MakeMusic(keySig, defaultNoteLength, voice);
         new ParseTreeWalker().walk(musicMaker, tree);
@@ -437,7 +426,9 @@ public class Parser {
             accidental.put(Accidental.valueOf("DOUBLEFLAT"), -2);
         }
         
-
+        /**
+         * @return the music object that was parsed
+         */
         public Music getMusic(){
             return stack.get(0);
         }
@@ -556,7 +547,10 @@ public class Parser {
             Measure m = new Measure(newElements, false, true, false, false);
             stack.push(m);         
         }
-
+        
+        //TODO
+        @Override
+        public void exitSinglerepeatmeasure(SinglerepeatmeasureContext ctx) { }
 
         @Override
         public void exitNormalmeasure(NormalmeasureContext ctx) { 
@@ -749,7 +743,13 @@ public class Parser {
             Music m = new Chord(chordNotes);
             stack.push(m);
         }
-
+        
+        /**
+         * Given a string representing a note or rest's length, returns a Fraction object representing the
+         * given length
+         * @param length string representation of note/rest's length
+         * @return Fraction object representing the note/rest's length
+         */
         private Fraction parseNoteLength(String length){
             int numerator;
             int denominator;
@@ -854,7 +854,10 @@ public class Parser {
         @Override
         public void enterPitch(PitchContext ctx) { }
 
+
+        @Override
+        public void enterSinglerepeatmeasure(SinglerepeatmeasureContext ctx) { }
+
+
     }
 }
-
-

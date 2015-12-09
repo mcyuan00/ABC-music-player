@@ -32,6 +32,10 @@ public class Voice implements Music {
         this.name = name;
         this.musicElements = musicElements;
     }
+    
+    public List<Music> getElements(){
+        return musicElements;
+    }
 
     @Override
     public Fraction duration() {
@@ -91,6 +95,26 @@ public class Voice implements Music {
         }
         return new Voice(name, newMeasures);
     }
+    
+    @Override
+    public boolean equals(Object obj){
+        if (!(obj instanceof Voice)){return false;}
+        Voice that = (Voice)obj;
+        return name.equals(that.name()) && musicElements.equals(that.measures());
+    }
+    
+    @Override
+    public int hashCode(){
+        return name.hashCode()+ musicElements.hashCode();
+    }
 
+    @Override
+    public String toString(){
+        String toString = "Voice: " + name + '\n';
+        for (Music m: musicElements){
+            toString += m.toString();
+        }
+        return toString;
+    }
 
 }

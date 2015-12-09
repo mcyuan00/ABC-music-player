@@ -84,8 +84,12 @@ public class Header {
         checkRep();
     }
 
+    //assert rep invariant
+    private void checkRep(){
+        assert tempo > 0;
+    }
+
     /**
-     * 
      * @return the composer of the piece
      */
     public String composer(){
@@ -93,7 +97,6 @@ public class Header {
     }
 
     /**
-     * 
      * @return the key signature of the piece
      */
     public KeySignature keySignature(){
@@ -101,7 +104,6 @@ public class Header {
     }
 
     /**
-     * 
      * @return the note length of the default note
      */
     public Fraction noteLength(){
@@ -109,7 +111,6 @@ public class Header {
     }
 
     /**
-     * 
      * @return the meter of the piece.
      */
     public Fraction meter(){
@@ -117,7 +118,6 @@ public class Header {
     }
 
     /**
-     * 
      * @return the tempo of the piece
      */
     public int tempo(){
@@ -125,7 +125,6 @@ public class Header {
     }
 
     /**
-     * 
      * @return the title of the piece
      */
     public String title(){
@@ -141,13 +140,12 @@ public class Header {
     }
 
     /**
-     * 
      * @return the voice(s) of the piece
      */
     public List<String> voices(){
         return new ArrayList<String>(voices);
     }
-    
+
     /**
      * Sets the composer of the piece to composer
      * @param composer the name of the composer
@@ -184,14 +182,23 @@ public class Header {
         checkRep();
     }
 
+    /**
+     * adds a voice to header's list of voicenames
+     * @param voiceName voice to add
+     */
     public void addVoice(String voiceName){
         this.voices.add(voiceName);
     }
-    private void checkRep(){
-        assert tempo > 0;
+
+    @Override
+    public String toString(){
+        String toString = "Index: " + index + "\n"
+                + "Title: " + title + "\n"
+                + "Composer: " + composer + "\n"
+                + "Meter: " + composer + "\n"
+                + "Default note length: " + noteLength.toString() + "\n"
+                + "Tempo: " + tempo + "\n"
+                + "Key Signature: " + key + "\n";
+        return toString;
     }
-
-
- 
-
 }
