@@ -37,30 +37,7 @@ public class PieceReaderTest {
             ioe.printStackTrace();
         }
     }
-    @Test
-    public void testPieceReaderTwoVoices() {
-        PieceReader reader = new PieceReader("sample_abc/fur_elise.abc");
-        String expectedHeader = "X: 1\nT:Bagatelle No.25 in A, WoO.59\nC:Ludwig van Beethoven\nV:1\nV:2\nM:3/8\nL:1/16\nQ:1/8=140\nK:Am\n";
-        try {
-            reader.readPiece();
-            String actualHeader = reader.getHeader();
-            assertEquals(expectedHeader, actualHeader);
 
-            Map<String, String> expectedVoices= new HashMap<String, String>();
-            expectedVoices.put("1", "e^d|e^deB=dc|A2 z CEA|B2 z E^GB|c2 z Ee^d|e^deB=dc|A2 z CEA|B2 z EcB|[1A2 z2:|[2A2z Bcd||:e3 Gfe|d3 Fed|c3 Edc|B2 z Ee z|z ee' z z ^d|e z z ^ded|e^deB=dc|A2 z CEA|B2 zE^GB|c2 z Ee^d|e^deB=dc|A2 z CEA|B2 z EcB|[1A2 z Bcd:|[2A2 z [Ec][Fc][EGc]|c4 fe|e2d2 _ba|agfedc|_B2A2 A/G/A/B/|c4 d^d|e3 efA|c4 dB|c/g/G/g/ A/g/B/g/ c/g/d/g/|e/g/c'/b/ a/g/f/e/ d/g/f/d/|");
-            expectedVoices.put("2", "z2|z6|A,,E,A, z z2|E,,E,^G, z z2|A,,E,A, z z2|z6|A,,E,A, z z2|E,,E,^G, z z2|[1A,,E,A, z :|[2A,,E,A, z z2||:C,E,C z z2|G,,G,B, z z2|A,,E,A, z z2|E,,E,E z z E|e z z ^de z|z ^de z z2|z6|A,,E,A, z z2|E,,E,^G, z ");
-            Map<String, String> actualVoices = reader.getVoices();
-
-            for(String key: actualVoices.keySet()){
-                assertTrue(actualVoices.get(key).contains(expectedVoices.get(key)));
-            }
-
-
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        }
-
-    }
 
     @Test 
     public void testPieceReaderThreeVoices(){

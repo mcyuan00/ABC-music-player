@@ -24,10 +24,10 @@ public class VoiceTest {
         notes.add(new Note(new Fraction(1,4), 'D', 0));
         Measure m = new Measure(notes, false, false, false, false);
         List<Music> notes2 = new ArrayList<Music>();
-        notes.add(new Note(new Fraction(1,4), 'A', 0));
-        notes.add(new Note(new Fraction(1,4), 'B', 0));
-        notes.add(new Note(new Fraction(1,4), 'C', 0));
-        notes.add(new Note(new Fraction(1,4), 'D', 0));
+        notes2.add(new Note(new Fraction(1,4), 'A', 0));
+        notes2.add(new Note(new Fraction(1,4), 'B', 0));
+        notes2.add(new Note(new Fraction(1,4), 'C', 0));
+        notes2.add(new Note(new Fraction(1,4), 'D', 0));
         Measure m2 = new Measure(notes2, false, false, false, false);
         
         Voice v = new Voice("voice", Arrays.asList(m,m2));
