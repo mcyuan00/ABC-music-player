@@ -1,5 +1,6 @@
 package abc.player;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -24,13 +25,13 @@ public interface Music {
      * @return total duration of music in terms of fraction of a whole note
      */
     Fraction duration();
-    
+
     /**
      * 
      * @return all the denominators for durations used
      */
     Set<Integer> getAllDurationDenominators();
-    
+
     /**
      * Transpose all notes upward or downward in pitch.
      * @param semitonesUp semitones by which to transpose
@@ -41,8 +42,8 @@ public interface Music {
      * @throws InvalidMidiDataException 
      * @throws MidiUnavailableException 
      */
-//    Music transpose(int semitonesUp);
-    
+    //    Music transpose(int semitonesUp);
+
     /**
      * 
      * @param tempo
@@ -56,7 +57,7 @@ public interface Music {
         // call piece.constructPlayer TODO finish this thing
         return new SequencePlayer(tempo, ticksPerBeat);
     }
-    
+
     /**
      * Translates this music object into PlayerElements, to be used to construct a SequencePlayer
      * @param startTick the start tick of the music, must be positive
@@ -65,7 +66,7 @@ public interface Music {
      * @return the list of PlayerElements for the entire music
      */
     public List<PlayerElement> getPlayerElements(int startTick, int ticksPerBeat, Fraction pieceNoteLength);
-    
+
     /**
      * Transposes a certain note in this music object the specified number of semitones up. N
      * @param note a note from A-G to be transposed
@@ -73,9 +74,9 @@ public interface Music {
      */
     public void transposeKey(char note, int octave, int semitonesUp);
     @Override String toString();
-    
+
     @Override boolean equals(Object obj);
-    
+
     @Override int hashCode();
-    
+
 }

@@ -389,21 +389,55 @@ public class ParseTest {
     //test body parse
     /*
      * Note:
-     *      - Lowercase and uppercase notes
-     *      - , vs ' signaling octave change: 0, 1, multiple
-     *      - duration in form n/m, /m, n/, /, n
-     *      
+     *      - note letter --> lowercase, uppercase
+     *      - , or ' (octave change) --> 0, 1, >1
+     *      - accidental --> __, _, ^, ^^
+     *      - duration --> default length, n, n/m, /m, n/, /
+     * Rest:
+     *      - duration --> default length, n, n/m, /m, n/, /
+     * Chord:
+     *      - number of notes --> 1, 2, >2
+     *      - length of notes --> 1, >1
+     *      - different lengths --> no, yes within chord, yes with additional notes
+     *      - (yes within chord = [C2E4], yes with additional notes = [C2E4]G2)
      * Tuplet:
-     *      - contains notes
-     *      - contains chords
-     *      - contains chords and notes, try in different orders (CNN, NCN, CNC, etc)
+     *      - duplet --> notes only, chords only, notes and chords
+     *      - triplet --> notes only, chords only, notes and chords
+     * Normal measure:
+     *      - one element (note or rest)
+     *      - multiple elements (notes and rests)
+     * Start repeat measure:
+     *      - start repeat --> |: or :
+     *      - (only : if start repeat is preceded by another measure bc measures end in |)
+     *      - one element --> note or rest
+     *      - multiple elements --> notes and rests
+     * End repeat measure:
+     *      - one element --> note or rest
+     *      - multiple elements --> notes and rests
+     * Doublebar measure:
+     *      - doublebar --> || or [| or |]
+     *      - one element --> note or rest
+     *      - multiple elements --> notes and rests
+     * First ending measure:
+     *      - first ending length --> one measure, multiple measures
+     * Second ending measure:
+     *      - second ending length --> one measure, multiple measures
      */
 
-    // test single uppercase note with duration in form /m
+    // covers normal measure (one element), note (uppercase note letter), note (
     @Test
-    public void testMusicParserMeasure(){
+    public void testUppercaseNote(){
         String test = "A|\n";
-        Music note = Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
-        assertEquals(new Fraction(1,4), note.duration());
+        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
+        assertEquals(new Fraction(1,4), measure.duration());
+        System.out.println("ELEMENTS: " + measure.getElements());
+    }
+    
+    // test measure with multiple notes -- one uppercase, one lowercase
+    @Test
+    public void testMultipleNoteMeasure(){
+        String test = "A b|\n";
+        Music piece = Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
+        assertEquals(new Fraction(1,2), piece.duration());
     }
 }

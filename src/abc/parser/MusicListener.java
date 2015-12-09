@@ -161,16 +161,6 @@ public interface MusicListener extends ParseTreeListener {
    */
   void exitNote(MusicParser.NoteContext ctx);
   /**
-   * Enter a parse tree produced by {@link MusicParser#notetype}.
-   * @param ctx the parse tree
-   */
-  void enterNotetype(MusicParser.NotetypeContext ctx);
-  /**
-   * Exit a parse tree produced by {@link MusicParser#notetype}.
-   * @param ctx the parse tree
-   */
-  void exitNotetype(MusicParser.NotetypeContext ctx);
-  /**
    * Enter a parse tree produced by {@link MusicParser#pitch}.
    * @param ctx the parse tree
    */

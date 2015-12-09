@@ -199,18 +199,6 @@ public class MusicBaseListener implements MusicListener {
    *
    * <p>The default implementation does nothing.</p>
    */
-  @Override public void enterNotetype(MusicParser.NotetypeContext ctx) { }
-  /**
-   * {@inheritDoc}
-   *
-   * <p>The default implementation does nothing.</p>
-   */
-  @Override public void exitNotetype(MusicParser.NotetypeContext ctx) { }
-  /**
-   * {@inheritDoc}
-   *
-   * <p>The default implementation does nothing.</p>
-   */
   @Override public void enterPitch(MusicParser.PitchContext ctx) { }
   /**
    * {@inheritDoc}

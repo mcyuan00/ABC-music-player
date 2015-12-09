@@ -59,7 +59,6 @@ import abc.parser.MusicParser.NormalmeasureContext;
 import abc.parser.MusicParser.NoteContext;
 import abc.parser.MusicParser.NoteelementContext;
 import abc.parser.MusicParser.NotelengthContext;
-import abc.parser.MusicParser.NotetypeContext;
 import abc.parser.MusicParser.PitchContext;
 import abc.parser.MusicParser.RestContext;
 import abc.parser.MusicParser.SecondendingmeasureContext;
@@ -388,6 +387,13 @@ public class Parser {
         // root is the starter rule for this grammar.
         // Other grammars may have different names for the starter rule.
         ParseTree tree = parser.root();
+        
+        Future<JDialog> inspect = Trees.inspect(tree, parser);
+        try {
+            Utils.waitForClose(inspect.get());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         MakeMusic musicMaker = new MakeMusic(keySig, defaultNoteLength);
         new ParseTreeWalker().walk(musicMaker, tree);
@@ -398,6 +404,7 @@ public class Parser {
         //            System.out.println(e.getMessage()); //not used after debugging
         //            throw new IllegalArgumentException();
         //        }
+
     }
 
 
@@ -480,7 +487,7 @@ public class Parser {
                 noteElements.add(stack.pop());
             }
             Collections.reverse(noteElements);
-            
+
             boolean transpose = false;
             char note = 'y';
             int octave = 0;
@@ -497,7 +504,7 @@ public class Parser {
                     m.transposeKey(note, octave, semitonesUp);
                 }
             }
-            
+
             Measure m = new Measure(noteElements, false, false, false, true);
             stack.push(m);
         }
@@ -510,7 +517,7 @@ public class Parser {
                 noteElements.add(stack.pop());
             }
             Collections.reverse(noteElements);
-            
+
             boolean transpose = false;
             char note = 'y';
             int octave = 0;
@@ -527,7 +534,7 @@ public class Parser {
                     m.transposeKey(note, octave, semitonesUp);
                 }
             }
-            
+
             Measure m = new Measure(noteElements, true, false, false, false);
             stack.push(m);
         }
@@ -540,7 +547,7 @@ public class Parser {
                 noteElements.add(stack.pop());
             }
             Collections.reverse(noteElements);  
-            
+
             boolean transpose = false;
             char note = 'y';
             int octave = 0;
@@ -557,7 +564,7 @@ public class Parser {
                     m.transposeKey(note, octave, semitonesUp);
                 }
             }
-            
+
             Measure m = new Measure(noteElements, false, true, false, false);
             stack.push(m);
         }
@@ -565,12 +572,13 @@ public class Parser {
         @Override
         public void exitNormalmeasure(NormalmeasureContext ctx) { 
             int numElements = ctx.element().size();
+
             List<Music> noteElements = new ArrayList<Music>();
             for (int i = 0; i < numElements; i++){
                 noteElements.add(stack.pop());
             }
             Collections.reverse(noteElements);  
-            
+
             boolean transpose = false;
             char note = 'y';
             int octave = 0;
@@ -587,7 +595,7 @@ public class Parser {
                     m.transposeKey(note, octave, semitonesUp);
                 }
             }
-            
+
             Measure m = new Measure(noteElements, false, false, false, false);
             stack.push(m);
         }
@@ -600,9 +608,6 @@ public class Parser {
 
         @Override
         public void exitNote(NoteContext ctx) { }
-
-        @Override
-        public void exitNotetype(NotetypeContext ctx) { }
 
         @Override
         public void exitPitch(PitchContext ctx) { 
@@ -793,9 +798,6 @@ public class Parser {
 
         @Override
         public void enterElement(ElementContext ctx) { }
-
-        @Override
-        public void enterNotetype(NotetypeContext ctx) { }
 
         @Override
         public void enterPitch(PitchContext ctx) { }
