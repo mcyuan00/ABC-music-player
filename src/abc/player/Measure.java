@@ -73,10 +73,10 @@ public class Measure implements Music {
     
     private void checkRep(){
         assert !m.isEmpty();
-        assert (startRepeat && firstEnding);
-        assert (startRepeat && doubleBar);
-        assert (endRepeat && doubleBar);
-        assert (firstEnding && doubleBar);
+        assert !(startRepeat && firstEnding);
+        assert !(startRepeat && doubleBar);
+        assert !(endRepeat && doubleBar);
+        assert !(firstEnding && doubleBar);
     }
     
     /**
