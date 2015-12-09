@@ -8,7 +8,7 @@ import Configuration;
 
 root : music EOF;
 music : measure+;
-measure : normalmeasure | startrepeatmeasure | doublebarmeasure | firstendingmeasure | secondendingmeasure | endrepeatmeasure;
+measure : normalmeasure | startrepeatmeasure | doublebarmeasure | firstendingmeasure | secondendingmeasure | endrepeatmeasure | singlerepeatmeasure;
 firstendingmeasure : '[1' normalmeasure* endrepeatmeasure;
 secondendingmeasure : '[2' normalmeasure* doublebarmeasure;
 normalmeasure : (element | WHITESPACE)+ ('|' | startrepeatmeasure);

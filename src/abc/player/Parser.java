@@ -86,12 +86,12 @@ public class Parser {
         // Other grammars may have different names for the starter rule.
         ParseTree tree = parser.root();
 
-                Future<JDialog> inspect = Trees.inspect(tree, parser);
-                try {
-                    Utils.waitForClose(inspect.get());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+//                Future<JDialog> inspect = Trees.inspect(tree, parser);
+//                try {
+//                    Utils.waitForClose(inspect.get());
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
 
         MakeHeader headerMaker = new MakeHeader();
         new ParseTreeWalker().walk(headerMaker, tree);
