@@ -31,10 +31,24 @@ import abc.parser.HeaderParser.VoiceContext;
  *
  */
 public class Header {
-
-    //rep invariant:
-    //  tempo > 0
-    //  all the fractions are already required to be greater than 0 and have a nonzero denominator
+    
+    //AF: 
+    //      represents a header of a piece that contains information about the field
+    //      composer - composer of the piece
+    //      key - the key signature
+    //      noteLength - the default note length of the piece with which the tempo is defined
+    //      meter - the meter
+    //      tempo - tempo of the default note length
+    //      title - title
+    //      index - index of the piece
+    //      voices - the different voices that are in the piece
+    //RI:
+    //      tempo > 0
+    //      all the fractions are already required to be greater than 0 and have a nonzero denominator
+    //          -already asserted by the RI of Fraction
+    //Safety from Rep Exposure:
+    //      fields are private and immutable
+    //      return a copy of voices since list is mutable
 
     private String composer;
     private KeySignature key;
@@ -131,7 +145,7 @@ public class Header {
      * @return the voice(s) of the piece
      */
     public List<String> voices(){
-        return voices;
+        return new ArrayList<String>(voices);
     }
     
     /**

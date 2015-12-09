@@ -7,10 +7,17 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Rest represents a pause in a piece of music
+ * Rest represents a pause in a piece of music. It is immutable.
  */
 public class Rest implements Music {
     private final Fraction duration;
+    
+    //AF: 
+    //      the duration represents the duration of the rest where nothing is played
+    //RI:
+    //      duration > 0
+    //Safety from Rep Exposure:
+    //      duration is private, final and immutable
     
     /**
      * Make a Rest that lasts for duration beats
@@ -18,6 +25,11 @@ public class Rest implements Music {
      */
     public Rest(Fraction duration){
         this.duration = duration.simplify();
+        checkRep();
+    }
+    
+    private void checkRep(){
+        assert duration.toDecimal() > 0;
     }
 
     /**

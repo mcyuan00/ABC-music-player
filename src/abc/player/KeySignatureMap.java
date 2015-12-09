@@ -2,6 +2,10 @@ package abc.player;
 
 import java.util.HashMap;
 
+/**
+ * Maps all possible key signatures.
+ *
+ */
 public class KeySignatureMap {
 
     // creates a key signature map

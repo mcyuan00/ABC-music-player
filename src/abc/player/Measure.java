@@ -19,6 +19,24 @@ public class Measure implements Music {
     private final boolean firstEnding;
     private final boolean doubleBar;
     
+    //AF: 
+    //      Represents a measure and contains all the parts of music as well as information about what kind of measure it is
+    //      m - the list of music that is in the measure in order
+    //      startRepeat - whether this measure is the first measure of a repeat
+    //      endRepeat - whether this measure is the last measure of a repeat
+    //      firstEnding - whether this measure is the beginning of the first ending of a repeat
+    //      doubleBar - whether this is the last measure of a major section with a doublebar
+    //RI:
+    //      m is not empty
+    //      CANNOT be:
+    //          startRepeat = firstEnding = true
+    //          startRepeat = doublebar = true
+    //          endRepeat = doubleBar = true
+    //          firstEnding = doubleBar = true
+    //Safety from Rep Exposure:
+    //      everything is final and immutable
+    //      we return a copy of m instead of m itself
+    
     /**
      * Make a Measure with certain notes and rests.
      * @param m array of Music
@@ -33,6 +51,7 @@ public class Measure implements Music {
         this.endRepeat = endRepeat;
         this.firstEnding = firstEnding;
         this.doubleBar = doubleBar;
+        checkRep();
     }
     
     /**
@@ -49,6 +68,15 @@ public class Measure implements Music {
         this.endRepeat = endRepeat;
         this.firstEnding = firstEnding;
         this.doubleBar = doubleBar;
+        checkRep();
+    }
+    
+    private void checkRep(){
+        assert !m.isEmpty();
+        assert (startRepeat && firstEnding);
+        assert (startRepeat && doubleBar);
+        assert (endRepeat && doubleBar);
+        assert (firstEnding && doubleBar);
     }
     
     /**
@@ -108,14 +136,6 @@ public class Measure implements Music {
         }
         return denominators;
     }
-
-//    @Override
-//    public void transposeKey(char note, int octave, int semitonesUp) {
-//        for (Music music: m){
-//            music.transposeKey(note, octave, semitonesUp);
-//        }
-//        
-//    }
 
     @Override
     public Music applyAccidentals(Map<String, Integer> accidentalMap) {

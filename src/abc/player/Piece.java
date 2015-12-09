@@ -9,13 +9,17 @@ import javax.sound.midi.MidiUnavailableException;
 import abc.sound.SequencePlayer;
 
 /**
- * A piece consists of a header and a music object
+ * A piece represents the entire music consisting of a header and the different voices
  */
 public class Piece {
 
-    /***
-     * Abstraction function:
-     */
+    //AF: 
+    //      header contains the header information while voices contain all the voices of the music
+    //RI:
+    //      voices is not empty
+    //Safety from Rep Exposure:
+    //      all fields are private and final
+    //      none of header or voices is returned in any observer functions
 
     private final Header header;
     private final List<Music> voices;
@@ -28,6 +32,11 @@ public class Piece {
     public Piece(Header header, List<Music> voices){
         this.header = header;
         this.voices = voices;
+        checkRep();
+    }
+    
+    private void checkRep(){
+        assert !voices.isEmpty();
     }
 
     /**
@@ -56,6 +65,11 @@ public class Piece {
         player.play();
     }
     
+    /**
+     * Finds the least common multiple among a set of integers
+     * @param durationDenominators the numbers to find the lcm of
+     * @return the least common multiple
+     */
     private int getLCM(Set<Integer> durationDenominators){
         int currentLcm = 1;
         for (int denominator : durationDenominators){
@@ -64,12 +78,24 @@ public class Piece {
         return currentLcm;
     }
     
+    /**
+     * Finds the least common multiple of two numbers
+     * @param firstNum one of the numbers
+     * @param secondNum the other number
+     * @return the least common multiple
+     */
     private int pairLCM(int firstNum, int secondNum){
         int product = firstNum * secondNum;
         int gcd = pairGCD(firstNum, secondNum);
         return product / gcd;
     }
     
+    /**
+     * Finds the greatest common divisor of two numbers
+     * @param firstNum one of the numbers to find GCD of
+     * @param secondNum the other number
+     * @return the greatest common divisor
+     */
     private int pairGCD(int firstNum, int secondNum){
         if(firstNum == 0){
             return secondNum;

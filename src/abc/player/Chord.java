@@ -7,15 +7,26 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Chord represents one or more notes played simultaneously.
+ * Chord represents one or more notes played simultaneously. Chord is immutable.
  */
 public class Chord implements Music{
     private final List<Music> notes;
+    
+    //AF: 
+    //      notes in the list notes contain all the notes contained in the chord
+    //      the duration of the chord is equal to the duration of the first Note in the list notes
+    //RI:
+    //      list notes cannot be empty
+    //Safety from Rep Exposure:
+    //      notes is final and private
+    //      return copy of notes for chordNotes instead of notes itself
+    
     
     /**
      * Make a Chord with certain notes played for duration beats.
      * @param duration duration in beats, must be >= 0 
      * @param notes notes in the chord; cannot be an empty list
+     *          all elements in notes must a Note
      */
     public Chord(List<Music> notes){
         this.notes = notes;
@@ -69,14 +80,6 @@ public class Chord implements Music{
         assert !notes.isEmpty();
     }
 
-
-//    @Override
-//    public void transposeKey(char note,int octave, int semitonesUp) {
-//        for (Music m : notes){
-//            m.transposeKey(note, octave, semitonesUp);
-//        }
-//        
-//    }
     
     @Override
     public Music applyAccidentals(Map<String, Integer> accidentalMap) {

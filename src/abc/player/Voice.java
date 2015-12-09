@@ -8,11 +8,20 @@ import java.util.Set;
 
 /**
  * Voice represents a melodic line (voice) playing at the
- * same time as other melodic lines (voices).
+ * same time as other melodic lines (voices). This class is immutable
  */
 public class Voice implements Music {
     private final String name;
     private final List<Music> musicElements;
+    
+    //AF: 
+    //      represents the voice by the name of the voice in name 
+    //      and the actual music in the musicElements
+    //RI:
+    //      musicElement cannot be empty
+    //Safety from Rep Exposure:
+    //      all fields are final and immutable
+    //      musicElements is never returned and we return a copy of it
     
     /**
      * Make a Voice with a given name identifier and measures.
@@ -63,14 +72,6 @@ public class Voice implements Music {
         }
         return elements;
     }
-
-//    @Override
-//    public void transposeKey(char note,int octave, int semitonesUp) {
-//        for (Music m: musicElements){
-//            m.transposeKey(note,octave, semitonesUp);
-//        }
-//        
-//    }
 
     @Override
     public Set<Integer> getAllDurationDenominators() {

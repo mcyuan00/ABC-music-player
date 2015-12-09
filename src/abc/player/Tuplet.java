@@ -23,10 +23,21 @@ public class Tuplet implements Music{
     private final List<Music> notes;
     private final Fraction adjustmentFactor;
     
+    //AF: 
+    //      notes represents the note to be played as a tuplet
+    //      first element of note determines the length of the tuplet
+    //RI:
+    //      list notes cannot be empty
+    //      1 < tupletNumber < 5
+    //      all elements in the noteElements must have equal length
+    //Safety from Rep Exposure:
+    //      all fields are immutable and final
+    //      notes is never returned, but we only return a copy of it
+    
     /**
      * Make a Tuplet with certain notes.
      * @param tupletNumber type of tuplet (2 for duplet, 3 for triplet, and 4 for quadruplet)
-     * @param notes notes in the tuplet; each note are required to have the same duration
+     * @param notes notes in the tuplet; each note are required to have the same duration; cannot be empty
      */
 
     public Tuplet(int tupletNumber, List<Music> notes){
@@ -52,6 +63,7 @@ public class Tuplet implements Music{
         for (Music note : notes){
             assert noteLength.equals(note.duration());
         }
+        assert !notes.isEmpty();
     }
 
     @Override
