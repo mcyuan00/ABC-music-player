@@ -7,11 +7,7 @@ grammar Music;
 import Configuration;
 
 root : music EOF;
-music : line+;
-line : (measureline | midtune | comment) NEWLINE ;
-midtune : 'V:' text+;
-
-measureline : measure+;
+music : measure+;
 measure : normalmeasure | startrepeatmeasure | doublebarmeasure | firstendingmeasure | secondendingmeasure | endrepeatmeasure;
 firstendingmeasure : '[1' normalmeasure* endrepeatmeasure;
 secondendingmeasure : '[2' normalmeasure* doublebarmeasure;

@@ -2,6 +2,7 @@ package abc.player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Voice represents a melodic line (voice) playing at the
@@ -76,6 +77,12 @@ public class Voice implements Music {
             m.transposeKey(note,octave, semitonesUp);
         }
         
+    }
+
+    @Override
+    public Set<Integer> getAllDurationDenominators() {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 

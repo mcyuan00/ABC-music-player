@@ -1,6 +1,7 @@
 package abc.player;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -387,7 +388,7 @@ public class Parser {
         // root is the starter rule for this grammar.
         // Other grammars may have different names for the starter rule.
         ParseTree tree = parser.root();
-        
+
         Future<JDialog> inspect = Trees.inspect(tree, parser);
         try {
             Utils.waitForClose(inspect.get());
@@ -482,122 +483,125 @@ public class Parser {
         @Override
         public void exitDoublebarmeasure(DoublebarmeasureContext ctx) { 
             int numElements = ctx.element().size();
-            List<Music> noteElements = new ArrayList<Music>();
+            List<Music> elements = new ArrayList<Music>();
             for (int i = 0; i < numElements; i++){
-                noteElements.add(stack.pop());
+                elements.add(stack.pop());
             }
-            Collections.reverse(noteElements);
-
-            boolean transpose = false;
-            char note = 'y';
-            int octave = 0;
-            int semitonesUp= 0;
-            for (Music m : noteElements){
-                if(m instanceof Note && ((Note)m).getTransposeTag()){
-                    Note n = (Note)m;
-                    transpose = true;
-                    note = n.getNoteLetter();
-                    octave = n.getOctave();
-                    semitonesUp = n.getAccidental();
-                }
-                if(transpose){
-                    m.transposeKey(note, octave, semitonesUp);
-                }
-            }
-
-            Measure m = new Measure(noteElements, false, false, false, true);
+            Collections.reverse(elements);
+            applyAccidentalsToMeasure(elements);
+            Measure m = new Measure(elements, false, false, false, true);
             stack.push(m);
         }
 
         @Override
         public void exitStartrepeatmeasure(StartrepeatmeasureContext ctx) { 
             int numElements = ctx.element().size();
-            List<Music> noteElements = new ArrayList<Music>();
+            List<Music> elements = new ArrayList<Music>();
             for (int i = 0; i < numElements; i++){
-                noteElements.add(stack.pop());
+                elements.add(stack.pop());
             }
-            Collections.reverse(noteElements);
+            Collections.reverse(elements);
 
-            boolean transpose = false;
-            char note = 'y';
-            int octave = 0;
-            int semitonesUp= 0;
-            for (Music m : noteElements){
-                if(m instanceof Note && ((Note)m).getTransposeTag()){
-                    Note n = (Note)m;
-                    transpose = true;
-                    note = n.getNoteLetter();
-                    octave = n.getOctave();
-                    semitonesUp = n.getAccidental();
-                }
-                if(transpose){
-                    m.transposeKey(note, octave, semitonesUp);
-                }
-            }
+            applyAccidentalsToMeasure(elements);
 
-            Measure m = new Measure(noteElements, true, false, false, false);
+            Measure m = new Measure(elements, true, false, false, false);
             stack.push(m);
         }
 
         @Override
         public void exitEndrepeatmeasure(EndrepeatmeasureContext ctx) {
             int numElements = ctx.element().size();
-            List<Music> noteElements = new ArrayList<Music>();
+            List<Music> elements = new ArrayList<Music>();
             for (int i = 0; i < numElements; i++){
-                noteElements.add(stack.pop());
+                elements.add(stack.pop());
             }
-            Collections.reverse(noteElements);  
+            Collections.reverse(elements);  
 
-            boolean transpose = false;
-            char note = 'y';
-            int octave = 0;
-            int semitonesUp= 0;
-            for (Music m : noteElements){
-                if(m instanceof Note && ((Note)m).getTransposeTag()){
-                    Note n = (Note)m;
-                    transpose = true;
-                    note = n.getNoteLetter();
-                    octave = n.getOctave();
-                    semitonesUp = n.getAccidental();
-                }
-                if(transpose){
-                    m.transposeKey(note, octave, semitonesUp);
-                }
-            }
+            applyAccidentalsToMeasure(elements);
 
-            Measure m = new Measure(noteElements, false, true, false, false);
+            Measure m = new Measure(elements, false, true, false, false);
             stack.push(m);
         }
+
 
         @Override
         public void exitNormalmeasure(NormalmeasureContext ctx) { 
             int numElements = ctx.element().size();
             assert stack.size()>= numElements;
-            List<Music> noteElements = new ArrayList<Music>();
+            List<Music> elements = new ArrayList<Music>();
             for (int i = 0; i < numElements; i++){
-                noteElements.add(stack.pop());
+                elements.add(stack.pop());
             }
-            Collections.reverse(noteElements);  
+            Collections.reverse(elements);  
 
+            applyAccidentalsToMeasure(elements);
+            Measure m = new Measure(elements, false, false, false, false);
+            stack.push(m);
+        }
+
+        /**
+         * Checks from beginning to end if list of music elements has accidentals and applies these
+         * to the rest of the list if found
+         * @param elements list of music elements to apply accidentals too
+         * @return modified list of elements
+         */
+        private List<Music> applyAccidentalsToMeasure(List<Music> elements){
+            // make sure accidentals apply to the entire line
             boolean transpose = false;
             char note = 'y';
             int octave = 0;
             int semitonesUp= 0;
-            for (Music m : noteElements){
-                if(m instanceof Note && ((Note)m).getTransposeTag()){
-                    Note n = (Note)m;
-                    transpose = true;
-                    note = n.getNoteLetter();
-                    octave = n.getOctave();
-                    semitonesUp = n.getAccidental();
+            for (Music m : elements){
+                List<Note> notesToCheck = new ArrayList<Note>();
+                if(m instanceof Chord){
+                    Chord chord = (Chord)m;
+                    notesToCheck = extractChordNotes(chord);
                 }
-                if(transpose){
-                    m.transposeKey(note, octave, semitonesUp);
+                else if(m instanceof Tuplet){
+                    Tuplet tuplet = (Tuplet)m;
+                    notesToCheck = extractTupletNotes(tuplet);
+                }
+                else if (m instanceof Note){
+                    Note n = (Note)m;
+                    notesToCheck= Arrays.asList(n);
+                }
+                for (Note n: notesToCheck){
+                    if (n.getTransposeTag()){
+                        transpose = true;
+                        note = n.getNoteLetter();
+                        octave = n.getOctave();
+                        semitonesUp = n.getAccidental();
+                    }
+                    if(transpose){
+                        n.transposeKey(note, octave, semitonesUp);
+                    }
                 }
             }
+            return elements;
+        }
 
-            Measure m = new Measure(noteElements, false, false, false, false);
-            stack.push(m);
+
+        private List<Note> extractChordNotes(Chord chord){
+            List<Note> notes = new ArrayList<Note>();
+            for(Music music:chord.chordNotes()){
+                notes.add((Note)music);
+            }
+            return notes;
+        }
+
+        private List<Note> extractTupletNotes(Tuplet tuplet){
+            List<Note> notes = new ArrayList<Note>();
+            for(Music music: tuplet.tupletNotes()){
+                if (music instanceof Chord){
+                    Chord chord = (Chord)music;
+                    notes.addAll(extractChordNotes(chord));
+                }
+                else{
+                    Note note = (Note)music;
+                    notes.add(note);
+                }
+            }
+            return notes;
         }
 
         @Override

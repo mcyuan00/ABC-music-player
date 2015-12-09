@@ -73,7 +73,8 @@ public class Note implements Music {
     @Override
     public void transposeKey(char note, int octave, int semitonesUp) {
         if(note == noteLetter && this.octave == octave){
-            pitch.transpose(semitonesUp);
+            int semitoneDifference = semitonesUp - accidental;
+            pitch.transpose(semitoneDifference);
         }  
     }
 
