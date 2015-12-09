@@ -449,7 +449,6 @@ public class Parser {
         @Override
         public void exitMeasure(MeasureContext ctx) { }
 
-        //TODO add accidentals to first ending measure
         @Override
         public void exitFirstendingmeasure(FirstendingmeasureContext ctx) { 
             int numNorm = ctx.normalmeasure().size();
