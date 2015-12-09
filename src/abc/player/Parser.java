@@ -1,6 +1,7 @@
 package abc.player;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -50,10 +51,7 @@ import abc.parser.MusicParser.DoublebarmeasureContext;
 import abc.parser.MusicParser.ElementContext;
 import abc.parser.MusicParser.EndrepeatmeasureContext;
 import abc.parser.MusicParser.FirstendingmeasureContext;
-import abc.parser.MusicParser.LineContext;
 import abc.parser.MusicParser.MeasureContext;
-import abc.parser.MusicParser.MeasurelineContext;
-import abc.parser.MusicParser.MidtuneContext;
 import abc.parser.MusicParser.MusicContext;
 import abc.parser.MusicParser.NormalmeasureContext;
 import abc.parser.MusicParser.NoteContext;
@@ -387,6 +385,7 @@ public class Parser {
         // root is the starter rule for this grammar.
         // Other grammars may have different names for the starter rule.
         ParseTree tree = parser.root();
+
         
 //        Future<JDialog> inspect = Trees.inspect(tree, parser);
 //        try {
@@ -448,15 +447,6 @@ public class Parser {
         public void exitMusic(MusicContext ctx) { }
 
         @Override
-        public void exitLine(LineContext ctx) { }
-
-        @Override
-        public void exitMidtune(MidtuneContext ctx) { }
-
-        @Override
-        public void exitMeasureline(MeasurelineContext ctx) { }
-
-        @Override
         public void exitMeasure(MeasureContext ctx) { }
 
         //TODO add accidentals to first ending measure
@@ -482,122 +472,125 @@ public class Parser {
         @Override
         public void exitDoublebarmeasure(DoublebarmeasureContext ctx) { 
             int numElements = ctx.element().size();
-            List<Music> noteElements = new ArrayList<Music>();
+            List<Music> elements = new ArrayList<Music>();
             for (int i = 0; i < numElements; i++){
-                noteElements.add(stack.pop());
+                elements.add(stack.pop());
             }
-            Collections.reverse(noteElements);
-
-            boolean transpose = false;
-            char note = 'y';
-            int octave = 0;
-            int semitonesUp= 0;
-            for (Music m : noteElements){
-                if(m instanceof Note && ((Note)m).getTransposeTag()){
-                    Note n = (Note)m;
-                    transpose = true;
-                    note = n.getNoteLetter();
-                    octave = n.getOctave();
-                    semitonesUp = n.getAccidental();
-                }
-                if(transpose){
-                    m.transposeKey(note, octave, semitonesUp);
-                }
-            }
-
-            Measure m = new Measure(noteElements, false, false, false, true);
+            Collections.reverse(elements);
+            applyAccidentalsToMeasure(elements);
+            Measure m = new Measure(elements, false, false, false, true);
             stack.push(m);
         }
 
         @Override
         public void exitStartrepeatmeasure(StartrepeatmeasureContext ctx) { 
             int numElements = ctx.element().size();
-            List<Music> noteElements = new ArrayList<Music>();
+            List<Music> elements = new ArrayList<Music>();
             for (int i = 0; i < numElements; i++){
-                noteElements.add(stack.pop());
+                elements.add(stack.pop());
             }
-            Collections.reverse(noteElements);
+            Collections.reverse(elements);
 
-            boolean transpose = false;
-            char note = 'y';
-            int octave = 0;
-            int semitonesUp= 0;
-            for (Music m : noteElements){
-                if(m instanceof Note && ((Note)m).getTransposeTag()){
-                    Note n = (Note)m;
-                    transpose = true;
-                    note = n.getNoteLetter();
-                    octave = n.getOctave();
-                    semitonesUp = n.getAccidental();
-                }
-                if(transpose){
-                    m.transposeKey(note, octave, semitonesUp);
-                }
-            }
+            applyAccidentalsToMeasure(elements);
 
-            Measure m = new Measure(noteElements, true, false, false, false);
+            Measure m = new Measure(elements, true, false, false, false);
             stack.push(m);
         }
 
         @Override
         public void exitEndrepeatmeasure(EndrepeatmeasureContext ctx) {
             int numElements = ctx.element().size();
-            List<Music> noteElements = new ArrayList<Music>();
+            List<Music> elements = new ArrayList<Music>();
             for (int i = 0; i < numElements; i++){
-                noteElements.add(stack.pop());
+                elements.add(stack.pop());
             }
-            Collections.reverse(noteElements);  
+            Collections.reverse(elements);  
 
-            boolean transpose = false;
-            char note = 'y';
-            int octave = 0;
-            int semitonesUp= 0;
-            for (Music m : noteElements){
-                if(m instanceof Note && ((Note)m).getTransposeTag()){
-                    Note n = (Note)m;
-                    transpose = true;
-                    note = n.getNoteLetter();
-                    octave = n.getOctave();
-                    semitonesUp = n.getAccidental();
-                }
-                if(transpose){
-                    m.transposeKey(note, octave, semitonesUp);
-                }
-            }
+            applyAccidentalsToMeasure(elements);
 
-            Measure m = new Measure(noteElements, false, true, false, false);
+            Measure m = new Measure(elements, false, true, false, false);
             stack.push(m);
         }
+
 
         @Override
         public void exitNormalmeasure(NormalmeasureContext ctx) { 
             int numElements = ctx.element().size();
             assert stack.size()>= numElements;
-            List<Music> noteElements = new ArrayList<Music>();
+            List<Music> elements = new ArrayList<Music>();
             for (int i = 0; i < numElements; i++){
-                noteElements.add(stack.pop());
+                elements.add(stack.pop());
             }
-            Collections.reverse(noteElements);  
+            Collections.reverse(elements);  
 
+            applyAccidentalsToMeasure(elements);
+            Measure m = new Measure(elements, false, false, false, false);
+            stack.push(m);
+        }
+
+        /**
+         * Checks from beginning to end if list of music elements has accidentals and applies these
+         * to the rest of the list if found
+         * @param elements list of music elements to apply accidentals to
+         * @return modified list of elements
+         */
+        private List<Music> applyAccidentalsToMeasure(List<Music> elements){
+            // make sure accidentals apply to the entire line
             boolean transpose = false;
             char note = 'y';
             int octave = 0;
             int semitonesUp= 0;
-            for (Music m : noteElements){
-                if(m instanceof Note && ((Note)m).getTransposeTag()){
-                    Note n = (Note)m;
-                    transpose = true;
-                    note = n.getNoteLetter();
-                    octave = n.getOctave();
-                    semitonesUp = n.getAccidental();
+            for (Music m : elements){
+                List<Note> notesToCheck = new ArrayList<Note>();
+                if(m instanceof Chord){
+                    Chord chord = (Chord)m;
+                    notesToCheck = extractChordNotes(chord);
                 }
-                if(transpose){
-                    m.transposeKey(note, octave, semitonesUp);
+                else if(m instanceof Tuplet){
+                    Tuplet tuplet = (Tuplet)m;
+                    notesToCheck = extractTupletNotes(tuplet);
+                }
+                else if (m instanceof Note){
+                    Note n = (Note)m;
+                    notesToCheck= Arrays.asList(n);
+                }
+                for (Note n: notesToCheck){
+                    if (n.getTransposeTag()){
+                        transpose = true;
+                        note = n.getNoteLetter();
+                        octave = n.getOctave();
+                        semitonesUp = n.getAccidental();
+                    }
+                    if(transpose){
+                        n.transposeKey(note, octave, semitonesUp);
+                    }
                 }
             }
+            return elements;
+        }
 
-            Measure m = new Measure(noteElements, false, false, false, false);
-            stack.push(m);
+
+        private List<Note> extractChordNotes(Chord chord){
+            List<Note> notes = new ArrayList<Note>();
+            for(Music music:chord.chordNotes()){
+                notes.add((Note)music);
+            }
+            return notes;
+        }
+
+        private List<Note> extractTupletNotes(Tuplet tuplet){
+            List<Note> notes = new ArrayList<Note>();
+            for(Music music: tuplet.tupletNotes()){
+                if (music instanceof Chord){
+                    Chord chord = (Chord)music;
+                    notes.addAll(extractChordNotes(chord));
+                }
+                else{
+                    Note note = (Note)music;
+                    notes.add(note);
+                }
+            }
+            return notes;
         }
 
         @Override
@@ -642,15 +635,17 @@ public class Parser {
             if (ctx.ACCIDENTAL()!= null){
                 String accidental = ctx.ACCIDENTAL().getText();
                 if (accidental.contains("_")){
-                    numAccidental = accidental.length();
+                    numAccidental = -accidental.length();
                 }
                 if (accidental.contains("^")){
                     numAccidental = accidental.length();
                 }
+                else{
+                    numAccidental = 0;
+                }
                 transpose = true;
             }
-            Note n = new Note(noteLength, noteLetter, octave, numAccidental);
-            n.setTransposeTag(transpose);
+            Note n = new Note(noteLength, noteLetter, octave, numAccidental, transpose);
             stack.push(n);
         }
 
@@ -671,10 +666,10 @@ public class Parser {
         @Override
         public void exitTupletelement(TupletelementContext ctx) { 
             int tupletNum = Integer.valueOf(ctx.tupletspec().getText().replace("(", ""));
-            assert stack.size()> tupletNum;
+            int tupletSize = ctx.noteelement().size();
+            assert tupletSize >= tupletNum;
             assert tupletNum > 1 && tupletNum < 5;
 
-            int tupletSize = ctx.noteelement().size();
             List<Music> tupletNotes = new ArrayList<Music>();
 
             for (int i = 0; i < tupletSize; i++){
@@ -754,9 +749,6 @@ public class Parser {
         public void enterMusic(MusicContext ctx) {}
 
         @Override
-        public void enterMidtune(MidtuneContext ctx) {}
-
-        @Override
         public void enterNote(NoteContext ctx) { }
 
         @Override
@@ -784,13 +776,7 @@ public class Parser {
         public void enterMeasure(MeasureContext ctx) { }
 
         @Override
-        public void enterLine(LineContext ctx) { }
-
-        @Override
         public void enterTupletelement(TupletelementContext ctx) { }
-
-        @Override
-        public void enterMeasureline(MeasurelineContext ctx) { }
 
         @Override
         public void enterFirstendingmeasure(FirstendingmeasureContext ctx) { }      

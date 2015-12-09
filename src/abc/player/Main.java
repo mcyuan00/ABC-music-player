@@ -38,7 +38,8 @@ public class Main {
                 Music m = Parser.parseMusic(voices.get(key), defaultNoteLength, keySig);
                 music.put(key, m);
             }
-
+            
+            //TODO: convert into pieces
             
             
             try {
