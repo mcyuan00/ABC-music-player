@@ -93,30 +93,31 @@ public class Note implements Music {
         return denominators;
     }
 
-    //    @Override
-    //    public void transposeKey(char note, int octave, int semitonesUp) {
-    //        if(note == noteLetter && this.octave == octave){
-    //            int semitoneDifference = semitonesUp - accidental;
-    //            pitch.transpose(semitoneDifference);
-    //        }  
-    //    }
-
-    public boolean getTransposeTag(){
-        return wasTransposed;
-    }
-
+    /**
+     * @return the letter that represents the note (A, B, C, D, E, F, G)
+     */
     public char getNoteLetter(){
         return noteLetter;
     }
 
+    /**
+     * @return the octave relative to middle C this note is in (where the octave of middle C is 0)
+     */
     public int getOctave(){
         return octave;
     }
 
+    /**
+     * @return the number of semitones away from a natural note 
+     *          (postive if the note is sharp, negative if note is flat)
+     */
     public int getAccidental(){
         return accidental;
     }
 
+    /**
+     * @return true if this note was transposed (constructed from a note with an accidental), false otherwise
+     */
     public boolean wasTransposed(){
         return wasTransposed;
     }
@@ -192,6 +193,4 @@ public class Note implements Music {
 
         return toString;
     }
-
-
 }

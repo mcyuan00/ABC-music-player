@@ -41,6 +41,14 @@ public class PlayerElement {
     }
     
     /**
+     * Asserts rep invariant.
+     */
+    private void checkRep(){
+        assert startTick >= 0;
+        assert numTicks > 0;
+    }
+    
+    /**
      * Represents a rest that can be added to the SequencePlayer.
      * @param startTick the start tick the rest is to be played at
      * @param numTicks the number of ticks the rest will be played for
@@ -54,7 +62,6 @@ public class PlayerElement {
     }
     
     /**
-     * 
      * @return the pitch of this PlayerElement
      */
     public Pitch pitch(){
@@ -62,7 +69,6 @@ public class PlayerElement {
     }
     
     /**
-     * 
      * @return the midi value of the pitch
      */
     public int pitchMidiValue(){
@@ -78,7 +84,6 @@ public class PlayerElement {
     }
     
     /**
-     * 
      * @return the number of ticks the note or rest will be played for
      */
     public int numTicks(){
@@ -86,7 +91,6 @@ public class PlayerElement {
     }
     
     /**
-     * 
      * @return if true if this PlayerElement is a rest; false otherwise
      */
     public boolean isRest(){
@@ -100,13 +104,5 @@ public class PlayerElement {
         return ((this.pitch().equals(that.pitch())) && (this.startTick() == that.startTick())
                 && (this.numTicks() == that.numTicks()) && (this.isRest() == that.isRest()));
     }
-    
-    /**
-     * Asserts rep invariant.
-     */
-    private void checkRep(){
-        assert startTick >= 0;
-        assert numTicks > 0;
-    }
-
+   
 }

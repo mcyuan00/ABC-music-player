@@ -113,7 +113,4 @@ public class Fraction {
             return numerator + "/" + denominator;
         }
     }
-    
-    
-
 }

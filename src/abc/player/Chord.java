@@ -27,7 +27,6 @@ public class Chord implements Music{
     }
     
     /**
-     * 
      * @return the number of notes that are played together in this chord
      */
     public int numNotes(){
@@ -35,8 +34,7 @@ public class Chord implements Music{
     }
     
     /**
-     * 
-     * @return the notes that are in the chord
+     * @return the a list that contains the notes within in this chord
      */
     public List<Music> chordNotes(){
         return new ArrayList<Music>(notes);   
@@ -48,7 +46,6 @@ public class Chord implements Music{
         return notes.get(0).duration();
     }
 
-
     @Override
     public List<PlayerElement> getPlayerElements(int startTick, int ticksPerBeat, Fraction pieceNoteLength) {
         List<PlayerElement> elements = new ArrayList<PlayerElement>();
@@ -58,7 +55,6 @@ public class Chord implements Music{
         return elements;
     }
 
-
     @Override
     public Set<Integer> getAllDurationDenominators() {
         Set<Integer> denominators = new HashSet<>();
@@ -67,16 +63,6 @@ public class Chord implements Music{
         }
         return denominators;
     }
-    
-
-
-//    @Override
-//    public void transposeKey(char note,int octave, int semitonesUp) {
-//        for (Music m : notes){
-//            m.transposeKey(note, octave, semitonesUp);
-//        }
-//        
-//    }
     
     @Override
     public Music applyAccidentals(Map<String, Integer> accidentalMap) {
