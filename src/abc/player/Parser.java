@@ -635,7 +635,7 @@ public class Parser {
             if (ctx.ACCIDENTAL()!= null){
                 String accidental = ctx.ACCIDENTAL().getText();
                 if (accidental.contains("_")){
-                    numAccidental = -accidental.length();
+                    numAccidental = -(accidental.length());
                 }
                 if (accidental.contains("^")){
                     numAccidental = accidental.length();
