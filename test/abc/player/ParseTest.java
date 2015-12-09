@@ -423,7 +423,6 @@ public class ParseTest {
      * Second ending measure:
      *      - second ending length --> one measure, multiple measures
      * End repeat measure
-     * Single repeat measure
      */
 
     // covers normal measure (one element), note (uppercase note letter), note (default length duration)
@@ -1030,7 +1029,7 @@ public class ParseTest {
     
     // covers start repeat measure (first measure)
     @Test
-    public void testStartRepeatFirst(){
+    public void testStartRepeatMeasureFirst(){
         String test = "|:A|";    
         Voice voice = (Voice) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"), "voice");
         List<Music> expected = new ArrayList<>();
@@ -1042,7 +1041,7 @@ public class ParseTest {
     
     // covers start repeat measure (preceded by another measure)
     @Test
-    public void testStartRepeatSecond(){
+    public void testStartRepeatMeasureSecond(){
         String test = "A|:B|";    
         Voice voice = (Voice) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"), "voice");
         List<Music> expected = new ArrayList<>();
@@ -1062,7 +1061,7 @@ public class ParseTest {
     
     // covers doublebar measure (||)
     @Test
-    public void testDoubleBar1(){
+    public void testDoubleBarMeasure1(){
         String test = "A||";     
         Voice voice = (Voice) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"), "voice");
         List<Music> expected = new ArrayList<>();
@@ -1074,7 +1073,7 @@ public class ParseTest {
     
     // covers doublebar measure ([|)
     @Test
-    public void testDoubleBar2(){
+    public void testDoubleBarMeasure2(){
         String test = "A[|";     
         Voice voice = (Voice) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"), "voice");
         List<Music> expected = new ArrayList<>();
@@ -1086,7 +1085,7 @@ public class ParseTest {
     
     // covers doublebar measure (|])
     @Test
-    public void testDoubleBar3(){
+    public void testDoubleBarMeasure3(){
         String test = "A|]";     
         Voice voice = (Voice) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"), "voice");
         List<Music> expected = new ArrayList<>();
@@ -1099,15 +1098,122 @@ public class ParseTest {
     // covers first ending measure (one measure first ending)
     @Test
     public void testFirstEndingOneMeasure(){
-        String test = "[1A:|";     
+        String test = "A|[1B:|";     
+        Voice voice = (Voice) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"), "voice");
+        List<Music> expected = new ArrayList<>();
+        List<Music> measure1 = new ArrayList<>();
+        List<Music> measure2 = new ArrayList<>();
+        Note note1 = new Note(new Fraction(1,4), 'A', 0);
+        Note note2 = new Note(new Fraction(1,4), 'B', 0);
+        measure1.add(note1);
+        measure2.add(note2);
+        Measure expectedMeasure1 = new Measure(measure1, false, false, false, false);
+        Measure expectedMeasure2 = new Measure(measure2, false, true, true, false);
+        expected.add(expectedMeasure1);
+        expected.add(expectedMeasure2);
+        assertTrue(voice.getElements().contains(expectedMeasure1));
+        assertTrue(voice.getElements().contains(expectedMeasure2));
+    }
+    
+    // covers first ending measure (multiple measure first ending)
+    @Test
+    public void testFirstEndingMultipleMeasure(){
+        String test = "A|[1B|C:|";     
+        Voice voice = (Voice) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"), "voice");
+        List<Music> expected = new ArrayList<>();
+        List<Music> measure1 = new ArrayList<>();
+        List<Music> measure2 = new ArrayList<>();
+        List<Music> measure3 = new ArrayList<>();
+        Note note1 = new Note(new Fraction(1,4), 'A', 0);
+        Note note2 = new Note(new Fraction(1,4), 'B', 0);
+        Note note3 = new Note(new Fraction(1,4), 'C', 0);
+        measure1.add(note1);
+        measure2.add(note2);
+        measure3.add(note3);
+        Measure expectedMeasure1 = new Measure(measure1, false, false, false, false);
+        Measure expectedMeasure2 = new Measure(measure2, false, false, true, false);
+        Measure expectedMeasure3 = new Measure(measure3, false, true, false, false);
+        expected.add(expectedMeasure1);
+        expected.add(expectedMeasure2);
+        expected.add(expectedMeasure3);
+        assertTrue(voice.getElements().contains(expectedMeasure1));
+        assertTrue(voice.getElements().contains(expectedMeasure2));
+        assertTrue(voice.getElements().contains(expectedMeasure3));
+    }
+    
+    // covers single repeat measure (one measure second ending)
+    @Test
+    public void testSecondEndingOneMeasure(){
+        String test = "[2A||";     
         Voice voice = (Voice) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"), "voice");
         List<Music> expected = new ArrayList<>();
         Note note = new Note(new Fraction(1,4), 'A', 0);
         expected.add(note);
-        Measure measure = new Measure(expected, false, true, true, false);
-        System.out.println("VOICE " + voice.getElements());
-        System.out.println("MEASURE " + measure);
+        Measure measure = new Measure(expected, false, false, false, true);
         assertTrue(voice.getElements().contains(measure));
     }
     
+    // covers single repeat measure (multiple measure second ending)
+    @Test
+    public void testSecondEndingMultipleMeasure(){
+        String test = "[2A|B||";    
+        Voice voice = (Voice) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"), "voice");
+        List<Music> expected = new ArrayList<>();
+        List<Music> measure1 = new ArrayList<>();
+        List<Music> measure2 = new ArrayList<>();
+        Note note1 = new Note(new Fraction(1,4), 'A', 0);
+        Note note2 = new Note(new Fraction(1,4), 'B', 0);
+        measure1.add(note1);
+        measure2.add(note2);
+        Measure expectedMeasure1 = new Measure(measure1, false, false, false, false);
+        Measure expectedMeasure2 = new Measure(measure2, false, false, false, true);
+        expected.add(expectedMeasure1);
+        expected.add(expectedMeasure2);
+        assertTrue(voice.getElements().contains(expectedMeasure1));
+        assertTrue(voice.getElements().contains(expectedMeasure2));
+    }
+    
+    // covers end repeat measure
+    @Test
+    public void testEndRepeatMeasure(){
+        String test = "A:|";     
+        Voice voice = (Voice) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"), "voice");
+        List<Music> expected = new ArrayList<>();
+        Note note = new Note(new Fraction(1,4), 'A', 0);
+        expected.add(note);
+        Measure measure = new Measure(expected, false, true, false, false);
+        assertTrue(voice.getElements().contains(measure));
+    }
+    
+    // covers first ending and second ending
+    @Test
+    public void testFirstEndingSecondEnding(){
+        String test = "A|[1B|C:|[2D||";     
+        Voice voice = (Voice) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"), "voice");
+        List<Music> expected = new ArrayList<>();
+        List<Music> measure1 = new ArrayList<>();
+        List<Music> measure2 = new ArrayList<>();
+        List<Music> measure3 = new ArrayList<>();
+        List<Music> measure4 = new ArrayList<>();
+        Note note1 = new Note(new Fraction(1,4), 'A', 0);
+        Note note2 = new Note(new Fraction(1,4), 'B', 0);
+        Note note3 = new Note(new Fraction(1,4), 'C', 0);
+        Note note4 = new Note(new Fraction(1,4), 'D', 0);
+        measure1.add(note1);
+        measure2.add(note2);
+        measure3.add(note3);
+        measure4.add(note4);
+        Measure expectedMeasure1 = new Measure(measure1, false, false, false, false);
+        Measure expectedMeasure2 = new Measure(measure2, false, false, true, false);
+        Measure expectedMeasure3 = new Measure(measure3, false, true, false, false);
+        Measure expectedMeasure4 = new Measure(measure4, false, false, false, true);
+        expected.add(expectedMeasure1);
+        expected.add(expectedMeasure2);
+        expected.add(expectedMeasure3);
+        expected.add(expectedMeasure4);
+        assertTrue(voice.getElements().contains(expectedMeasure1));
+        assertTrue(voice.getElements().contains(expectedMeasure2));
+        assertTrue(voice.getElements().contains(expectedMeasure3));
+        assertTrue(voice.getElements().contains(expectedMeasure4));
+    }
 }

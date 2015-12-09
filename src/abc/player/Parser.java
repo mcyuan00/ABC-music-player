@@ -60,7 +60,6 @@ import abc.parser.MusicParser.NotelengthContext;
 import abc.parser.MusicParser.PitchContext;
 import abc.parser.MusicParser.RestContext;
 import abc.parser.MusicParser.SecondendingmeasureContext;
-import abc.parser.MusicParser.SinglerepeatmeasureContext;
 import abc.parser.MusicParser.StartrepeatmeasureContext;
 import abc.parser.MusicParser.TupletelementContext;
 import abc.parser.MusicParser.TupletspecContext;
@@ -582,22 +581,6 @@ public class Parser {
             Measure m = new Measure(newElements, false, true, false, false);
             stack.push(m);
         }
-        
-        //TODO
-        @Override
-        public void exitSinglerepeatmeasure(SinglerepeatmeasureContext ctx) { 
-            int numElements = ctx.element().size();
-            List<Music> elements = new ArrayList<Music>();
-            for (int i = 0; i < numElements; i++){
-                elements.add(stack.pop());
-            }
-            Collections.reverse(elements);  
-
-            List<Music> newElements = applyAccidentalsToMeasure(elements);
-
-            Measure m = new Measure(newElements, true, true, false, false);
-            stack.push(m);
-        }
 
         @Override
         public void exitNormalmeasure(NormalmeasureContext ctx) {
@@ -860,11 +843,6 @@ public class Parser {
 
         @Override
         public void enterPitch(PitchContext ctx) { }
-
-
-        @Override
-        public void enterSinglerepeatmeasure(SinglerepeatmeasureContext ctx) { }
-
 
     }
 }
