@@ -710,18 +710,20 @@ public class Parser {
                 numerator = Integer.valueOf(length);
                 denominator = 1;
             }
-            String[] nums = length.split("/");
-            if (nums.length == 0){
-                numerator = 1;
-                denominator = 2;
-            }
-            else if (nums.length == 1){
-                numerator = Integer.valueOf(nums[0]);
-                denominator = 2;
-            }
             else{
-                numerator = (nums[0].equals("")) ? 1 : Integer.valueOf(nums[0]);
-                denominator = Integer.valueOf(nums[1]);
+                String[] nums = length.split("/");
+                if (nums.length == 0){
+                    numerator = 1;
+                    denominator = 2;
+                }
+                else if (nums.length == 1){
+                    numerator = Integer.valueOf(nums[0]);
+                    denominator = 2;
+                }
+                else{
+                    numerator = (nums[0].equals("")) ? 1 : Integer.valueOf(nums[0]);
+                    denominator = Integer.valueOf(nums[1]);
+                }
             }
             return new Fraction(numerator * defaultNoteLength.numerator(), denominator * defaultNoteLength.denominator()).simplify();
         }
