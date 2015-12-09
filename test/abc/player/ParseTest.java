@@ -423,7 +423,6 @@ public class ParseTest {
      * Second ending measure:
      *      - second ending length --> one measure, multiple measures
      * End repeat measure
-     * Single repeat measure
      */
 
     // covers normal measure (one element), note (uppercase note letter), note (default length duration)
@@ -1183,18 +1182,6 @@ public class ParseTest {
         Note note = new Note(new Fraction(1,4), 'A', 0);
         expected.add(note);
         Measure measure = new Measure(expected, false, true, false, false);
-        assertTrue(voice.getElements().contains(measure));
-    }
-    
-    // covers single repeat measure
-    @Test
-    public void testSingleRepeatMeasure(){
-        String test = "|:A:|";     
-        Voice voice = (Voice) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"), "voice");
-        List<Music> expected = new ArrayList<>();
-        Note note = new Note(new Fraction(1,4), 'A', 0);
-        expected.add(note);
-        Measure measure = new Measure(expected, true, true, false, false);
         assertTrue(voice.getElements().contains(measure));
     }
     

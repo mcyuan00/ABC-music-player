@@ -101,16 +101,6 @@ public interface MusicListener extends ParseTreeListener {
    */
   void exitEndrepeatmeasure(MusicParser.EndrepeatmeasureContext ctx);
   /**
-   * Enter a parse tree produced by {@link MusicParser#singlerepeatmeasure}.
-   * @param ctx the parse tree
-   */
-  void enterSinglerepeatmeasure(MusicParser.SinglerepeatmeasureContext ctx);
-  /**
-   * Exit a parse tree produced by {@link MusicParser#singlerepeatmeasure}.
-   * @param ctx the parse tree
-   */
-  void exitSinglerepeatmeasure(MusicParser.SinglerepeatmeasureContext ctx);
-  /**
    * Enter a parse tree produced by {@link MusicParser#element}.
    * @param ctx the parse tree
    */

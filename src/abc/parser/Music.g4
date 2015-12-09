@@ -8,14 +8,13 @@ import Configuration;
 
 root : music EOF;
 music : measure+;
-measure : normalmeasure | startrepeatmeasure | doublebarmeasure | firstendingmeasure | secondendingmeasure | endrepeatmeasure | singlerepeatmeasure;
+measure : normalmeasure | startrepeatmeasure | doublebarmeasure | firstendingmeasure | secondendingmeasure | endrepeatmeasure;
 firstendingmeasure : '[1' normalmeasure* endrepeatmeasure;
 secondendingmeasure : '[2' normalmeasure* doublebarmeasure;
 normalmeasure : (element | WHITESPACE)+ ('|' | startrepeatmeasure);
 doublebarmeasure : (element | WHITESPACE)+ ('||' | '[|' | '|]');
-startrepeatmeasure : ('|:') (element | WHITESPACE)+ ('|');
+startrepeatmeasure : '|:' (element | WHITESPACE)+ ('|');
 endrepeatmeasure : (element | WHITESPACE)+ ':|';
-singlerepeatmeasure : ('|:' | ':') (element | WHITESPACE)+ (':|');
 
 element : noteelement | tupletelement;
 noteelement : note | chord;
