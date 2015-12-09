@@ -32,9 +32,15 @@ public class Piece {
      */
     public void Play(){
         int tempo = header.tempo();
+        Set<Integer> durationDenominators = new HashSet
+        int ticksPerBeat = 
         SequencePlayer player =  new SequencePlayer(tempo, ticksPerBeat);
         // SequencePlayer player = Music.constructPlayer(tempo, tickBreakdown, pieceNoteLength);
         // call Music.constructPlayer() and then plays it
+    }
+    
+    private int getLCM(List<Integer> durationDenominator){
+        
     }
 
 }
