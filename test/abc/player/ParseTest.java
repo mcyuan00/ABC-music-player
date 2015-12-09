@@ -400,12 +400,12 @@ public class ParseTest {
      *      - duration --> default length, n, n/m, /m, n/, /
      * Chord:
      *      - number of notes --> 1, 2, >2
-     *      - length of notes --> 1, >1
-     *      - different lengths --> no, yes within chord, yes with additional notes
-     *      - (yes within chord = [C2E4], yes with additional notes = [C2E4]G2)
+     *      - duration --> default length, modified length
+     *      - different durations --> no, yes
      * Tuplet:
      *      - duplet --> notes only, chords only, notes and chords
      *      - triplet --> notes only, chords only, notes and chords
+     *      - quadruplet --> notes only, chords only, notes and chords
      * Normal measure:
      *      - one element (note or rest)
      *      - multiple elements (notes and rests)
@@ -665,17 +665,245 @@ public class ParseTest {
         assertEquals(new Fraction(1,8), measure.duration());
     }
     
+    // covers chord (one note), chord (default length)
     @Test
-    public void testChordSingleNote(){
-        String test = "[A]|";    
+    public void testChordOneNote(){
+        String test = "[C]|";    
         Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
         assertEquals(new Fraction(1,4), measure.duration());
         List<Music> expected = new ArrayList<>();
         List<Music> chordNotes = new ArrayList<>();
-        Note note = new Note(new Fraction(1,4), 'A', 0);
+        Note note = new Note(new Fraction(1,4), 'C', 0);
         chordNotes.add(note);
         Chord chord = new Chord(chordNotes);
         expected.add(chord);
         assertEquals(expected, measure.getElements());
     }
+    
+    // covers chord (two notes), chord (default length)
+    @Test
+    public void testChordTwoNotes(){
+        String test = "[CE]|";    
+        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
+        assertEquals(new Fraction(1,4), measure.duration());
+        List<Music> expected = new ArrayList<>();
+        List<Music> chordNotes = new ArrayList<>();
+        Note note1 = new Note(new Fraction(1,4), 'C', 0);
+        Note note2 = new Note(new Fraction(1,4), 'E', 0);
+        chordNotes.add(note1);
+        chordNotes.add(note2);
+        Chord chord = new Chord(chordNotes);
+        expected.add(chord);
+        assertEquals(expected, measure.getElements());
+    }
+    
+    // covers chord (three notes), chord (default length)
+    @Test
+    public void testChordThreeNotesDefaultLength(){
+        String test = "[CEG]|";    
+        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
+        assertEquals(new Fraction(1,4), measure.duration());
+        List<Music> expected = new ArrayList<>();
+        List<Music> chordNotes = new ArrayList<>();
+        Note note1 = new Note(new Fraction(1,4), 'C', 0);
+        Note note2 = new Note(new Fraction(1,4), 'E', 0);
+        Note note3 = new Note(new Fraction(1,4), 'G', 0);
+        chordNotes.add(note1);
+        chordNotes.add(note2);
+        chordNotes.add(note3);
+        Chord chord = new Chord(chordNotes);
+        expected.add(chord);
+        assertEquals(expected, measure.getElements());
+    }
+    
+    // covers chord (three notes), chord (modified length), chord (no different durations)
+    @Test
+    public void testChordThreeNotesModifiedLength(){
+        String test = "[C2E2G2]|";    
+        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
+        assertEquals(new Fraction(1,2), measure.duration());
+        List<Music> expected = new ArrayList<>();
+        List<Music> chordNotes = new ArrayList<>();
+        Note note1 = new Note(new Fraction(1,2), 'C', 0);
+        Note note2 = new Note(new Fraction(1,2), 'E', 0);
+        Note note3 = new Note(new Fraction(1,2), 'G', 0);
+        chordNotes.add(note1);
+        chordNotes.add(note2);
+        chordNotes.add(note3);
+        Chord chord = new Chord(chordNotes);
+        expected.add(chord);
+        assertEquals(expected, measure.getElements());
+    }
+    
+    // covers chord (three notes), chord (length n), chord (yes different durations)
+    @Test
+    public void testChordTwoNotesDifferentDurations(){
+        String test = "[C2E4]|";    
+        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
+        List<Music> expected = new ArrayList<>();
+        List<Music> chordNotes = new ArrayList<>();
+        Note note1 = new Note(new Fraction(1,2), 'C', 0);
+        Note note2 = new Note(new Fraction(1,1), 'E', 0);
+        chordNotes.add(note1);
+        chordNotes.add(note2);
+        Chord chord = new Chord(chordNotes);
+        expected.add(chord);
+        assertEquals(new Fraction(1,2), chord.duration());
+        assertEquals(expected, measure.getElements());
+    }
+    
+    // covers tuplet (duplet), duplet (notes only)
+    @Test
+    public void testDupletNotesOnly(){
+        String test = "(2CE|";    
+        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
+        List<Music> expected = new ArrayList<>();
+        List<Music> tupletNotes = new ArrayList<>();
+        Note note1 = new Note(new Fraction(1,4), 'C', 0);
+        Note note2 = new Note(new Fraction(1,4), 'E', 0);
+        tupletNotes.add(note1);
+        tupletNotes.add(note2);
+        Tuplet tuplet = new Tuplet(2, tupletNotes);
+        expected.add(tuplet);
+        assertEquals(new Fraction(3,4), tuplet.duration());
+        assertEquals(new Fraction(3,4), measure.duration());
+        assertEquals(expected, measure.getElements());
+    }
+    
+    // covers tuplet (duplet), duplet (chords only)
+    @Test
+    public void testDupletChordsOnly(){
+        String test = "(2[CE][GB]|";    
+        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
+        List<Music> expected = new ArrayList<>();
+        List<Music> chordNotes1 = new ArrayList<>();
+        List<Music> chordNotes2 = new ArrayList<>();
+        List<Music> tupletNotes = new ArrayList<>();
+        Note note1 = new Note(new Fraction(1,4), 'C', 0);
+        Note note2 = new Note(new Fraction(1,4), 'E', 0);
+        Note note3 = new Note(new Fraction(1,4), 'G', 0);
+        Note note4 = new Note(new Fraction(1,4), 'B', 0);
+        chordNotes1.add(note1);
+        chordNotes1.add(note2);
+        chordNotes2.add(note3);
+        chordNotes2.add(note4);
+        Chord chord1 = new Chord(chordNotes1);
+        Chord chord2 = new Chord(chordNotes2);
+        tupletNotes.add(chord1);
+        tupletNotes.add(chord2);
+        Tuplet tuplet = new Tuplet(2, tupletNotes);
+        expected.add(tuplet);
+        assertEquals(new Fraction(3,4), tuplet.duration());
+        assertEquals(new Fraction(3,4), measure.duration());
+        assertEquals(expected, measure.getElements());
+    }
+    
+    // covers tuplet (duplet), duplet (notes and chords)
+    @Test
+    public void testDupletNotesAndChords(){
+        String test = "(2[CE]G|";    
+        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
+        List<Music> expected = new ArrayList<>();
+        List<Music> chordNotes1 = new ArrayList<>();
+        List<Music> tupletNotes = new ArrayList<>();
+        Note note1 = new Note(new Fraction(1,4), 'C', 0);
+        Note note2 = new Note(new Fraction(1,4), 'E', 0);
+        Note note3 = new Note(new Fraction(1,4), 'G', 0);
+        chordNotes1.add(note1);
+        chordNotes1.add(note2);
+        Chord chord1 = new Chord(chordNotes1);
+        tupletNotes.add(chord1);
+        tupletNotes.add(note3);
+        Tuplet tuplet = new Tuplet(2, tupletNotes);
+        expected.add(tuplet);
+        assertEquals(new Fraction(3,4), tuplet.duration());
+        assertEquals(new Fraction(3,4), measure.duration());
+        assertEquals(expected, measure.getElements());
+    }
+    
+    // covers tuplet (triplet), triplet (notes only)
+    @Test
+    public void testTripletNotesOnly(){
+        String test = "(3CEG|";    
+        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
+        List<Music> expected = new ArrayList<>();
+        List<Music> tupletNotes = new ArrayList<>();
+        Note note1 = new Note(new Fraction(1,4), 'C', 0);
+        Note note2 = new Note(new Fraction(1,4), 'E', 0);
+        Note note3 = new Note(new Fraction(1,4), 'G', 0);
+        tupletNotes.add(note1);
+        tupletNotes.add(note2);
+        tupletNotes.add(note3);
+        Tuplet tuplet = new Tuplet(3, tupletNotes);
+        expected.add(tuplet);
+        assertEquals(new Fraction(1,2), tuplet.duration());
+        assertEquals(new Fraction(1,2), measure.duration());
+        assertEquals(expected, measure.getElements());
+    }
+    
+    // covers tuplet (triplet), triplet (chords only)
+    @Test
+    public void testTripletChordsOnly(){
+        String test = "(3[CE][GB][DF]|";    
+        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
+        List<Music> expected = new ArrayList<>();
+        List<Music> chordNotes1 = new ArrayList<>();
+        List<Music> chordNotes2 = new ArrayList<>();
+        List<Music> chordNotes3 = new ArrayList<>();
+        List<Music> tupletNotes = new ArrayList<>();
+        Note note1 = new Note(new Fraction(1,4), 'C', 0);
+        Note note2 = new Note(new Fraction(1,4), 'E', 0);
+        Note note3 = new Note(new Fraction(1,4), 'G', 0);
+        Note note4 = new Note(new Fraction(1,4), 'B', 0);
+        Note note5 = new Note(new Fraction(1,4), 'D', 0);
+        Note note6 = new Note(new Fraction(1,4), 'F', 0);
+        chordNotes1.add(note1);
+        chordNotes1.add(note2);
+        chordNotes2.add(note3);
+        chordNotes2.add(note4);
+        chordNotes3.add(note5);
+        chordNotes3.add(note6);
+        Chord chord1 = new Chord(chordNotes1);
+        Chord chord2 = new Chord(chordNotes2);
+        Chord chord3 = new Chord(chordNotes3);
+        tupletNotes.add(chord1);
+        tupletNotes.add(chord2);
+        tupletNotes.add(chord3);
+        Tuplet tuplet = new Tuplet(3, tupletNotes);
+        expected.add(tuplet);
+        assertEquals(new Fraction(1,2), tuplet.duration());
+        assertEquals(new Fraction(1,2), measure.duration());
+        assertEquals(expected, measure.getElements());
+    }
+    
+    // covers tuplet (triplet), triplet (notes and chords)
+    @Test
+    public void testTripletNotesAndChords(){
+        String test = "(3[CE][GB]D|";    
+        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
+        List<Music> expected = new ArrayList<>();
+        List<Music> chordNotes1 = new ArrayList<>();
+        List<Music> chordNotes2 = new ArrayList<>();
+        List<Music> tupletNotes = new ArrayList<>();
+        Note note1 = new Note(new Fraction(1,4), 'C', 0);
+        Note note2 = new Note(new Fraction(1,4), 'E', 0);
+        Note note3 = new Note(new Fraction(1,4), 'G', 0);
+        Note note4 = new Note(new Fraction(1,4), 'B', 0);
+        Note note5 = new Note(new Fraction(1,4), 'D', 0);
+        chordNotes1.add(note1);
+        chordNotes1.add(note2);
+        chordNotes2.add(note3);
+        chordNotes2.add(note4);
+        Chord chord1 = new Chord(chordNotes1);
+        Chord chord2 = new Chord(chordNotes2);
+        tupletNotes.add(chord1);
+        tupletNotes.add(chord2);
+        tupletNotes.add(note5);
+        Tuplet tuplet = new Tuplet(3, tupletNotes);
+        expected.add(tuplet);
+        assertEquals(new Fraction(1,2), tuplet.duration());
+        assertEquals(new Fraction(1,2), measure.duration());
+        assertEquals(expected, measure.getElements());
+    }
+    
 }
