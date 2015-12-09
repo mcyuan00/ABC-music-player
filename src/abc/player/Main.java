@@ -30,15 +30,14 @@ public class Main {
         reader.readPiece();
         String headerString = reader.getHeader();
         Header header = Parser.parseHeader(headerString);
-        System.out.println(header.toString());
 
+        System.out.println(header.toString());
         Fraction defaultNoteLength = header.noteLength();
         KeySignature keySig = header.keySignature();
         Map<String, String> voicesString = reader.getVoices();
         List<Music> voices = new ArrayList<Music>();
         
         for (String key: voicesString.keySet()){
-            System.out.println(voicesString.get(key));
             Music m = Parser.parseMusic(voicesString.get(key), defaultNoteLength, keySig, key);
             voices.add(m);
         }
@@ -57,7 +56,7 @@ public class Main {
 
     public static void main(String[] args) {
         try {
-            play("sample_abc/fur_elise.abc");
+            play("sample_abc/sample2.abc");
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

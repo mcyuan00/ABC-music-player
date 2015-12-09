@@ -10,7 +10,7 @@ root : music EOF;
 music : '|'? measure+;
 measure : normalmeasure | startrepeatmeasure | doublebarmeasure | firstendingmeasure | secondendingmeasure | endrepeatmeasure;
 firstendingmeasure : '[1' normalmeasure* endrepeatmeasure;
-secondendingmeasure : '[2' normalmeasure* doublebarmeasure;
+secondendingmeasure : '[2' normalmeasure* doublebarmeasure?;
 normalmeasure : (element | WHITESPACE)+ ('|' | startrepeatmeasure);
 doublebarmeasure : (element | WHITESPACE)+ ('||' | '[|' | '|]');
 startrepeatmeasure : '|:' (element | WHITESPACE)+ ('|');

@@ -59,11 +59,6 @@ public class Rest implements Music {
         denominators.add(duration.denominator());
         return denominators;
     }
-
-//    @Override
-//    public void transposeKey(char note,int octave, int semitonesUp) {
-//        //rests cannot be transposed
-//    }
     
 
     @Override

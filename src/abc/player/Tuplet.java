@@ -98,7 +98,6 @@ public class Tuplet implements Music{
 
     @Override
     public List<PlayerElement> getPlayerElements(int startTick, int ticksPerBeat, Fraction pieceNoteLength) {
-        //TODO: fix so that tuplets play the right amount time
         List<PlayerElement> elements = new ArrayList<PlayerElement>();
         int currentStart = startTick;
         for (Music music : notes){

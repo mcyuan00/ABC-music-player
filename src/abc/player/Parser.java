@@ -85,13 +85,6 @@ public class Parser {
         // Other grammars may have different names for the starter rule.
         ParseTree tree = parser.root();
 
-//                Future<JDialog> inspect = Trees.inspect(tree, parser);
-//                try {
-//                    Utils.waitForClose(inspect.get());
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-
         MakeHeader headerMaker = new MakeHeader();
         new ParseTreeWalker().walk(headerMaker, tree);
         return headerMaker.getHeader();
@@ -118,10 +111,6 @@ public class Parser {
             // parse/check existence of required fields index, header, keySignature
             while (!requiredStack.isEmpty()){
                 String context = requiredStack.pop();
-                //                System.out.println(context);
-                //                if (context.contains("missing")){
-                //                    throw new IllegalArgumentException();  
-                //                }
 
                 //parse out index, header, and keySignature
                 if (context.contains("X:")){
@@ -171,17 +160,11 @@ public class Parser {
             //parse other fields
             while (!optionalStack.isEmpty()){
                 String context = optionalStack.pop();
-                //                System.out.println(context);
-                //                if (context.contains("missing")|| !(context.contains(":"))){
-                //                    throw new IllegalArgumentException();  
-                //                }
-
                 if (context.contains("C:")){
                     String composer = context.replace("C:", "").replace("\n", "");
                     header.setComposer(composer);
                 }
                 if (context.contains("M:")){
-                    //                    System.out.println(context);
                     if(context.contains("C|")){
                         header.setMeter(new Fraction(2,2));
                     }
@@ -215,10 +198,6 @@ public class Parser {
 
                     given = parseFraction(context);
                     header.setTempo((tempo)); 
-//                    System.out.println("tempo offset:" + tempoOffset);
-//                    System.out.println("tempo:" + tempo);
-//                    System.out.println("given:" + given);
-//                    System.out.println("header:" + headerLength);
                     
                 }
                 if (context.contains("V:")){
@@ -229,13 +208,7 @@ public class Parser {
             
             if (!(given.equals(header.noteLength()))){
                 Fraction headerLength = header.noteLength();
-                System.out.println("headerLength: "+ headerLength);
-                System.out.println("given length: "+ given);
                 double tempoOffset = (double)(headerLength.numerator()*given.denominator())/(headerLength.denominator()*given.numerator());
-                System.out.println("offset: "+ tempoOffset);
-                System.out.println(headerLength.numerator()*given.denominator());
-                System.out.println(headerLength.denominator()*given.numerator());
-                
                 header.setTempo((int)(header.tempo()/tempoOffset)); 
             }
  
@@ -282,7 +255,6 @@ public class Parser {
 
         @Override
         public void exitMeter(HeaderParser.MeterContext ctx) {
-            System.out.println(ctx.getText());
             optionalStack.push(ctx.getText());
 
         }
@@ -422,16 +394,6 @@ public class Parser {
         private final Map<Accidental, Integer> accidental = new HashMap<Accidental, Integer>();
         private final Stack<Music> stack = new Stack<>();
 
-        //        public MakeMusic(){
-        //            KeySignatureMap map = new KeySignatureMap();
-        //            this.keySig = KeySignatureMap.KEY_SIGNATURE_MAP.get(KeySignature.valueOf("C_MAJOR"));
-        //            accidental.put(Accidental.valueOf("DOUBLESHARP"), 2);
-        //            accidental.put(Accidental.valueOf("SHARP"), 1);
-        //            accidental.put(Accidental.valueOf("NATURAL"), 0);
-        //            accidental.put(Accidental.valueOf("FLAT"), -1);
-        //            accidental.put(Accidental.valueOf("DOUBLEFLAT"), -2);
-        //
-        //        }
 
         public MakeMusic(KeySignature keysig, Fraction defaultNoteLength, String voiceName){
             KeySignatureMap map = new KeySignatureMap();
