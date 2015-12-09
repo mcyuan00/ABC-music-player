@@ -195,7 +195,7 @@ public class Header {
         String toString = "Index: " + index + "\n"
                 + "Title: " + title + "\n"
                 + "Composer: " + composer + "\n"
-                + "Meter: " + composer + "\n"
+                + "Meter: " + meter.toString() + "\n"
                 + "Default note length: " + noteLength.toString() + "\n"
                 + "Tempo: " + tempo + "\n"
                 + "Key Signature: " + key + "\n";

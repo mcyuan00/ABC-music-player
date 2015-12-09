@@ -25,16 +25,16 @@ public class HeaderParser extends Parser {
     KEYACCIDENTAL=17, MINOR=18, NEWLINE=19, DIGIT=20, WHITESPACE=21;
   public static final int
     RULE_root = 0, RULE_header = 1, RULE_index = 2, RULE_title = 3, RULE_otherfields = 4, 
-    RULE_composer = 5, RULE_length = 6, RULE_tempo = 7, RULE_meter = 8, 
+    RULE_composer = 5, RULE_tempo = 6, RULE_length = 7, RULE_meter = 8, 
     RULE_voice = 9, RULE_key = 10, RULE_endline = 11, RULE_comment = 12, 
     RULE_text = 13;
   public static final String[] ruleNames = {
-    "root", "header", "index", "title", "otherfields", "composer", "length", 
-    "tempo", "meter", "voice", "key", "endline", "comment", "text"
+    "root", "header", "index", "title", "otherfields", "composer", "tempo", 
+    "length", "meter", "voice", "key", "endline", "comment", "text"
   };
 
   private static final String[] _LITERAL_NAMES = {
-    null, "'X:'", "'T:'", "'C:'", "'L:'", "'/'", "'Q:'", "'='", "'M:'", 
+    null, "'X:'", "'T:'", "'C:'", "'Q:'", "'/'", "'='", "'L:'", "'M:'", 
     "'C|'", "'V:'", "'K:'", "'%'", null, "'C'", null, null, null, "'m'"
   };
   private static final String[] _SYMBOLIC_NAMES = {
@@ -214,7 +214,7 @@ public class HeaderParser extends Parser {
       setState(42);
       _errHandler.sync(this);
       _la = _input.LA(1);
-      while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__2) | (1L << T__3) | (1L << T__5) | (1L << T__7) | (1L << T__9) | (1L << T__11) | (1L << NEWLINE))) != 0)) {
+      while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__2) | (1L << T__3) | (1L << T__6) | (1L << T__7) | (1L << T__9) | (1L << T__11) | (1L << NEWLINE))) != 0)) {
         {
         {
         setState(39);
@@ -412,7 +412,7 @@ public class HeaderParser extends Parser {
         composer();
         }
         break;
-      case T__3:
+      case T__6:
         enterOuterAlt(_localctx, 2);
         {
         setState(64);
@@ -426,7 +426,7 @@ public class HeaderParser extends Parser {
         meter();
         }
         break;
-      case T__5:
+      case T__3:
         enterOuterAlt(_localctx, 4);
         {
         setState(66);
@@ -543,7 +543,7 @@ public class HeaderParser extends Parser {
     return _localctx;
   }
 
-  public static class LengthContext extends ParserRuleContext {
+  public static class TempoContext extends ParserRuleContext {
     public EndlineContext endline() {
       return getRuleContext(EndlineContext.class,0);
     }
@@ -551,29 +551,30 @@ public class HeaderParser extends Parser {
     public TerminalNode DIGIT(int i) {
       return getToken(HeaderParser.DIGIT, i);
     }
-    public LengthContext(ParserRuleContext parent, int invokingState) {
+    public TempoContext(ParserRuleContext parent, int invokingState) {
       super(parent, invokingState);
     }
-    @Override public int getRuleIndex() { return RULE_length; }
+    @Override public int getRuleIndex() { return RULE_tempo; }
     @Override
     public void enterRule(ParseTreeListener listener) {
-      if ( listener instanceof HeaderListener ) ((HeaderListener)listener).enterLength(this);
+      if ( listener instanceof HeaderListener ) ((HeaderListener)listener).enterTempo(this);
     }
     @Override
     public void exitRule(ParseTreeListener listener) {
-      if ( listener instanceof HeaderListener ) ((HeaderListener)listener).exitLength(this);
+      if ( listener instanceof HeaderListener ) ((HeaderListener)listener).exitTempo(this);
     }
   }
 
-  public final LengthContext length() throws RecognitionException {
-    LengthContext _localctx = new LengthContext(_ctx, getState());
-    enterRule(_localctx, 12, RULE_length);
+  public final TempoContext tempo() throws RecognitionException {
+    TempoContext _localctx = new TempoContext(_ctx, getState());
+    enterRule(_localctx, 12, RULE_tempo);
     int _la;
     try {
       enterOuterAlt(_localctx, 1);
       {
       setState(83);
       match(T__3);
+      {
       setState(85); 
       _errHandler.sync(this);
       _la = _input.LA(1);
@@ -604,7 +605,24 @@ public class HeaderParser extends Parser {
         _errHandler.sync(this);
         _la = _input.LA(1);
       } while ( _la==DIGIT );
+      }
       setState(95);
+      match(T__5);
+      setState(97); 
+      _errHandler.sync(this);
+      _la = _input.LA(1);
+      do {
+        {
+        {
+        setState(96);
+        match(DIGIT);
+        }
+        }
+        setState(99); 
+        _errHandler.sync(this);
+        _la = _input.LA(1);
+      } while ( _la==DIGIT );
+      setState(101);
       endline();
       }
     }
@@ -619,7 +637,7 @@ public class HeaderParser extends Parser {
     return _localctx;
   }
 
-  public static class TempoContext extends ParserRuleContext {
+  public static class LengthContext extends ParserRuleContext {
     public EndlineContext endline() {
       return getRuleContext(EndlineContext.class,0);
     }
@@ -627,46 +645,29 @@ public class HeaderParser extends Parser {
     public TerminalNode DIGIT(int i) {
       return getToken(HeaderParser.DIGIT, i);
     }
-    public TempoContext(ParserRuleContext parent, int invokingState) {
+    public LengthContext(ParserRuleContext parent, int invokingState) {
       super(parent, invokingState);
     }
-    @Override public int getRuleIndex() { return RULE_tempo; }
+    @Override public int getRuleIndex() { return RULE_length; }
     @Override
     public void enterRule(ParseTreeListener listener) {
-      if ( listener instanceof HeaderListener ) ((HeaderListener)listener).enterTempo(this);
+      if ( listener instanceof HeaderListener ) ((HeaderListener)listener).enterLength(this);
     }
     @Override
     public void exitRule(ParseTreeListener listener) {
-      if ( listener instanceof HeaderListener ) ((HeaderListener)listener).exitTempo(this);
+      if ( listener instanceof HeaderListener ) ((HeaderListener)listener).exitLength(this);
     }
   }
 
-  public final TempoContext tempo() throws RecognitionException {
-    TempoContext _localctx = new TempoContext(_ctx, getState());
-    enterRule(_localctx, 14, RULE_tempo);
+  public final LengthContext length() throws RecognitionException {
+    LengthContext _localctx = new LengthContext(_ctx, getState());
+    enterRule(_localctx, 14, RULE_length);
     int _la;
     try {
       enterOuterAlt(_localctx, 1);
       {
-      setState(97);
-      match(T__5);
-      {
-      setState(99); 
-      _errHandler.sync(this);
-      _la = _input.LA(1);
-      do {
-        {
-        {
-        setState(98);
-        match(DIGIT);
-        }
-        }
-        setState(101); 
-        _errHandler.sync(this);
-        _la = _input.LA(1);
-      } while ( _la==DIGIT );
       setState(103);
-      match(T__4);
+      match(T__6);
       setState(105); 
       _errHandler.sync(this);
       _la = _input.LA(1);
@@ -681,9 +682,8 @@ public class HeaderParser extends Parser {
         _errHandler.sync(this);
         _la = _input.LA(1);
       } while ( _la==DIGIT );
-      }
       setState(109);
-      match(T__6);
+      match(T__4);
       setState(111); 
       _errHandler.sync(this);
       _la = _input.LA(1);
@@ -1110,7 +1110,7 @@ public class HeaderParser extends Parser {
       "\3\4\3\4\6\4\64\n\4\r\4\16\4\65\3\4\3\4\3\5\3\5\6\5<\n\5\r\5\16\5"+
       "=\3\5\3\5\3\6\3\6\3\6\3\6\3\6\6\6G\n\6\r\6\16\6H\3\6\5\6L\n\6\3\7"+
       "\3\7\6\7P\n\7\r\7\16\7Q\3\7\3\7\3\b\3\b\6\bX\n\b\r\b\16\bY\3\b\3\b"+
-      "\6\b^\n\b\r\b\16\b_\3\b\3\b\3\t\3\t\6\tf\n\t\r\t\16\tg\3\t\3\t\6\t"+
+      "\6\b^\n\b\r\b\16\b_\3\b\3\b\6\bd\n\b\r\b\16\be\3\b\3\b\3\t\3\t\6\t"+
       "l\n\t\r\t\16\tm\3\t\3\t\6\tr\n\t\r\t\16\ts\3\t\3\t\3\n\3\n\6\nz\n"+
       "\n\r\n\16\n{\3\n\3\n\6\n\u0080\n\n\r\n\16\n\u0081\3\n\3\n\5\n\u0086"+
       "\n\n\3\n\3\n\3\13\3\13\6\13\u008c\n\13\r\13\16\13\u008d\3\13\3\13"+
@@ -1118,7 +1118,7 @@ public class HeaderParser extends Parser {
       "\n\r\3\r\3\r\3\16\3\16\6\16\u00a3\n\16\r\16\16\16\u00a4\3\17\3\17"+
       "\3\17\2\2\20\2\4\6\b\n\f\16\20\22\24\26\30\32\34\2\4\3\2\17\20\4\2"+
       "\17\24\26\26\u00b3\2\36\3\2\2\2\4!\3\2\2\2\6\61\3\2\2\2\b9\3\2\2\2"+
-      "\nK\3\2\2\2\fM\3\2\2\2\16U\3\2\2\2\20c\3\2\2\2\22w\3\2\2\2\24\u0089"+
+      "\nK\3\2\2\2\fM\3\2\2\2\16U\3\2\2\2\20i\3\2\2\2\22w\3\2\2\2\24\u0089"+
       "\3\2\2\2\26\u0091\3\2\2\2\30\u009c\3\2\2\2\32\u00a0\3\2\2\2\34\u00a6"+
       "\3\2\2\2\36\37\5\4\3\2\37 \7\2\2\3 \3\3\2\2\2!%\5\6\4\2\"$\5\32\16"+
       "\2#\"\3\2\2\2$\'\3\2\2\2%#\3\2\2\2%&\3\2\2\2&(\3\2\2\2\'%\3\2\2\2"+
@@ -1127,16 +1127,16 @@ public class HeaderParser extends Parser {
       "\2\2\63\62\3\2\2\2\64\65\3\2\2\2\65\63\3\2\2\2\65\66\3\2\2\2\66\67"+
       "\3\2\2\2\678\5\30\r\28\7\3\2\2\29;\7\4\2\2:<\5\34\17\2;:\3\2\2\2<"+
       "=\3\2\2\2=;\3\2\2\2=>\3\2\2\2>?\3\2\2\2?@\5\30\r\2@\t\3\2\2\2AL\5"+
-      "\f\7\2BL\5\16\b\2CL\5\22\n\2DL\5\20\t\2EG\5\24\13\2FE\3\2\2\2GH\3"+
+      "\f\7\2BL\5\20\t\2CL\5\22\n\2DL\5\16\b\2EG\5\24\13\2FE\3\2\2\2GH\3"+
       "\2\2\2HF\3\2\2\2HI\3\2\2\2IL\3\2\2\2JL\5\30\r\2KA\3\2\2\2KB\3\2\2"+
       "\2KC\3\2\2\2KD\3\2\2\2KF\3\2\2\2KJ\3\2\2\2L\13\3\2\2\2MO\7\5\2\2N"+
       "P\5\34\17\2ON\3\2\2\2PQ\3\2\2\2QO\3\2\2\2QR\3\2\2\2RS\3\2\2\2ST\5"+
       "\30\r\2T\r\3\2\2\2UW\7\6\2\2VX\7\26\2\2WV\3\2\2\2XY\3\2\2\2YW\3\2"+
       "\2\2YZ\3\2\2\2Z[\3\2\2\2[]\7\7\2\2\\^\7\26\2\2]\\\3\2\2\2^_\3\2\2"+
-      "\2_]\3\2\2\2_`\3\2\2\2`a\3\2\2\2ab\5\30\r\2b\17\3\2\2\2ce\7\b\2\2"+
-      "df\7\26\2\2ed\3\2\2\2fg\3\2\2\2ge\3\2\2\2gh\3\2\2\2hi\3\2\2\2ik\7"+
-      "\7\2\2jl\7\26\2\2kj\3\2\2\2lm\3\2\2\2mk\3\2\2\2mn\3\2\2\2no\3\2\2"+
-      "\2oq\7\t\2\2pr\7\26\2\2qp\3\2\2\2rs\3\2\2\2sq\3\2\2\2st\3\2\2\2tu"+
+      "\2_]\3\2\2\2_`\3\2\2\2`a\3\2\2\2ac\7\b\2\2bd\7\26\2\2cb\3\2\2\2de"+
+      "\3\2\2\2ec\3\2\2\2ef\3\2\2\2fg\3\2\2\2gh\5\30\r\2h\17\3\2\2\2ik\7"+
+      "\t\2\2jl\7\26\2\2kj\3\2\2\2lm\3\2\2\2mk\3\2\2\2mn\3\2\2\2no\3\2\2"+
+      "\2oq\7\7\2\2pr\7\26\2\2qp\3\2\2\2rs\3\2\2\2sq\3\2\2\2st\3\2\2\2tu"+
       "\3\2\2\2uv\5\30\r\2v\21\3\2\2\2w\u0085\7\n\2\2xz\7\26\2\2yx\3\2\2"+
       "\2z{\3\2\2\2{y\3\2\2\2{|\3\2\2\2|}\3\2\2\2}\177\7\7\2\2~\u0080\7\26"+
       "\2\2\177~\3\2\2\2\u0080\u0081\3\2\2\2\u0081\177\3\2\2\2\u0081\u0082"+
@@ -1153,7 +1153,7 @@ public class HeaderParser extends Parser {
       "\2\u009d\u009e\3\2\2\2\u009e\u009f\7\25\2\2\u009f\31\3\2\2\2\u00a0"+
       "\u00a2\7\16\2\2\u00a1\u00a3\5\34\17\2\u00a2\u00a1\3\2\2\2\u00a3\u00a4"+
       "\3\2\2\2\u00a4\u00a2\3\2\2\2\u00a4\u00a5\3\2\2\2\u00a5\33\3\2\2\2"+
-      "\u00a6\u00a7\t\3\2\2\u00a7\35\3\2\2\2\26%,\65=HKQY_gms{\u0081\u0085"+
+      "\u00a6\u00a7\t\3\2\2\u00a7\35\3\2\2\2\26%,\65=HKQY_ems{\u0081\u0085"+
       "\u008d\u0094\u0097\u009c\u00a4";
   public static final ATN _ATN =
     new ATNDeserializer().deserialize(_serializedATN.toCharArray());

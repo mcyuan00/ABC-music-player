@@ -7,7 +7,7 @@ grammar Music;
 import Configuration;
 
 root : music EOF;
-music : measure+;
+music : '|'? measure+;
 measure : normalmeasure | startrepeatmeasure | doublebarmeasure | firstendingmeasure | secondendingmeasure | endrepeatmeasure;
 firstendingmeasure : '[1' normalmeasure* endrepeatmeasure;
 secondendingmeasure : '[2' normalmeasure* doublebarmeasure;

@@ -71,16 +71,6 @@ public interface HeaderListener extends ParseTreeListener {
    */
   void exitComposer(HeaderParser.ComposerContext ctx);
   /**
-   * Enter a parse tree produced by {@link HeaderParser#length}.
-   * @param ctx the parse tree
-   */
-  void enterLength(HeaderParser.LengthContext ctx);
-  /**
-   * Exit a parse tree produced by {@link HeaderParser#length}.
-   * @param ctx the parse tree
-   */
-  void exitLength(HeaderParser.LengthContext ctx);
-  /**
    * Enter a parse tree produced by {@link HeaderParser#tempo}.
    * @param ctx the parse tree
    */
@@ -90,6 +80,16 @@ public interface HeaderListener extends ParseTreeListener {
    * @param ctx the parse tree
    */
   void exitTempo(HeaderParser.TempoContext ctx);
+  /**
+   * Enter a parse tree produced by {@link HeaderParser#length}.
+   * @param ctx the parse tree
+   */
+  void enterLength(HeaderParser.LengthContext ctx);
+  /**
+   * Exit a parse tree produced by {@link HeaderParser#length}.
+   * @param ctx the parse tree
+   */
+  void exitLength(HeaderParser.LengthContext ctx);
   /**
    * Enter a parse tree produced by {@link HeaderParser#meter}.
    * @param ctx the parse tree

@@ -86,12 +86,12 @@ public class Parser {
         // Other grammars may have different names for the starter rule.
         ParseTree tree = parser.root();
 
-                Future<JDialog> inspect = Trees.inspect(tree, parser);
-                try {
-                    Utils.waitForClose(inspect.get());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+//                Future<JDialog> inspect = Trees.inspect(tree, parser);
+//                try {
+//                    Utils.waitForClose(inspect.get());
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
 
         MakeHeader headerMaker = new MakeHeader();
         new ParseTreeWalker().walk(headerMaker, tree);
@@ -166,6 +166,9 @@ public class Parser {
 
             Header header = new Header(index, title, keySignature);
 
+            // need to fix tempo later
+            Fraction given = header.noteLength();
+            
             //parse other fields
             while (!optionalStack.isEmpty()){
                 String context = optionalStack.pop();
@@ -211,17 +214,34 @@ public class Parser {
                         throw new IllegalArgumentException();
                     }
 
-                    Fraction given = parseFraction(context);
-                    Fraction headerLength = header.noteLength();
-                    double tempoOffset = given.numerator()*headerLength.denominator()/(given.denominator()*headerLength.numerator());
-                    header.setTempo((int)(tempo/tempoOffset)); 
+                    given = parseFraction(context);
+                    header.setTempo((tempo)); 
+//                    System.out.println("tempo offset:" + tempoOffset);
+//                    System.out.println("tempo:" + tempo);
+//                    System.out.println("given:" + given);
+//                    System.out.println("header:" + headerLength);
+                    
                 }
                 if (context.contains("V:")){
                     String voice = context.replace("V:", "").replace("\n", "");
                     header.addVoice(voice);
                 }
             }
-
+            
+            if (!(given.equals(header.noteLength()))){
+                Fraction headerLength = header.noteLength();
+                System.out.println("headerLength: "+ headerLength);
+                System.out.println("given length: "+ given);
+                double tempoOffset = (double)(headerLength.numerator()*given.denominator())/(headerLength.denominator()*given.numerator());
+                System.out.println("offset: "+ tempoOffset);
+                System.out.println(headerLength.numerator()*given.denominator());
+                System.out.println(headerLength.denominator()*given.numerator());
+                
+                header.setTempo((int)(header.tempo()/tempoOffset)); 
+            }
+ 
+            
+            
             return header;
         }
 
@@ -450,6 +470,7 @@ public class Parser {
         @Override
         public void exitMeasure(MeasureContext ctx) { 
             if (ctx.endrepeatmeasure()!= null){
+                System.out.println(ctx.getText());
                 List<Music> repeatBody= new ArrayList<Music>();
                 List<Music> firstRepeat = new ArrayList<Music>();
                 List<Music> repeat = new ArrayList<Music>();
@@ -637,7 +658,6 @@ public class Parser {
 
         @Override
         public void exitPitch(PitchContext ctx) { 
-            System.out.println(ctx.NOTELETTER().getText());
             Fraction noteLength = defaultNoteLength;
             int octave = 0;
             char noteLetter = 'y';
