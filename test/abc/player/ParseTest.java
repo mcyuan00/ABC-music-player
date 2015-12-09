@@ -510,9 +510,21 @@ public class ParseTest {
     // covers normal measure (one element), note (lowercase note letter), note (natural)
     @Test
     public void testLowercaseNoteNatural(){
+        String test = "=f|";
+        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("G_MAJOR"));
+        assertEquals(new Fraction(1,4), measure.duration());
+        List<Music> expected = new ArrayList<>();
+        Note note = new Note(new Fraction(1,4), 'F', 1, 0);
+        expected.add(note);
+        assertEquals(expected, measure.getElements());
+    }
+    
+    // covers normal measure (multiple elements), note (lowercase note letter), note (natural)
+    @Test
+    public void testLowercaseNoteSharpThenNatural(){
         String test = "^a =a|";
         Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
-        assertEquals(new Fraction(1,4), measure.duration());
+        assertEquals(new Fraction(1,2), measure.duration());
         List<Music> expected = new ArrayList<>();
         Note note1 = new Note(new Fraction(1,4), 'A', 1, 1);
         Note note2 = new Note(new Fraction(1,4), 'A', 1, 0);
@@ -557,14 +569,50 @@ public class ParseTest {
         assertEquals(expected, measure.getElements());
     }
     
+    // covers normal measure (one element), note (lowercase note letter), note (three octaves above)
+    @Test
+    public void testLowercaseNoteTwoApostrophes(){
+        String test = "a''|";
+        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
+        assertEquals(new Fraction(1,4), measure.duration());
+        List<Music> expected = new ArrayList<>();
+        Note note = new Note(new Fraction(1,4), 'A', 3);
+        expected.add(note);
+        assertEquals(expected, measure.getElements());
+    }
+    
     // covers normal measure (one element), note (uppercase note letter), note (one octave below)
     @Test
-    public void testLowercaseNoteOneComma(){
+    public void testUppercaseNoteOneComma(){
         String test = "A,|";
         Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
         assertEquals(new Fraction(1,4), measure.duration());
         List<Music> expected = new ArrayList<>();
         Note note = new Note(new Fraction(1,4), 'A', -1);
+        expected.add(note);
+        assertEquals(expected, measure.getElements());
+    }
+    
+    // covers normal measure (one element), note (uppercase note letter), note (two octaves below)
+    @Test
+    public void testUppercaseNoteTwoCommas(){
+        String test = "A,,|";
+        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
+        assertEquals(new Fraction(1,4), measure.duration());
+        List<Music> expected = new ArrayList<>();
+        Note note = new Note(new Fraction(1,4), 'A', -2);
+        expected.add(note);
+        assertEquals(expected, measure.getElements());
+    }
+    
+    // covers normal measure (one element), note (lowercase note letter), note (octaves cancel)
+    @Test
+    public void testLowercaseNoteOneComma(){
+        String test = "a,|";
+        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
+        assertEquals(new Fraction(1,4), measure.duration());
+        List<Music> expected = new ArrayList<>();
+        Note note = new Note(new Fraction(1,4), 'A', 0);
         expected.add(note);
         assertEquals(expected, measure.getElements());
     }
@@ -615,5 +663,19 @@ public class ParseTest {
         String test = "z/|";
         Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
         assertEquals(new Fraction(1,8), measure.duration());
+    }
+    
+    @Test
+    public void testChordSingleNote(){
+        String test = "[A]|";    
+        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
+        assertEquals(new Fraction(1,4), measure.duration());
+        List<Music> expected = new ArrayList<>();
+        List<Music> chordNotes = new ArrayList<>();
+        Note note = new Note(new Fraction(1,4), 'A', 0);
+        chordNotes.add(note);
+        Chord chord = new Chord(chordNotes);
+        expected.add(chord);
+        assertEquals(expected, measure.getElements());
     }
 }

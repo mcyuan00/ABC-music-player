@@ -369,7 +369,7 @@ public class Parser {
 
     }
 
-    public static Music parseMusic(String input, Fraction defaultNoteLength, KeySignature keySig){
+    public static Music parseMusic(String input, Fraction defaultNoteLength, KeySignature keySig, String voice){
         //        try{
         // Create a stream of characters from the string
         CharStream stream = new ANTLRInputStream(input);
@@ -394,7 +394,7 @@ public class Parser {
 //            e.printStackTrace();
 //        }
 
-        MakeMusic musicMaker = new MakeMusic(keySig, defaultNoteLength);
+        MakeMusic musicMaker = new MakeMusic(keySig, defaultNoteLength, voice);
         new ParseTreeWalker().walk(musicMaker, tree);
         return musicMaker.getMusic();
 
@@ -409,10 +409,10 @@ public class Parser {
 
     static class MakeMusic implements MusicListener{
         private final Map<NoteLetter, Accidental> keySig;
+        private final String voiceName;
         private final Fraction defaultNoteLength;
         private final Map<Accidental, Integer> accidental = new HashMap<Accidental, Integer>();
         private final Stack<Music> stack = new Stack<>();
-        private final Stack<List<Music>> listStack = new Stack<>();
 
         //        public MakeMusic(){
         //            KeySignatureMap map = new KeySignatureMap();
@@ -425,9 +425,10 @@ public class Parser {
         //
         //        }
 
-        public MakeMusic(KeySignature keysig, Fraction defaultNoteLength){
+        public MakeMusic(KeySignature keysig, Fraction defaultNoteLength, String voiceName){
             KeySignatureMap map = new KeySignatureMap();
             this.defaultNoteLength = defaultNoteLength;
+            this.voiceName = voiceName;
             this.keySig = map.KEY_SIGNATURE_MAP.get(keysig);
             accidental.put(Accidental.valueOf("DOUBLESHARP"), 2);
             accidental.put(Accidental.valueOf("SHARP"), 1);
@@ -435,6 +436,7 @@ public class Parser {
             accidental.put(Accidental.valueOf("FLAT"), -1);
             accidental.put(Accidental.valueOf("DOUBLEFLAT"), -2);
         }
+        
 
         public Music getMusic(){
             return stack.get(0);
@@ -444,10 +446,54 @@ public class Parser {
         public void exitRoot(MusicParser.RootContext ctx) { }
 
         @Override
-        public void exitMusic(MusicContext ctx) { }
+        public void exitMusic(MusicContext ctx) { 
+            List<Music> voiceMeasures = new ArrayList<Music>();
+            while(!stack.isEmpty()){
+                voiceMeasures.add(stack.pop());
+            }
+            Collections.reverse(voiceMeasures);
+            Voice voice = new Voice(voiceName, voiceMeasures);
+            stack.push(voice);
+        }
 
         @Override
-        public void exitMeasure(MeasureContext ctx) { }
+        public void exitMeasure(MeasureContext ctx) { 
+            if (ctx.endrepeatmeasure()!= null){
+                List<Music> repeatBody= new ArrayList<Music>();
+                List<Music> firstRepeat = new ArrayList<Music>();
+                List<Music> repeat = new ArrayList<Music>();
+                while(!stack.isEmpty()){
+                    Music music = stack.pop();
+                    Measure m = (Measure)music;
+                    if (m.isFirstEnding()){
+                        repeat.add(music);
+                        firstRepeat.addAll(repeat);
+                        Collections.reverse(firstRepeat);
+                        repeat = new ArrayList<Music>();
+                    }
+                    else if(m.isStartRepeat()){
+                        repeat.add(music);
+                        repeatBody.addAll(repeat);
+                        Collections.reverse(repeatBody);
+                        repeat = new ArrayList<Music>();
+                        break;
+                    }
+                    else if(m.isDoubleBar()){
+                        repeatBody.addAll(repeat);
+                        stack.push(m);
+                        Collections.reverse(repeatBody);
+                        repeat = new ArrayList<Music>();
+                        break;
+                    }
+                }
+                repeat.addAll(repeatBody);
+                repeat.addAll(firstRepeat);
+                repeat.addAll(repeatBody);
+                for (Music m: repeat){
+                    stack.push(m);
+                }
+            }
+        }
 
         @Override
         public void exitFirstendingmeasure(FirstendingmeasureContext ctx) { 
@@ -508,7 +554,7 @@ public class Parser {
             applyAccidentalsToMeasure(elements);
 
             Measure m = new Measure(elements, false, true, false, false);
-            stack.push(m);
+            stack.push(m);         
         }
 
 

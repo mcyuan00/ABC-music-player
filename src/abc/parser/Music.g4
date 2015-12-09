@@ -18,13 +18,13 @@ normalmeasure : (element | WHITESPACE)+ '|';
 
 element : noteelement | tupletelement;
 noteelement : note | chord;
+chord : '[' note+ ']';
 note : pitch | rest;
 pitch : ACCIDENTAL? NOTELETTER OCTAVE? notelength?;
 rest : 'z' notelength?;
 notelength : ((DIGIT+)? '/' (DIGIT+)?) | DIGIT+;
 tupletelement : tupletspec noteelement+;
 tupletspec : '(' DIGIT;
-chord : '[' note+ ']';
 comment : '%' text+;
 text : DIGIT | NOTELETTER | LETTERS | SYMBOLS | ACCIDENTAL;
 

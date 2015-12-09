@@ -121,6 +121,16 @@ public interface MusicListener extends ParseTreeListener {
    */
   void exitNoteelement(MusicParser.NoteelementContext ctx);
   /**
+   * Enter a parse tree produced by {@link MusicParser#chord}.
+   * @param ctx the parse tree
+   */
+  void enterChord(MusicParser.ChordContext ctx);
+  /**
+   * Exit a parse tree produced by {@link MusicParser#chord}.
+   * @param ctx the parse tree
+   */
+  void exitChord(MusicParser.ChordContext ctx);
+  /**
    * Enter a parse tree produced by {@link MusicParser#note}.
    * @param ctx the parse tree
    */
@@ -180,16 +190,6 @@ public interface MusicListener extends ParseTreeListener {
    * @param ctx the parse tree
    */
   void exitTupletspec(MusicParser.TupletspecContext ctx);
-  /**
-   * Enter a parse tree produced by {@link MusicParser#chord}.
-   * @param ctx the parse tree
-   */
-  void enterChord(MusicParser.ChordContext ctx);
-  /**
-   * Exit a parse tree produced by {@link MusicParser#chord}.
-   * @param ctx the parse tree
-   */
-  void exitChord(MusicParser.ChordContext ctx);
   /**
    * Enter a parse tree produced by {@link MusicParser#comment}.
    * @param ctx the parse tree
