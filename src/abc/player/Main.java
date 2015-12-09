@@ -38,6 +38,7 @@ public class Main {
         List<Music> voices = new ArrayList<Music>();
         
         for (String key: voicesString.keySet()){
+            System.out.println(voicesString.get(key));
             Music m = Parser.parseMusic(voicesString.get(key), defaultNoteLength, keySig, key);
             voices.add(m);
         }
@@ -56,7 +57,7 @@ public class Main {
 
     public static void main(String[] args) {
         try {
-            play("sample_abc/paddy.abc");
+            play("sample_abc/fur_elise.abc");
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

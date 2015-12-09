@@ -197,7 +197,7 @@ public class Header {
                 + "Composer: " + composer + "\n"
                 + "Meter: " + meter.toString() + "\n"
                 + "Default note length: " + noteLength.toString() + "\n"
-                + "Tempo: " + tempo + "\n"
+                + "Tempo: "+  noteLength.toString()+  "=" + tempo + "\n"
                 + "Key Signature: " + key + "\n";
         return toString;
     }

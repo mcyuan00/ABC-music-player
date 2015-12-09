@@ -61,7 +61,12 @@ public class PieceReader {
             }
             else{
                 StringBuilder currentPiece = builderVoices.get(currentVoice);
-                currentPiece.append(line);
+                if (line.startsWith("|")){
+                    currentPiece.append(line.substring(1));
+                }
+                else{
+                    currentPiece.append(line);
+                }
             }
         }
         

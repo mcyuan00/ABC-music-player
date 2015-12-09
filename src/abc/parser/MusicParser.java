@@ -220,6 +220,9 @@ public class MusicParser extends Parser {
   }
 
   public static class MeasureContext extends ParserRuleContext {
+    public FirstendingmeasureContext firstendingmeasure() {
+      return getRuleContext(FirstendingmeasureContext.class,0);
+    }
     public NormalmeasureContext normalmeasure() {
       return getRuleContext(NormalmeasureContext.class,0);
     }
@@ -228,9 +231,6 @@ public class MusicParser extends Parser {
     }
     public DoublebarmeasureContext doublebarmeasure() {
       return getRuleContext(DoublebarmeasureContext.class,0);
-    }
-    public FirstendingmeasureContext firstendingmeasure() {
-      return getRuleContext(FirstendingmeasureContext.class,0);
     }
     public SecondendingmeasureContext secondendingmeasure() {
       return getRuleContext(SecondendingmeasureContext.class,0);
@@ -262,28 +262,28 @@ public class MusicParser extends Parser {
         enterOuterAlt(_localctx, 1);
         {
         setState(51);
-        normalmeasure();
+        firstendingmeasure();
         }
         break;
       case 2:
         enterOuterAlt(_localctx, 2);
         {
         setState(52);
-        startrepeatmeasure();
+        normalmeasure();
         }
         break;
       case 3:
         enterOuterAlt(_localctx, 3);
         {
         setState(53);
-        doublebarmeasure();
+        startrepeatmeasure();
         }
         break;
       case 4:
         enterOuterAlt(_localctx, 4);
         {
         setState(54);
-        firstendingmeasure();
+        doublebarmeasure();
         }
         break;
       case 5:
@@ -1476,9 +1476,9 @@ public class MusicParser extends Parser {
       "\2\2\2\"\u00aa\3\2\2\2$\u00b0\3\2\2\2&\u00b3\3\2\2\2(\u00b9\3\2\2"+
       "\2*+\5\4\3\2+,\7\2\2\3,\3\3\2\2\2-/\7\3\2\2.-\3\2\2\2./\3\2\2\2/\61"+
       "\3\2\2\2\60\62\5\6\4\2\61\60\3\2\2\2\62\63\3\2\2\2\63\61\3\2\2\2\63"+
-      "\64\3\2\2\2\64\5\3\2\2\2\65<\5\f\7\2\66<\5\20\t\2\67<\5\16\b\28<\5"+
-      "\b\5\29<\5\n\6\2:<\5\22\n\2;\65\3\2\2\2;\66\3\2\2\2;\67\3\2\2\2;8"+
-      "\3\2\2\2;9\3\2\2\2;:\3\2\2\2<\7\3\2\2\2=A\7\4\2\2>@\5\f\7\2?>\3\2"+
+      "\64\3\2\2\2\64\5\3\2\2\2\65<\5\b\5\2\66<\5\f\7\2\67<\5\20\t\28<\5"+
+      "\16\b\29<\5\n\6\2:<\5\22\n\2;\65\3\2\2\2;\66\3\2\2\2;\67\3\2\2\2;"+
+      "8\3\2\2\2;9\3\2\2\2;:\3\2\2\2<\7\3\2\2\2=A\7\4\2\2>@\5\f\7\2?>\3\2"+
       "\2\2@C\3\2\2\2A?\3\2\2\2AB\3\2\2\2BD\3\2\2\2CA\3\2\2\2DE\5\22\n\2"+
       "E\t\3\2\2\2FJ\7\5\2\2GI\5\f\7\2HG\3\2\2\2IL\3\2\2\2JH\3\2\2\2JK\3"+
       "\2\2\2KM\3\2\2\2LJ\3\2\2\2MN\5\16\b\2N\13\3\2\2\2OR\5\24\13\2PR\7"+
