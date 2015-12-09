@@ -151,6 +151,18 @@ public class MusicBaseListener implements MusicListener {
    *
    * <p>The default implementation does nothing.</p>
    */
+  @Override public void enterChord(MusicParser.ChordContext ctx) { }
+  /**
+   * {@inheritDoc}
+   *
+   * <p>The default implementation does nothing.</p>
+   */
+  @Override public void exitChord(MusicParser.ChordContext ctx) { }
+  /**
+   * {@inheritDoc}
+   *
+   * <p>The default implementation does nothing.</p>
+   */
   @Override public void enterNote(MusicParser.NoteContext ctx) { }
   /**
    * {@inheritDoc}
@@ -218,18 +230,6 @@ public class MusicBaseListener implements MusicListener {
    * <p>The default implementation does nothing.</p>
    */
   @Override public void exitTupletspec(MusicParser.TupletspecContext ctx) { }
-  /**
-   * {@inheritDoc}
-   *
-   * <p>The default implementation does nothing.</p>
-   */
-  @Override public void enterChord(MusicParser.ChordContext ctx) { }
-  /**
-   * {@inheritDoc}
-   *
-   * <p>The default implementation does nothing.</p>
-   */
-  @Override public void exitChord(MusicParser.ChordContext ctx) { }
   /**
    * {@inheritDoc}
    *
