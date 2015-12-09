@@ -94,8 +94,24 @@ public class Fraction {
     }
     
     @Override
+    public int hashCode(){
+        return numerator + denominator;
+    }
+    
+    @Override
     public String toString(){
-        return numerator + "/" + denominator;
+        if(numerator == 1 && denominator ==1){
+            return "";
+        }
+        else if(numerator == 1){
+            return "/" + denominator;
+        }
+        else if(denominator == 1){
+            return String.valueOf(numerator);
+        }
+        else{
+            return numerator + "/" + denominator;
+        }
     }
     
     

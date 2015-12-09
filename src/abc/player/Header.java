@@ -133,7 +133,7 @@ public class Header {
     public List<String> voices(){
         return voices;
     }
-    
+
     /**
      * Sets the composer of the piece to composer
      * @param composer the name of the composer
@@ -177,7 +177,34 @@ public class Header {
         assert tempo > 0;
     }
 
+    @Override
+    public boolean equals(Object obj){
+        if(! (obj instanceof Header)) {return false;}
+        Header that = (Header) obj;
+        return composer.equals(that.composer()) 
+                && key.toString().equals(that.keySignature().toString()) 
+                && noteLength.equals(that.noteLength())
+                && tempo == that.tempo()
+                && title.equals(that.title())
+                && index == that.index()
+                && voices == that.voices();
+    }
+    
+    @Override public int hashCode(){
+        return composer.hashCode() + key.hashCode() + noteLength.hashCode() + tempo + title.hashCode() + index + voices.hashCode();
+    }
+    
+    @Override
+    public String toString(){
+        String toString = "Index: " + index + "\n"
+                            + "Title: " + title + "\n"
+                            + "Composer: " + composer + "\n"
+                            + "Meter: " + composer + "\n"
+                            + "Default note length: " + noteLength.toString() + "\n"
+                            + "Tempo: " + tempo + "\n"
+                            + "Key Signature: " + key + "\n";
+        return toString;
+    }
 
- 
 
 }
