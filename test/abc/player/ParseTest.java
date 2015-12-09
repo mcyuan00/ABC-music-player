@@ -388,6 +388,7 @@ public class ParseTest {
 
     //test body parse
     /*
+     * for duration n/m --> absent numerator assumed to be 1, absent denominator assumed to be 2
      * Note:
      *      - note letter --> lowercase, uppercase
      *      - , or ' (octave change) --> 0, 1, >1
@@ -424,20 +425,99 @@ public class ParseTest {
      *      - second ending length --> one measure, multiple measures
      */
 
-    // covers normal measure (one element), note (uppercase note letter), note (
+    // covers normal measure (one element), note (uppercase note letter), note (default length duration)
     @Test
-    public void testUppercaseNote(){
+    public void testUppercaseNoteDefaultLength(){
         String test = "A|\n";
         Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
         assertEquals(new Fraction(1,4), measure.duration());
-        System.out.println("ELEMENTS: " + measure.getElements());
     }
     
-    // test measure with multiple notes -- one uppercase, one lowercase
+    // covers normal measure (one element), note (lowercase note letter), note (length n)
     @Test
-    public void testMultipleNoteMeasure(){
-        String test = "A b|\n";
-        Music piece = Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
-        assertEquals(new Fraction(1,2), piece.duration());
+    public void testLowercaseNoteLengthN(){
+        String test = "a2|\n";
+        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
+        assertEquals(new Fraction(1,2), measure.duration());
+    }
+    
+    // covers normal measure (one element), note (lowercase note letter), note (length n/m)
+    @Test
+    public void testLowercaseNoteLengthNSlashM(){
+        String test = "a3/2|\n";
+        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
+        assertEquals(new Fraction(3,8), measure.duration());
+    }
+    
+    // covers normal measure (one element), note (lowercase note letter), note (length n/)
+    @Test
+    public void testLowercaseNoteLengthNSlash(){
+        String test = "a3/|\n";
+        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
+        assertEquals(new Fraction(3,8), measure.duration());
+    }
+    
+    // covers normal measure (one element), note (lowercase note letter), note (length /m)
+    @Test
+    public void testLowercaseNoteLengthSlashM(){
+        String test = "a/3|\n";
+        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
+        assertEquals(new Fraction(1,12), measure.duration());
+    }
+    
+    // covers normal measure (one element), note (lowercase note letter), note (length /)
+    @Test
+    public void testLowercaseNoteLengthSlash(){
+        String test = "a/|\n";
+        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
+        assertEquals(new Fraction(1,8), measure.duration());
+    }
+    
+    // covers normal measure (one element), rest (default length)
+    @Test
+    public void testRestDefaultLength(){
+        String test = "z|\n";
+        Music measure = Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
+        assertEquals(new Fraction(1,4), measure.duration());
+    }
+    
+    // covers normal measure (one element), rest (length n)
+    @Test
+    public void testRestLengthN(){
+        String test = "z2|\n";
+        Music measure = Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
+        assertEquals(new Fraction(1,2), measure.duration());
+    }
+    
+    // covers normal measure (one element), rest (length n/m)
+    @Test
+    public void testRestLengthNSlashM(){
+        String test = "z3/2|\n";
+        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
+        assertEquals(new Fraction(3,8), measure.duration());
+    }
+    
+    // covers normal measure (one element), rest (length n/)
+    @Test
+    public void testRestLengthNSlash(){
+        String test = "z3/|\n";
+        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
+        assertEquals(new Fraction(3,8), measure.duration());
+    }
+    
+    // covers normal measure (one element), rest (length /m)
+    @Test
+    public void testRestLengthSlashM(){
+        String test = "z/3|\n";
+        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
+        assertEquals(new Fraction(1,12), measure.duration());
+    }
+    
+    // covers normal measure (one element), rest (length /)
+    @Test
+    public void testRestLengthSlash(){
+        String test = "z/|\n";
+        Measure measure = (Measure) Parser.parseMusic(test, new Fraction(1,4), KeySignature.valueOf("C_MAJOR"));
+        assertEquals(new Fraction(1,8), measure.duration());
     }
 }
