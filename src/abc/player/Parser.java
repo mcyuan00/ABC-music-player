@@ -531,7 +531,7 @@ public class Parser {
         /**
          * Checks from beginning to end if list of music elements has accidentals and applies these
          * to the rest of the list if found
-         * @param elements list of music elements to apply accidentals too
+         * @param elements list of music elements to apply accidentals to
          * @return modified list of elements
          */
         private List<Music> applyAccidentalsToMeasure(List<Music> elements){
@@ -635,15 +635,17 @@ public class Parser {
             if (ctx.ACCIDENTAL()!= null){
                 String accidental = ctx.ACCIDENTAL().getText();
                 if (accidental.contains("_")){
-                    numAccidental = accidental.length();
+                    numAccidental = -accidental.length();
                 }
                 if (accidental.contains("^")){
                     numAccidental = accidental.length();
                 }
+                else{
+                    numAccidental = 0;
+                }
                 transpose = true;
             }
-            Note n = new Note(noteLength, noteLetter, octave, numAccidental);
-            n.setTransposeTag(transpose);
+            Note n = new Note(noteLength, noteLetter, octave, numAccidental, transpose);
             stack.push(n);
         }
 
@@ -664,10 +666,10 @@ public class Parser {
         @Override
         public void exitTupletelement(TupletelementContext ctx) { 
             int tupletNum = Integer.valueOf(ctx.tupletspec().getText().replace("(", ""));
-            assert stack.size()> tupletNum;
+            int tupletSize = ctx.noteelement().size();
+            assert tupletSize >= tupletNum;
             assert tupletNum > 1 && tupletNum < 5;
 
-            int tupletSize = ctx.noteelement().size();
             List<Music> tupletNotes = new ArrayList<Music>();
 
             for (int i = 0; i < tupletSize; i++){
