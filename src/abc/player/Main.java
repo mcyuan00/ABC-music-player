@@ -27,17 +27,22 @@ public class Main {
      */
     public static void play(String file) throws IOException {
         PieceReader reader = new PieceReader(file);
+        reader.readPiece();
         String headerString = reader.getHeader();
+        System.out.println(headerString);
         Header header = Parser.parseHeader(headerString);
-        
+        System.out.println("hi");
+
         Fraction defaultNoteLength = header.noteLength();
         KeySignature keySig = header.keySignature();
         Map<String, String> voicesString = reader.getVoices();
         List<Music> voices = new ArrayList<Music>();
-         
+        System.out.println(voicesString.toString());
         
         for (String key: voicesString.keySet()){
+            System.out.println(voicesString.get(key));
             Music m = Parser.parseMusic(voicesString.get(key), defaultNoteLength, keySig, key);
+            System.out.println(voicesString.get(key));
             voices.add(m);
         }
         Piece piece = new Piece(header, voices);
@@ -54,6 +59,11 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        // CALL play() HERE USING ARGS
+        try {
+            play("sample_abc/scale.abc");
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 }

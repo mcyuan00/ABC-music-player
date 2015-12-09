@@ -44,7 +44,7 @@ public class PieceReader {
             }
         }
         
-        System.out.println(header);
+//        System.out.println(header);
         String currentVoice = "main";
         Map<String, StringBuilder> builderVoices = new HashMap<String, StringBuilder>();
         builderVoices.put(currentVoice, new StringBuilder());
@@ -67,8 +67,8 @@ public class PieceReader {
         
         for (String v: builderVoices.keySet()){
             voices.put(v, builderVoices.get(v).toString());
-            System.out.println(v);
-            System.out.println(voices.get(v));
+//            System.out.println(v);
+//            System.out.println(voices.get(v));
         }
         
         fileReader.close();
