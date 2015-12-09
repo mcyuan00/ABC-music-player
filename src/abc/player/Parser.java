@@ -376,12 +376,12 @@ public class Parser {
         ParseTree tree = parser.root();
 
         
-        Future<JDialog> inspect = Trees.inspect(tree, parser);
-        try {
-            Utils.waitForClose(inspect.get());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        Future<JDialog> inspect = Trees.inspect(tree, parser);
+//        try {
+//            Utils.waitForClose(inspect.get());
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
         MakeMusic musicMaker = new MakeMusic(keySig, defaultNoteLength, voice);
         new ParseTreeWalker().walk(musicMaker, tree);
@@ -476,6 +476,14 @@ public class Parser {
                         repeat = new ArrayList<Music>();
                         break;
                     }
+                    else{
+                        repeat.add(music);
+                    }
+                }
+                if(stack.isEmpty()){
+                    repeatBody.addAll(repeat);
+                    Collections.reverse(repeatBody);
+                    repeat = new ArrayList<Music>();
                 }
                 repeat.addAll(repeatBody);
                 repeat.addAll(firstRepeat);
@@ -494,7 +502,13 @@ public class Parser {
                 measures.add(stack.pop());
             }
             Measure startFirstEnding = (Measure) stack.pop();
-            Measure replacedStartFirst = new Measure(startFirstEnding, true, false, false, false);
+            Measure replacedStartFirst;
+            if (numNorm == 0){
+                replacedStartFirst = new Measure(startFirstEnding, false, true, true, false);
+            }
+            else{
+                replacedStartFirst = new Measure(startFirstEnding, false, false, true, false);
+            }
             measures.add(replacedStartFirst);
             Collections.reverse(measures);
             for (int i = 0; i < numNorm + 1; i++){
@@ -545,17 +559,13 @@ public class Parser {
             List<Music> newElements = applyAccidentalsToMeasure(elements);
 
             Measure m = new Measure(newElements, false, true, false, false);
-            stack.push(m);         
+            stack.push(m);
         }
         
         //TODO
         @Override
-        public void exitSinglerepeatmeasure(SinglerepeatmeasureContext ctx) { }
-
-        @Override
-        public void exitNormalmeasure(NormalmeasureContext ctx) { 
+        public void exitSinglerepeatmeasure(SinglerepeatmeasureContext ctx) { 
             int numElements = ctx.element().size();
-            assert stack.size()>= numElements;
             List<Music> elements = new ArrayList<Music>();
             for (int i = 0; i < numElements; i++){
                 elements.add(stack.pop());
@@ -563,8 +573,41 @@ public class Parser {
             Collections.reverse(elements);  
 
             List<Music> newElements = applyAccidentalsToMeasure(elements);
-            Measure m = new Measure(newElements, false, false, false, false);
+
+            Measure m = new Measure(newElements, true, true, false, false);
             stack.push(m);
+        }
+
+        @Override
+        public void exitNormalmeasure(NormalmeasureContext ctx) {
+            if (ctx.startrepeatmeasure() != null){
+                Music startRepeatMeasure = stack.pop();
+                int numElements = ctx.element().size();
+                assert stack.size()>= numElements;
+                List<Music> elements = new ArrayList<Music>();
+                for (int i = 0; i < numElements; i++){
+                    elements.add(stack.pop());
+                }
+                Collections.reverse(elements);  
+
+                List<Music> newElements = applyAccidentalsToMeasure(elements);
+                Measure m = new Measure(newElements, false, false, false, false);
+                stack.push(m);
+                stack.push(startRepeatMeasure);
+            }
+            else{
+                int numElements = ctx.element().size();
+                assert stack.size()>= numElements;
+                List<Music> elements = new ArrayList<Music>();
+                for (int i = 0; i < numElements; i++){
+                    elements.add(stack.pop());
+                }
+                Collections.reverse(elements);  
+    
+                List<Music> newElements = applyAccidentalsToMeasure(elements);
+                Measure m = new Measure(newElements, false, false, false, false);
+                stack.push(m);
+            }
         }
 
         /**
