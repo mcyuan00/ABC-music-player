@@ -468,8 +468,9 @@ public class Parser {
 
         @Override
         public void exitMeasure(MeasureContext ctx) { 
-            if (ctx.endrepeatmeasure()!= null){
-                System.out.println(ctx.getText());
+            Measure popped = (Measure)stack.pop();
+            if (popped.isEndRepeat()){
+                stack.push(popped);
                 List<Music> repeatBody= new ArrayList<Music>();
                 List<Music> firstRepeat = new ArrayList<Music>();
                 List<Music> repeat = new ArrayList<Music>();
@@ -511,6 +512,9 @@ public class Parser {
                 for (Music m: repeat){
                     stack.push(m);
                 }
+            }
+            else{
+                stack.push(popped);
             }
         }
 
