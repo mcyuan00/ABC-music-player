@@ -14,11 +14,11 @@ public interface Music {
     /**
      * Datatype definition:
      *      Music = Note (duration: double, pitch: Pitch) 
-     *              + Chord (duration:double, numNotes: int, notes: List<Note>)
-     *              + Tuplet (numNotes: int, notes List<Note>)
+     *              + Chord (duration:double, numNotes: int, notes: List<Music>)
+     *              + Tuplet (numNotes: int, notes List<Music>)
      *              + Rest (duration: duration)
-     *              + Measure (m: List<Note>)
-     *              + Voice (name: String, measures: List<Note>) 
+     *              + Measure (m: List<Music>)
+     *              + Voice (name: String, measures: List<Music>) 
      */
 
     /**

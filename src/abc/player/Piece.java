@@ -1,5 +1,7 @@
 package abc.player;
 
+import java.util.List;
+
 import abc.sound.SequencePlayer;
 
 /**
@@ -12,23 +14,25 @@ public class Piece {
      */
 
     private final Header header;
-    private final Music music;
+    private final List<Music> voices;
 
     /**
      * Creates a piece object
      * @param header    header of the music piece
      * @param music     body of the music piece 
      */
-    public Piece(Header header, Music music){
+    public Piece(Header header, List<Music> voices){
         this.header = header;
-        this.music = music;
+        this.voices = voices;
     }
 
     /**
      * Uses information from the header and the music piece to create a SequencePlayer
      * object that plays the piece.
      */
-    public static void Play(){
+    public void Play(){
+        int tempo = header.tempo();
+        SequencePlayer player =  new SequencePlayer(tempo, ticksPerBeat);
         // SequencePlayer player = Music.constructPlayer(tempo, tickBreakdown, pieceNoteLength);
         // call Music.constructPlayer() and then plays it
     }
