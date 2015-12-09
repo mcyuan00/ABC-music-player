@@ -1,7 +1,10 @@
 package abc.player;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.MidiUnavailableException;
 
 import abc.sound.SequencePlayer;
 
@@ -30,19 +33,32 @@ public class Piece {
     /**
      * Uses information from the header and the music piece to create a SequencePlayer
      * object that plays the piece.
+     * @throws InvalidMidiDataException 
+     * @throws MidiUnavailableException 
      */
-    public void Play(){
+    public void play() throws MidiUnavailableException, InvalidMidiDataException{
         int tempo = header.tempo();
-        Set<Integer> durationDenominators = new HashSet<>();
-        int ticksPerBeat = 
+        Set<Integer> durationDenominators = new HashSet<Integer>();
+        for (Music m: voices){
+            durationDenominators.addAll(m.getAllDurationDenominators());
+        }
+        int ticksPerBeat = getLCM(durationDenominators);
+        
+        Fraction pieceNoteLength = header.noteLength();
         SequencePlayer player =  new SequencePlayer(tempo, ticksPerBeat);
-        // SequencePlayer player = Music.constructPlayer(tempo, tickBreakdown, pieceNoteLength);
-        // call Music.constructPlayer() and then plays it
+        for (Music m: voices){
+            List<PlayerElement> elements = m.getPlayerElements(0, ticksPerBeat, pieceNoteLength);
+            for (PlayerElement e: elements){
+                player.addNote(e);
+            }
+        }
+        
+        player.play();
     }
     
-    private int getLCM(Set<Integer> durationDenominator){
+    private int getLCM(Set<Integer> durationDenominators){
         int currentLcm = 1;
-        for (int denominator : durationDenominator){
+        for (int denominator : durationDenominators){
             currentLcm = pairLCM(denominator, currentLcm);
         }
         return currentLcm;

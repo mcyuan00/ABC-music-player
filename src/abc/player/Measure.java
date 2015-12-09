@@ -127,5 +127,37 @@ public class Measure implements Music {
         return new Measure(newMusicParts, startRepeat, endRepeat, firstEnding, doubleBar);
     }
 
+    @Override 
+    public boolean equals(Object obj){
+        if (!(obj instanceof Measure)){return false;}
+        Measure that = (Measure)obj;
+        return m.equals(that.getElements()) && startRepeat == that.isStartRepeat() && endRepeat == that.isEndRepeat() && firstEnding == that.isFirstEnding() && doubleBar == that.isDoubleBar();
+    }
+    
+    @Override
+    public int hashCode(){
+        return m.hashCode();
+    }
+    
+    @Override
+    public String toString(){
+        String toString = "";
+//        if (startRepeat){
+//            toString += "|:";
+//        }
+//        else if (firstEnding){
+//            toString += "[1";
+//        }
+        for (Music music : m){
+            toString+= music.toString() + " ";
+        }
+//        if (endRepeat){
+//            toString += ":|";
+//        }
+//        else if(doubleBar){
+//            toString +=
+//        }
+        return toString;
+    }
 
 }

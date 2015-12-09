@@ -21,7 +21,10 @@ public class Chord implements Music{
         this.notes = notes;
         checkRep();
     }
-    
+    // asserts rep invariant
+    private void checkRep(){
+        assert !notes.isEmpty();
+    }
     
     /**
      * 
@@ -65,9 +68,6 @@ public class Chord implements Music{
         return denominators;
     }
     
-    private void checkRep(){
-        assert !notes.isEmpty();
-    }
 
 
 //    @Override
@@ -93,6 +93,25 @@ public class Chord implements Music{
         if(! (obj instanceof Chord)) {return false;}
         Chord that = (Chord) obj;
         return this.chordNotes().equals(that.chordNotes());
+    }
+    
+    @Override 
+    public int hashCode(){
+        int hashCode = 0;
+        for (Music m: notes){
+            hashCode+= m.hashCode();
+        }
+        return hashCode;
+    }
+    
+    @Override
+    public String toString(){
+        String toString = "[";
+        for (Music m: notes){
+            toString += m.toString();
+        }
+        toString += "]";
+        return toString;
     }
         
 

@@ -25,37 +25,30 @@ public class Main {
      * 
      * @param file the name of input abc file
      */
-    public static void play(String file) {
+    public static void play(String file) throws IOException {
+        PieceReader reader = new PieceReader(file);
+        String headerString = reader.getHeader();
+        Header header = Parser.parseHeader(headerString);
+        
+        Fraction defaultNoteLength = header.noteLength();
+        KeySignature keySig = header.keySignature();
+        Map<String, String> voicesString = reader.getVoices();
+        List<Music> voices = new ArrayList<Music>();
+         
+        
+        for (String key: voicesString.keySet()){
+            Music m = Parser.parseMusic(voicesString.get(key), defaultNoteLength, keySig, key);
+            voices.add(m);
+        }
+        Piece piece = new Piece(header, voices);
+        
+        
         try {
-            PieceReader reader = new PieceReader(file);
-            String headerString = reader.getHeader();
-            Header header = Parser.parseHeader(headerString);
-            
-            Fraction defaultNoteLength = header.noteLength();
-            KeySignature keySig = header.keySignature();
-            Map<String, String> voicesString = reader.getVoices();
-            List<Music> voices = new ArrayList<Music>();
-           
-            
-            for (String key: voicesString.keySet()){
-                Music m = Parser.parseMusic(voicesString.get(key), defaultNoteLength, keySig, key);
-                voices.add(m);
-            }
-            Piece piece = new Piece(header, voices);
-            
-            //TODO: convert into pieces
-            
-            
-            try {
-                SequencePlayer sequencePlayer = Piece.Play();
-                sequencePlayer.play();
-            } catch (MidiUnavailableException mue) {
-                mue.printStackTrace();
-            } catch (InvalidMidiDataException imde) {
-                imde.printStackTrace();
-            }            
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
+            piece.play();
+        } catch (MidiUnavailableException mue) {
+            mue.printStackTrace();
+        } catch (InvalidMidiDataException imde) {
+            imde.printStackTrace();
         }
         
     }

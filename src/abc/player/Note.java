@@ -33,7 +33,7 @@ public class Note implements Music {
         pitch = new Pitch(noteLetter).transpose(Pitch.OCTAVE*octave);
         wasTransposed = false;
     }
-    
+
     /**
      * Make a Note with a certain pitch (with an accidental) played for duration beats.
      * @param duration duration in beats, must be >= 0
@@ -52,7 +52,7 @@ public class Note implements Music {
         pitch = new Pitch(noteLetter).transpose(Pitch.OCTAVE*octave + accidental);
         wasTransposed = false;
     }
-    
+
     /**
      * Make a Note with a certain pitch (with an accidental) played for duration beats.
      * @param duration duration in beats, must be >= 0
@@ -73,7 +73,7 @@ public class Note implements Music {
         pitch = new Pitch(noteLetter).transpose(Pitch.OCTAVE*octave + accidental);
         this.wasTransposed = wasTransposed;
     }
-    
+
     /**
      * @return pitch of this note
      */
@@ -92,54 +92,47 @@ public class Note implements Music {
         denominators.add(duration.denominator());
         return denominators;
     }
-    
-//    @Override
-//    public void transposeKey(char note, int octave, int semitonesUp) {
-//        if(note == noteLetter && this.octave == octave){
-//            int semitoneDifference = semitonesUp - accidental;
-//            pitch.transpose(semitoneDifference);
-//        }  
-//    }
-    
+
+    //    @Override
+    //    public void transposeKey(char note, int octave, int semitonesUp) {
+    //        if(note == noteLetter && this.octave == octave){
+    //            int semitoneDifference = semitonesUp - accidental;
+    //            pitch.transpose(semitoneDifference);
+    //        }  
+    //    }
+
     public boolean getTransposeTag(){
         return wasTransposed;
     }
-    
+
     public char getNoteLetter(){
         return noteLetter;
     }
-    
+
     public int getOctave(){
         return octave;
     }
-    
+
     public int getAccidental(){
         return accidental;
     }
-    
+
     public boolean wasTransposed(){
         return wasTransposed;
     }
-    
+
     @Override
     public List<PlayerElement> getPlayerElements(int startTick, int ticksPerBeat, Fraction pieceNoteLength) {
         List<PlayerElement> elements = new ArrayList<PlayerElement>();
-        
+
         //find the number of ticks the note is played for
         Fraction numBeats = new Fraction(duration.numerator()*pieceNoteLength.denominator(), duration.denominator()*pieceNoteLength.numerator()).simplify();
         int noteDuration = ticksPerBeat*numBeats.numerator()/numBeats.denominator();
-        
+
         elements.add(new PlayerElement(pitch, startTick, noteDuration));
         return elements;
     }
 
-    
-    @Override
-    public boolean equals(Object obj){
-        if(! (obj instanceof Note)) {return false;}
-        Note that = (Note) obj;
-        return ((this.duration.equals(that.duration())) && this.pitch.equals(that.pitch()));
-    }
 
     @Override
     public Music applyAccidentals(Map<String, Integer> accidentalMap) {
@@ -159,6 +152,46 @@ public class Note implements Music {
         }
     }
 
+    @Override
+    public boolean equals(Object obj){
+        if(! (obj instanceof Note)) {return false;}
+        Note that = (Note) obj;
+        return ((this.duration.equals(that.duration())) && this.pitch.equals(that.pitch()));
+    }
+
+    @Override
+    public int hashCode(){
+        return duration.hashCode() + pitch.hashCode();
+    }
+
+    @Override
+    public String toString(){
+        String toString = "";
+        if(accidental > 0){
+            for(int i = 0; i < accidental; i++){
+                toString +="^";
+            }
+        }
+        else if(accidental < 0){
+            for(int i = 0; i > accidental; i--){
+                toString +="_";
+            }
+        }
+        toString += noteLetter;
+        if(octave > 0){
+            for(int i = 0; i < octave; i++){
+                toString +="'";
+            }
+        }
+        else if(octave < 0){
+            for(int i = 0; i > octave; i--){
+                toString +=",";
+            }
+        }
+        toString += duration.toString();
+
+        return toString;
+    }
 
 
 }

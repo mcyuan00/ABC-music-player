@@ -53,18 +53,28 @@ public class Rest implements Music {
 //        //rests cannot be transposed
 //    }
     
-    @Override
-    public boolean equals(Object obj){
-        if(! (obj instanceof Rest)) {return false;}
-        Rest that = (Rest) obj;
-        return this.duration.equals(that.duration());
-    }
 
     @Override
     public Music applyAccidentals(Map<String, Integer> accidentalMap) {
         return new Rest(duration);
     }
 
+    @Override
+    public boolean equals(Object obj){
+        if(! (obj instanceof Rest)) {return false;}
+        Rest that = (Rest) obj;
+        return this.duration.equals(that.duration());
+    }
+    
+    @Override
+    public int hashCode(){
+        return duration.hashCode();
+    }
+    
+    @Override
+    public String toString(){
+        return "z" + duration.toString();
+    }
 
 
 }
