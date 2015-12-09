@@ -711,8 +711,12 @@ public class Parser {
                 denominator = 1;
             }
             String[] nums = length.split("/");
-            if (nums.length == 1){
-                numerator = (nums[0].equals("")) ? 1 : Integer.valueOf(nums[0]);
+            if (nums.length == 0){
+                numerator = 1;
+                denominator = 2;
+            }
+            else if (nums.length == 1){
+                numerator = Integer.valueOf(nums[0]);
                 denominator = 2;
             }
             else{
