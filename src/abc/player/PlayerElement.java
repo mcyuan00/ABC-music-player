@@ -105,4 +105,8 @@ public class PlayerElement {
                 && (this.numTicks() == that.numTicks()) && (this.isRest() == that.isRest()));
     }
    
+    @Override
+    public String toString(){
+        return pitch + ", " + startTick + ", " + numTicks; 
+    }
 }

@@ -4,8 +4,10 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.junit.Test;
@@ -16,7 +18,7 @@ public class TupletTest {
     public void testAssertionsEnabled() {
         assert false; // make sure assertions are enabled with VM argument: -ea
     }
-    
+
     //testing strategy:
     //  tupletNum: 2, 3, 4; also check that other numbers fail
     //  notes: length = tupletNum, not equal
@@ -26,21 +28,21 @@ public class TupletTest {
     //      getAllDurationDenominators()
     //  equals:
     //      different tupletNumber, notes contain mix of Chord and Notes
-    
+
     @Test(expected = AssertionError.class)
     public void testTupletNumTooLow(){
         List<Music> notes = new ArrayList<>();
         notes.add(new Note(new Fraction(1, 5), 'D', 0));
         Tuplet tuplet = new Tuplet(1, notes);
     }
-    
+
     @Test(expected=AssertionError.class)
     public void testTupletNumTooHigh(){
         List<Music> notes = new ArrayList<>();
         notes.add(new Note(new Fraction(1, 5), 'D', 0));
         Tuplet tuplet = new Tuplet(5, notes);
     }
-    
+
     @Test(expected=AssertionError.class)
     public void testDurationsNotEqual(){
         List<Music> notes = new ArrayList<>();
@@ -48,7 +50,7 @@ public class TupletTest {
         notes.add(new Note(new Fraction(1, 4), 'B', 2));
         Tuplet tuplet = new Tuplet(2, notes);
     }
-    
+
     //also tests note length = tupletNum, only notes
     @Test
     public void testDuplet(){
@@ -78,7 +80,7 @@ public class TupletTest {
         denominators.add(2);
         assertEquals(denominators, tuplet.getAllDurationDenominators());        
     }
-    
+
     //also tests note length > tupletNumber, notes & chords
     @Test
     public void testTriplet(){
@@ -127,7 +129,7 @@ public class TupletTest {
         denominators.add(3);
         assertEquals(denominators, tuplet.getAllDurationDenominators());        
     }
-    
+
     //also tests note length = tupletNumber, only notes
     @Test
     public void testQuadruplet(){
@@ -164,4 +166,81 @@ public class TupletTest {
         assertEquals(denominators, tuplet.getAllDurationDenominators());        
     }
 
+    // test ApplyAccidental: no accidental in map
+    @Test
+    public void testAccidentalNoAccidental(){
+        List<Music> notes = new ArrayList<Music>();
+        notes.add(new Note(new Fraction(1,4), 'A', 0));
+        notes.add(new Note(new Fraction(1,4), 'B', 0));
+        notes.add(new Note(new Fraction(1,4), 'C', 0));
+        Tuplet tuplet = new Tuplet(3,notes);
+        Map<String,Integer> accidentals = new HashMap<String, Integer>();
+        Tuplet newTuplet = (Tuplet) tuplet.applyAccidentals(accidentals);
+        assertEquals(tuplet, newTuplet);
+        assertEquals(0, accidentals.size());
+    }
+
+    // test ApplyAccidental: accidental in map but doesnt match note
+    @Test
+    public void testAccidentalWrongAccidentalInMap(){
+        List<Music> notes = new ArrayList<Music>();
+        notes.add(new Note(new Fraction(1,4), 'A', 0));
+        notes.add(new Note(new Fraction(1,4), 'B', 0));
+        notes.add(new Note(new Fraction(1,4), 'C', 0));
+        Tuplet tuplet = new Tuplet(3,notes);
+        Map<String,Integer> accidentals = new HashMap<String, Integer>();
+        accidentals.put("A2", 2);
+        Tuplet newTuplet = (Tuplet) tuplet.applyAccidentals(accidentals);
+        assertEquals(tuplet, newTuplet);
+        assertEquals(1, accidentals.size());
+    }
+
+    // test ApplyAccidental: accidental in map that matches note
+    @Test
+    public void testAccidentalAccidentalMatchesNote(){
+        List<Music> notes = new ArrayList<Music>();
+        notes.add(new Note(new Fraction(1,4), 'A', 0));
+        notes.add(new Note(new Fraction(1,4), 'B', 0));
+        notes.add(new Note(new Fraction(1,4), 'C', 0));
+        Tuplet tuplet = new Tuplet(3,notes);
+        Map<String,Integer> accidentals = new HashMap<String, Integer>();
+        accidentals.put("A0", 2);
+        Tuplet newTuplet = (Tuplet) tuplet.applyAccidentals(accidentals);
+        notes.remove(0);
+        notes.add(0, new Note(new Fraction(1,4), 'A', 0, 2, true));
+        Tuplet expected = new Tuplet(3,notes);
+        assertEquals(expected, newTuplet);
+        assertEquals(1, accidentals.size());
+    }
+
+    // test ApplyAccidental: tuplet contains accidental not in map
+    @Test
+    public void testAccidentalAccidentalNotInMap(){
+        List<Music> notes = new ArrayList<Music>();
+        notes.add(new Note(new Fraction(1,4), 'A', 0, 2, true));
+        notes.add(new Note(new Fraction(1,4), 'B', 0));
+        notes.add(new Note(new Fraction(1,4), 'C', 0));
+        Tuplet tuplet = new Tuplet(3,notes);
+        Map<String,Integer> accidentals = new HashMap<String, Integer>();
+        Tuplet newTuplet = (Tuplet) tuplet.applyAccidentals(accidentals);
+        assertEquals(tuplet, newTuplet);
+        assertEquals(1, accidentals.size());
+        assertTrue(2== accidentals.get("A0"));
+    }
+
+    // test ApplyAccidental: tuplet contains accidental in map
+    @Test
+    public void testAccidentalAccidentalInMap(){
+        List<Music> notes = new ArrayList<Music>();
+        notes.add(new Note(new Fraction(1,4), 'A', 0, 2, true));
+        notes.add(new Note(new Fraction(1,4), 'B', 0));
+        notes.add(new Note(new Fraction(1,4), 'C', 0));
+        Tuplet tuplet = new Tuplet(3,notes);
+        Map<String,Integer> accidentals = new HashMap<String, Integer>();
+        accidentals.put("A0", 0);
+        Tuplet newTuplet = (Tuplet) tuplet.applyAccidentals(accidentals);
+        assertEquals(tuplet, newTuplet);
+        assertEquals(1, accidentals.size());
+        assertTrue(2== accidentals.get("A0"));
+    }
 }

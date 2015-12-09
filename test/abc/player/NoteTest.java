@@ -3,8 +3,10 @@ package abc.player;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.junit.Test;
@@ -15,13 +17,14 @@ public class NoteTest {
     public void testAssertionsEnabled() {
         assert false; // make sure assertions are enabled with VM argument: -ea
     }
-    
+
     //testing strategy:
     //  test both constructors
     //  test observers: pitch(), duration(), getPlayerElement()
     //  test getAllDurationDenominators()
     //  test equals(): different length, different pitch, same pitch but different constructor, same everything
-    
+    //  test applyAccidentals: no accidental in map, accidental in map but doesnt match note, accidental in map that matches note, note contains accidental
+
     @Test
     public void testNoteNoAccidentalMiddleOctave(){
         Note note = new Note(new Fraction(3, 4), 'B', 0);
@@ -34,7 +37,7 @@ public class NoteTest {
         playerElements.add(new PlayerElement(new Pitch('B'), 5, 6));
         assertEquals(playerElements, note.getPlayerElements(5, 2, new Fraction(1, 4)));
     }
-    
+
     @Test
     public void testNoteNoAccidentalOneOctaveHigher(){
         Note note = new Note(new Fraction(5, 8), 'C', 1);
@@ -47,7 +50,7 @@ public class NoteTest {
         playerElements.add(new PlayerElement(new Pitch('C').transpose(Pitch.OCTAVE), 0, 5));
         assertEquals(playerElements, note.getPlayerElements(0, 1, new Fraction(1, 8)));
     }
-    
+
     @Test
     public void testNoteAccidentalsLowerOctave(){
         Note note = new Note(new Fraction(2, 8), 'G', -2, -1);
@@ -60,28 +63,28 @@ public class NoteTest {
         playerElements.add(new PlayerElement(new Pitch('G').transpose(Pitch.OCTAVE * -2 - 1), 12, 4));
         assertEquals(playerElements, note.getPlayerElements(12, 16, new Fraction(1, 1)));
     }
-    
+
     @Test
     public void testNoteEqualsDifferentLength(){
         Note note1 = new Note(new Fraction(1, 5), 'B', 0);
         Note note2 = new Note(new Fraction(4, 8), 'B', 0);
         assertTrue(!note1.equals(note2));
     }
-    
+
     @Test
     public void testNoteEqualsDifferentPitch(){
         Note note1 = new Note(new Fraction(3, 8), 'B', 0);
         Note note2 = new Note(new Fraction(3, 8), 'C', 0);
         assertTrue(!note1.equals(note2));
     }
-    
+
     @Test
     public void testNoteEqualsDifferentConstructor(){
         Note note1 = new Note(new Fraction(3, 8), 'G', -1);
         Note note2 = new Note(new Fraction(3, 8), 'G', -1, 0);
         assertEquals(note1, note2);
     }
-    
+
     // test that D is the same as C##
     @Test
     public void testNoteEqualsDoubleSharp(){
@@ -89,11 +92,62 @@ public class NoteTest {
         Note note2 = new Note(new Fraction(3, 8), 'D', 0);
         assertEquals(note1, note2);
     }
-    
+
     @Test
     public void testNoteEqualsSameEverything(){
         Note note1 = new Note(new Fraction(3, 8), 'A', 3);
         Note note2 = new Note(new Fraction(3, 8), 'A', 3);
         assertEquals(note1, note2);
     }
+
+    //  test applyAccidentals: no accidental in map or in note
+    @Test
+    public void testApplyAccidentalNoAccidental(){
+        Note note = new Note(new Fraction(1,4), 'A', 0); 
+        Note newNote = (Note) note.applyAccidentals(new HashMap<String, Integer>());
+        assertEquals(note, newNote);
+    }
+    
+    //  test applyAccidentals: accidental in map but doesnt match note
+    @Test
+    public void testApplyAccidentalWrongAccidentalInMap(){
+        Note note = new Note(new Fraction(1,4), 'A', 0); 
+        Map<String,Integer> accidentals = new HashMap<String, Integer>();
+        accidentals.put("B2", 2);
+        Note newNote = (Note) note.applyAccidentals(accidentals);
+        assertEquals(note, newNote);
+    }
+    
+    //  test applyAccidentals: accidental in map that matches note
+    @Test
+    public void testApplyAccidentalAccidentalInMap(){
+        Note note = new Note(new Fraction(1,4), 'A', 0); 
+        Map<String,Integer> accidentals = new HashMap<String, Integer>();
+        accidentals.put("A0", 2);
+        Note newNote = (Note) note.applyAccidentals(accidentals);
+        Note expected = new Note(new Fraction(1,4), 'A', 0, 2, true);
+        assertEquals(expected, newNote);
+    }
+    
+    //  test applyAccidentals:note contains accidental not in map
+    @Test
+    public void testApplyAccidentalNoteAccidentalNotInMap(){
+        Note note = new Note(new Fraction(1,4), 'A', 0, 2, true); 
+        Map<String,Integer> accidentals = new HashMap<String, Integer>();
+        Note newNote = (Note) note.applyAccidentals(accidentals);
+        assertEquals(note, newNote);
+        assertTrue(2 == accidentals.get("A0"));
+    }
+    
+    //  test applyAccidentals:note contains accidental already in map
+    @Test
+    public void testApplyAccidentalNoteAccidentalInMap(){
+        Note note = new Note(new Fraction(1,4), 'A', 0, 0, true); 
+        Map<String,Integer> accidentals = new HashMap<String, Integer>();
+        accidentals.put("A0", 2);
+        Note newNote = (Note) note.applyAccidentals(accidentals);
+        assertEquals(note, newNote);
+        assertTrue(0 == accidentals.get("A0"));
+    }
+
 }

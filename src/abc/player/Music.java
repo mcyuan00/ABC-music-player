@@ -10,14 +10,18 @@ import javax.sound.midi.MidiUnavailableException;
 
 import abc.sound.SequencePlayer;
 
+/**
+ * Music is an immutable datatype representing the music.
+ *
+ */
 public interface Music {
     /**
      * Datatype definition:
-     *      Music = Note (duration: double, pitch: Pitch) 
-     *              + Chord (duration:double, numNotes: int, notes: List<Music>)
-     *              + Tuplet (numNotes: int, notes List<Music>)
-     *              + Rest (duration: duration)
-     *              + Measure (m: List<Music>)
+     *      Music = Note (duration: Fraction, noteLetter: char, octave: int, accidental: int, wasTransposed: boolean) 
+     *              + Chord (notes: List<Music>)
+     *              + Tuplet (tupletNumber: int, notes: List<Music>)
+     *              + Rest (duration: Fraction)
+     *              + Measure (m: List<Music>, startRepeat: boolean, endRepeat: boolean, firstEnding: boolean, doubleBar: boolean)
      *              + Voice (name: String, measures: List<Music>) 
      */
 
@@ -32,18 +36,6 @@ public interface Music {
      * @return all the denominators for durations used
      */
     Set<Integer> getAllDurationDenominators();
-
-    /**
-     * Transpose all notes upward or downward in pitch.
-     * @param semitonesUp semitones by which to transpose
-     * @return for Music m, return m' such that for all notes n in m, the
-     *         corresponding note n' in m' has
-     *         n'.pitch() == n.pitch().transpose(semitonesUp), and m' is
-     *         otherwise identical to m
-     * @throws InvalidMidiDataException 
-     * @throws MidiUnavailableException 
-     */
-    //    Music transpose(int semitonesUp);
 
     /**
      * 
