@@ -12,8 +12,9 @@ measure : normalmeasure | startrepeatmeasure | doublebarmeasure | firstendingmea
 firstendingmeasure : '[1' normalmeasure* endrepeatmeasure;
 secondendingmeasure : '[2' normalmeasure* doublebarmeasure;
 doublebarmeasure : (element | WHITESPACE)+ ('||' | '[|' | '|]');
-startrepeatmeasure : ('|:' | ':') (element | WHITESPACE)+;
+startrepeatmeasure : ('|:' | ':') (element | WHITESPACE)+ ('|');
 endrepeatmeasure : (element | WHITESPACE)+ ':|';
+singlerepeatmeasure : ('|:' | ':') (element | WHITESPACE)+ (':|');
 normalmeasure : (element | WHITESPACE)+ '|';
 
 element : noteelement | tupletelement;
