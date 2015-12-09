@@ -507,8 +507,39 @@ public class Parser {
 
             applyAccidentalsToMeasure(elements);
 
-            Measure m = new Measure(elements, false, true, false, false);
-            stack.push(m);
+            Measure measure = new Measure(elements, false, true, false, false);
+            
+            List<Music> repeatBody= new ArrayList<Music>();
+            List<Music> firstRepeat = new ArrayList<Music>();
+            List<Music> repeat = new ArrayList<Music>();
+            repeat.add(measure);
+            while(!stack.isEmpty()){
+                Music music = stack.pop();
+                Measure m = (Measure)music;
+                if (m.isFirstEnding()){
+                    repeat.add(music);
+                    firstRepeat.addAll(repeat);
+                    repeat = new ArrayList<Music>();
+                }
+                else if(m.isStartRepeat()){
+                    repeat.add(music);
+                    repeatBody.addAll(repeat);
+                    repeat = new ArrayList<Music>();
+                    break;
+                }
+                else if(m.isDoubleBar()){
+                    repeatBody.addAll(repeat);
+                    stack.push(m);
+                    repeat = new ArrayList<Music>();
+                    break;
+                }
+            }
+            repeat.addAll(repeatBody);
+            repeat.addAll(firstRepeat);
+            repeat.addAll(repeatBody);
+            for (Music m: repeat){
+                stack.push(m);
+            }
         }
 
 
